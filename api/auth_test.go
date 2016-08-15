@@ -11,6 +11,8 @@ import (
 )
 
 func TestAuthenticate(t *testing.T) {
+	t.Parallel()
+
 	u := mem.NewStore()
 	m := kiasu.FakeMailer()
 
