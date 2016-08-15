@@ -3,7 +3,7 @@ package kiasu
 import (
 	"time"
 
-	"golang.org/x/net/context"
+	"context"
 )
 
 // Store is responsible for persistent (or not) data storage and retrieval

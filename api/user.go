@@ -13,6 +13,10 @@ import (
 func UserProfile(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		user := r.Context().Value("user").(*kiasu.User)
+		if !activeUser(user, w, r) {
+			return
+		}
+
 		err := json.NewEncoder(w).Encode(user)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -24,7 +28,10 @@ func UserProfile(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
 // UserSessions lists all of the active users sessions
 func UserSessions(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		user := r.Context().Value("user").(*kiasu.User)
+		if !activeUser(user, w, r) {
+			return
+		}
 	}
 }
 
@@ -103,4 +110,12 @@ func DeactivateUser(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 	}
+}
+
+func activeUser(u *kiasu.User, w http.ResponseWriter, r *http.Request) bool {
+	if !u.Active {
+		json.NewEncoder(w).Encode(map[string]string{"error": "please activate your account"})
+	}
+
+	return u.Active
 }

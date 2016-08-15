@@ -6,10 +6,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"context"
+
 	"github.com/fortytw2/kiasu"
 	"github.com/fortytw2/kiasu/stores/mem"
 	"github.com/go-kit/kit/log"
-	"golang.org/x/net/context"
 )
 
 func TestUserProfile(t *testing.T) {
@@ -44,4 +45,9 @@ func TestUserProfile(t *testing.T) {
 	if us.Email != "luke@jedicouncil.gov" {
 		t.Errorf("user email is NOT luke! - %s", us.Email)
 	}
+}
+
+func TestRegisterUser(t *testing.T) {
+	t.Parallel()
+
 }

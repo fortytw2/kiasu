@@ -5,9 +5,10 @@ import (
 	"sync"
 	"time"
 
+	"context"
+
 	"github.com/fortytw2/abdi"
 	"github.com/fortytw2/kiasu"
-	"golang.org/x/net/context"
 )
 
 type store struct {
