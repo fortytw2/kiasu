@@ -13,6 +13,31 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
+func TestConfirmUser(t *testing.T) {
+	t.Parallel()
+
+	u := mem.NewStore()
+	m := kiasu.FakeMailer()
+
+	confirmToken, err := u.CreateUser(context.Background(), m, "luke@jedicouncil.gov", "IamABest91030!")
+	if err != nil {
+		t.Error(err)
+	}
+
+	req, err := http.NewRequest("GET", "http://kiasu.io/api/v1/users/confirm?token="+confirmToken, nil)
+	if err != nil {
+		t.Error(err)
+	}
+
+	w := httptest.NewRecorder()
+	ConfirmToken(log.NewNopLogger(), m, u).ServeHTTP(w, req)
+	if w.Code != 200 {
+		t.Errorf("confirm token did not return 200 - %d", w.Code)
+		return
+	}
+
+}
+
 func TestUserProfile(t *testing.T) {
 	t.Parallel()
 

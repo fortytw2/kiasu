@@ -30,6 +30,8 @@ func (h httpError) Write(w http.ResponseWriter) {
 	json.NewEncoder(w).Encode(h)
 }
 
+// ErrorHandler is an HTTP Handler mixed with a error to avoid repetitive
+// writeHeader ; return
 type ErrorHandler func(w http.ResponseWriter, r *http.Request) error
 
 func (eh ErrorHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

@@ -41,6 +41,17 @@ func UserSessions(l log.Logger, us kiasu.UserStore) ErrorHandler {
 // ConfirmToken confirms an authentication token, activating a user
 func ConfirmToken(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler {
 	return func(w http.ResponseWriter, r *http.Request) error {
+		token := r.URL.Query().Get("token")
+		if token == "" {
+			return NewHTTPError("not a valid confirmation token", http.StatusBadRequest)
+		}
+
+		accessToken, err := us.ActivateUser(r.Context(), token)
+		if err != nil {
+			return NewHTTPError("could not activate user", http.StatusBadRequest)
+		}
+
+		fmt.Fprintf(w, `{"access_token": "%s"}`, accessToken)
 
 		return nil
 	}
@@ -64,6 +75,7 @@ func RegisterUser(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler
 			return NewHTTPError("could not register user", http.StatusForbidden)
 		}
 
+		// this needs to sent via email
 		fmt.Fprintf(w, `{"confirmation_token": "%s"}`, sesh)
 		w.WriteHeader(http.StatusOK)
 		return nil
