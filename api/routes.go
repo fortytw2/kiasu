@@ -23,15 +23,15 @@ func Routes(l log.Logger, m kiasu.Mailer, ds kiasu.Store) http.Handler {
 func userRoutes(l log.Logger, m kiasu.Mailer, ds kiasu.Store) http.Handler {
 	users := chi.NewRouter()
 
-	users.Get("/", UserProfile(l, ds))
-	users.Delete("/", DeactivateUser(l, ds))
+	users.Get("/", UserProfile(l, ds).ServeHTTP)
+	users.Delete("/", DeactivateUser(l, ds).ServeHTTP)
 
-	users.Get("/sessions", UserSessions(l, ds))
-	users.Delete("/sessions", Logout(l, ds))
+	users.Get("/sessions", UserSessions(l, ds).ServeHTTP)
+	users.Delete("/sessions", Logout(l, ds).ServeHTTP)
 
-	users.Get("/confirm", ConfirmToken(l, m, ds))
-	users.Post("/login", Login(l, m, ds))
-	users.Post("/new", RegisterUser(l, m, ds))
+	users.Get("/confirm", ConfirmToken(l, m, ds).ServeHTTP)
+	users.Post("/login", Login(l, m, ds).ServeHTTP)
+	users.Post("/new", RegisterUser(l, m, ds).ServeHTTP)
 
 	return users
 }

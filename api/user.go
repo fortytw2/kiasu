@@ -10,41 +10,45 @@ import (
 )
 
 // UserProfile encodes the current user's profile to JSON
-func UserProfile(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func UserProfile(l log.Logger, us kiasu.UserStore) ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
 		user := r.Context().Value("user").(*kiasu.User)
-		if !activeUser(user, w, r) {
-			return
+		if err := activeUser(user); err != nil {
+			return err
 		}
 
 		err := json.NewEncoder(w).Encode(user)
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
+			return NewHTTPError("could not write response", http.StatusInternalServerError)
 		}
+
+		return nil
 	}
 }
 
 // UserSessions lists all of the active users sessions
-func UserSessions(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func UserSessions(l log.Logger, us kiasu.UserStore) ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
 		user := r.Context().Value("user").(*kiasu.User)
-		if !activeUser(user, w, r) {
-			return
+		if err := activeUser(user); err != nil {
+			return err
 		}
+
+		return nil
 	}
 }
 
 // ConfirmToken confirms an authentication token, activating a user
-func ConfirmToken(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func ConfirmToken(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
 
+		return nil
 	}
 }
 
 // RegisterUser creates a new user
-func RegisterUser(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func RegisterUser(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
 		var body struct {
 			Email    string `json:"email"`
 			Password string `json:"password"`
@@ -52,24 +56,23 @@ func RegisterUser(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) http.Handler
 
 		err := json.NewDecoder(r.Body).Decode(&body)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
+			return NewHTTPError("error parsing json", http.StatusBadRequest)
 		}
 
 		sesh, err := us.CreateUser(r.Context(), m, body.Email, body.Password)
 		if err != nil {
-			w.WriteHeader(http.StatusUnauthorized)
-			return
+			return NewHTTPError("could not register user", http.StatusForbidden)
 		}
 
-		fmt.Fprintf(w, `{"access_token": "%s"}`, sesh)
+		fmt.Fprintf(w, `{"confirmation_token": "%s"}`, sesh)
 		w.WriteHeader(http.StatusOK)
+		return nil
 	}
 }
 
 // Login logs a user in, giving them a fresh access token
-func Login(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func Login(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
 		var body struct {
 			Email    string `json:"email"`
 			Password string `json:"password"`
@@ -77,45 +80,44 @@ func Login(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&body)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
+			return NewHTTPError("error parsing json", http.StatusBadRequest)
 		}
 
 		sesh, err := us.NewSession(r.Context(), m, body.Email, body.Password)
 		if err != nil {
-			w.WriteHeader(http.StatusUnauthorized)
-			return
+			return NewHTTPError("could not create a new session", http.StatusInternalServerError)
 		}
 
 		fmt.Fprintf(w, `{"access_token": "%s"}`, sesh)
 		w.WriteHeader(http.StatusOK)
+		return nil
 	}
 }
 
 // Logout invalidates the current token
-func Logout(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func Logout(l log.Logger, us kiasu.UserStore) ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
 		token := r.Context().Value("access_token").(string)
 		err := us.InvalidateToken(r.Context(), token)
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
+			return NewHTTPError("could not invalidate current session", http.StatusInternalServerError)
 		}
 		w.WriteHeader(http.StatusOK)
+		return nil
 	}
 }
 
 // DeactivateUser deletes the users account
-func DeactivateUser(l log.Logger, us kiasu.UserStore) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-
+func DeactivateUser(l log.Logger, us kiasu.UserStore) ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
+		return nil
 	}
 }
 
-func activeUser(u *kiasu.User, w http.ResponseWriter, r *http.Request) bool {
+func activeUser(u *kiasu.User) error {
 	if !u.Active {
-		json.NewEncoder(w).Encode(map[string]string{"error": "please activate your account"})
+		return NewHTTPError("inactive or deleted user account", http.StatusUnauthorized)
 	}
 
-	return u.Active
+	return nil
 }

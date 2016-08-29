@@ -19,21 +19,24 @@ func TestUserProfile(t *testing.T) {
 	u := mem.NewStore()
 	m := kiasu.FakeMailer()
 
-	token, err := u.CreateUser(context.Background(), m, "luke@jedicouncil.gov", "IamABest91030!")
+	confirmToken, err := u.CreateUser(context.Background(), m, "luke@jedicouncil.gov", "IamABest91030!")
 	if err != nil {
 		t.Error(err)
 	}
+
+	accessToken, _ := u.ActivateUser(nil, confirmToken)
 
 	req, err := http.NewRequest("GET", "http://kiasu.io/api/v1/users/", nil)
 	if err != nil {
 		t.Error(err)
 	}
-	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Authorization", "Bearer "+accessToken)
 
 	w := httptest.NewRecorder()
-	Authenticate(u, UserProfile(log.NewNopLogger(), u))(w, req)
+	Authenticate(u, UserProfile(log.NewNopLogger(), u)).ServeHTTP(w, req)
 	if w.Code != 200 {
 		t.Errorf("user profile did not return 200 - %d", w.Code)
+		return
 	}
 
 	var us kiasu.User

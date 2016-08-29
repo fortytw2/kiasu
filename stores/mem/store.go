@@ -59,10 +59,13 @@ func (s *store) CreateUser(_ context.Context, m kiasu.Mailer, email string, pw s
 	if err != nil {
 		return "", err
 	}
+	t := "potatoes"
 	s.users = append(s.users, &kiasu.User{
 		ID:                s.userIDMax,
 		Email:             email,
 		EncryptedPassword: *h,
+		ConfirmationToken: &t,
+		Confirmed:         false,
 		NotifyWindow:      30 * time.Second,
 	})
 
@@ -76,7 +79,35 @@ func (s *store) CreateUser(_ context.Context, m kiasu.Mailer, email string, pw s
 		Token:     "111222233334444",
 	})
 	s.sessMu.Unlock()
-	return "111222233334444", nil
+	return t, nil
+}
+
+func (s *store) ActivateUser(_ context.Context, confirmToken string) (string, error) {
+	s.userMu.RLock()
+	for _, u := range s.users {
+		if confirmToken == *u.ConfirmationToken {
+			s.userMu.RUnlock()
+			s.userMu.Lock()
+			u.Confirmed = true
+			u.Active = true
+			s.userMu.Unlock()
+
+			s.sessMu.Lock()
+			s.sessIDMax++
+			s.sessions = append(s.sessions, &kiasu.Session{
+				ID:        s.sessIDMax,
+				UserID:    s.userIDMax,
+				CreatedAt: time.Now(),
+				ExpiresAt: time.Now().Add(time.Hour),
+				Token:     "111222233334444",
+			})
+			s.sessMu.Unlock()
+			return "111222233334444", nil
+		}
+	}
+	s.userMu.RUnlock()
+	return "", errors.New("could not activate")
+
 }
 
 func (s *store) NewSession(_ context.Context, m kiasu.Mailer, email string, pw string) (string, error) {

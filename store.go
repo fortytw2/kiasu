@@ -18,9 +18,10 @@ type Store interface {
 type UserStore interface {
 	// GetUser returns a users details
 	GetUser(ctx context.Context, accessToken string) (*User, error)
-	// CreateUser creates a new user, session and returns their access_token
+	// CreateUser creates a new user, session and returns a confirmation_token
 	// given email + encrypted password
 	CreateUser(ctx context.Context, m Mailer, email string, pw string) (string, error)
+	ActivateUser(ctx context.Context, confirmToken string) (string, error)
 	// NewSession creates a new session
 	NewSession(ctx context.Context, m Mailer, email string, pw string) (string, error)
 
