@@ -39,7 +39,7 @@ func UserSessions(l log.Logger, us kiasu.UserStore) ErrorHandler {
 }
 
 // ConfirmToken confirms an authentication token, activating a user
-func ConfirmToken(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler {
+func ConfirmToken(l log.Logger, us kiasu.UserStore) ErrorHandler {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		token := r.URL.Query().Get("token")
 		if token == "" {
@@ -83,7 +83,7 @@ func RegisterUser(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler
 }
 
 // Login logs a user in, giving them a fresh access token
-func Login(l log.Logger, m kiasu.Mailer, us kiasu.UserStore) ErrorHandler {
+func Login(l log.Logger, us kiasu.UserStore) ErrorHandler {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		var body struct {
 			Email    string `json:"email"`

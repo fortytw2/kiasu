@@ -1,4 +1,4 @@
-package api
+package middlewarez
 
 // Ported from Goji's middleware, source:
 // https://github.com/zenazn/goji/tree/master/web/middleware
@@ -14,13 +14,13 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-// logger is a middleware that logs the start and end of each request, along
+// Logger is a middleware that logs the start and end of each request, along
 // with some useful data about what was requested, what the response status was,
 // and how long it took to return. When standard output is a TTY, logger will
 // print in color, otherwise it will print in black and white.
 //
-// logger prints a request ID if one is provided.
-func logger(l log.Logger) func(next http.Handler) http.Handler {
+// Logger prints a request ID if one is provided.
+func Logger(l log.Logger) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
 			lw := wrapWriter(w)
@@ -28,7 +28,13 @@ func logger(l log.Logger) func(next http.Handler) http.Handler {
 			t1 := time.Now()
 			defer func() {
 				t2 := time.Now()
-				printRequest(l, r.URL.Path, lw, t2.Sub(t1))
+
+				id, ok := r.Context().Value("id").(string)
+				if !ok {
+					id = "n/a"
+				}
+
+				printRequest(l, id, r.Method, r.URL.Path, lw, t2.Sub(t1))
 			}()
 
 			next.ServeHTTP(lw, r)
@@ -38,8 +44,8 @@ func logger(l log.Logger) func(next http.Handler) http.Handler {
 	}
 }
 
-func printRequest(l log.Logger, path string, w writerProxy, dt time.Duration) {
-	l.Log("path", path, "bytes_written", w.BytesWritten(), "status_code", w.Status(), "duration", dt)
+func printRequest(l log.Logger, id, meth, path string, w writerProxy, dt time.Duration) {
+	l.Log("id", id, "method", meth, "path", path, "bytes_written", w.BytesWritten(), "status_code", w.Status(), "duration", dt)
 }
 
 // writerProxy is a proxy around an http.ResponseWriter that allows you to hook
