@@ -1,12 +1,11 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"context"
 
 	"github.com/fortytw2/kiasu"
 	"github.com/fortytw2/kiasu/stores/mem"
