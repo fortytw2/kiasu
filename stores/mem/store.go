@@ -90,7 +90,7 @@ func (s *store) ActivateUser(_ context.Context, confirmToken string) (string, er
 			t := randToken(24)
 			s.sessions = append(s.sessions, &kiasu.Session{
 				ID:        s.sessIDMax,
-				UserID:    s.userIDMax,
+				UserID:    u.ID,
 				CreatedAt: time.Now(),
 				ExpiresAt: time.Now().Add(time.Hour),
 				Token:     t,
@@ -109,7 +109,21 @@ func (s *store) NewSession(_ context.Context, email string, pw string) (string, 
 }
 
 func (s *store) GetActiveSessions(_ context.Context, accessToken string, p *kiasu.Pagination) ([]kiasu.Session, error) {
-	panic("not implemented")
+	u, err := s.GetUser(context.Background(), accessToken)
+	if err != nil {
+		return nil, err
+	}
+
+	var out []kiasu.Session
+	s.sessMu.RLock()
+	for _, s := range s.sessions {
+		if s.UserID == u.ID {
+			out = append(out, *s)
+		}
+	}
+	s.sessMu.RUnlock()
+
+	return out, nil
 }
 
 func (s *store) GetPastSessions(_ context.Context, accessToken string, p *kiasu.Pagination) ([]kiasu.Session, error) {

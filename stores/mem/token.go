@@ -2,10 +2,14 @@ package mem
 
 import (
 	"math/rand"
+	"sync"
 	"time"
 )
 
-var src = rand.NewSource(time.Now().UnixNano())
+var (
+	src     = rand.NewSource(time.Now().UnixNano())
+	tokLock = sync.Mutex{}
+)
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const (
@@ -15,6 +19,9 @@ const (
 )
 
 func randToken(n int) string {
+	tokLock.Lock()
+	defer tokLock.Unlock()
+
 	b := make([]byte, n)
 	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
 	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {

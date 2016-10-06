@@ -15,7 +15,7 @@ import (
 func TestConfirmUser(t *testing.T) {
 	t.Parallel()
 
-	u := mem.NewStore()
+	u := mem.NewStore([]byte{1, 2, 3, 4, 5, 3})
 	m := kiasu.FakeMailer()
 
 	confirmToken, err := u.CreateUser(context.Background(), m, "luke@jedicouncil.gov", "IamABest91030!")
@@ -40,7 +40,7 @@ func TestConfirmUser(t *testing.T) {
 func TestUserProfile(t *testing.T) {
 	t.Parallel()
 
-	u := mem.NewStore()
+	u := mem.NewStore([]byte{1, 2, 3, 4, 5, 3})
 	m := kiasu.FakeMailer()
 
 	confirmToken, err := u.CreateUser(context.Background(), m, "luke@jedicouncil.gov", "IamABest91030!")
