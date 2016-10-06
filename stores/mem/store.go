@@ -110,7 +110,7 @@ func (s *store) ActivateUser(_ context.Context, confirmToken string) (string, er
 
 }
 
-func (s *store) NewSession(_ context.Context, m kiasu.Mailer, email string, pw string) (string, error) {
+func (s *store) NewSession(_ context.Context, email string, pw string) (string, error) {
 	panic("not implemented")
 }
 
