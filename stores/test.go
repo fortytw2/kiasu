@@ -17,6 +17,8 @@ func Test(s kiasu.Store, t *testing.T) {
 	}{
 		{"luke@puke.com", "iamaJedi2319-%"},
 		{"george@lucas.org", "IamNotMyFather2320"},
+		{"george23@lucas.org", "IamNotMyFatheqwer2320"},
+		{"georg432e@lucas.org", "IamNotMyFwadaather2320"},
 	}
 
 	for _, u := range users {

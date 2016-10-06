@@ -20,7 +20,6 @@ func Authenticate(us kiasu.UserStore, x ErrorHandler) ErrorHandler {
 
 		user, err := us.GetUser(r.Context(), trimmed)
 		if err != nil {
-			println(err)
 			return NewHTTPError("invalid authorization header", http.StatusUnauthorized)
 		}
 
