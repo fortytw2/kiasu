@@ -95,7 +95,7 @@ func Login(l log.Logger, us kiasu.UserStore) ErrorHandler {
 			return NewHTTPError("error parsing json", http.StatusBadRequest)
 		}
 
-		sesh, err := us.NewSession(r.Context(), m, body.Email, body.Password)
+		sesh, err := us.NewSession(r.Context(), body.Email, body.Password)
 		if err != nil {
 			return NewHTTPError("could not create a new session", http.StatusInternalServerError)
 		}

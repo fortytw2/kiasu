@@ -30,7 +30,7 @@ func TestConfirmUser(t *testing.T) {
 	}
 
 	w := httptest.NewRecorder()
-	ConfirmToken(log.NewNopLogger(), m, u).ServeHTTP(w, req)
+	ConfirmToken(log.NewNopLogger(), u).ServeHTTP(w, req)
 	if w.Code != 200 {
 		t.Errorf("confirm token did not return 200 - %d", w.Code)
 		return

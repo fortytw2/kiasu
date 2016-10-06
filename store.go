@@ -23,7 +23,7 @@ type UserStore interface {
 	CreateUser(ctx context.Context, m Mailer, email string, pw string) (string, error)
 	ActivateUser(ctx context.Context, confirmToken string) (string, error)
 	// NewSession creates a new session
-	NewSession(ctx context.Context, m Mailer, email string, pw string) (string, error)
+	NewSession(ctx context.Context, email string, pw string) (string, error)
 
 	// Session management
 	GetActiveSessions(ctx context.Context, accessToken string, p *Pagination) ([]Session, error)
