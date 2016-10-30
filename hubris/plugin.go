@@ -3,6 +3,8 @@ package hubris
 import (
 	"errors"
 	"regexp"
+
+	"github.com/fortytw2/kiasu"
 )
 
 // Plugin Errors
@@ -19,7 +21,7 @@ type Plugin struct {
 
 	Validate func(Client, Config) error
 	// Entrypoint starts the scrape with the given config
-	Entrypoint func(Client, *Config) ([]Info, error)
+	Entrypoint func(Client, *Config) ([]kiasu.Post, []string, error)
 	// User input routes function
 	Routes map[string]Handler
 
@@ -28,12 +30,12 @@ type Plugin struct {
 }
 
 // A Handler processes a given task URL
-type Handler func(Client, string) ([]Info, error)
+type Handler func(Client, string) ([]kiasu.Post, []string, error)
 
 // NewPlugin constructs a plugin from the given functions
 func NewPlugin(name string,
 	configs func(Client) ([]Config, error),
-	entrypoint func(Client, *Config) ([]Info, error),
+	entrypoint func(Client, *Config) ([]kiasu.Post, []string, error),
 	Routes map[string]Handler) (*Plugin, error) {
 
 	return nil, nil
