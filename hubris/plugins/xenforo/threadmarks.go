@@ -10,11 +10,13 @@ import (
 	"github.com/jaytaylor/html2text"
 )
 
-type Extractor struct{}
+type Extractor struct {
+	c *http.Client
+}
 
 // NewExtractor creates a new Extractor for SpaceBattles
-func NewExtractor() *Extractor {
-	return &Extractor{}
+func NewExtractor(c *http.Client) *Extractor {
+	return &Extractor{c: c}
 }
 
 func (e *Extractor) Validate(f *kiasu.Feed) error {
@@ -27,7 +29,7 @@ func (e *Extractor) Update(a *kiasu.Post) error {
 }
 
 func (e *Extractor) FindSince(f *kiasu.Feed, since time.Time) ([]kiasu.Post, error) {
-	rsp, err := http.Get(f.URL)
+	rsp, err := e.c.Get(f.URL)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +100,7 @@ func (e *Extractor) getThreadmarkPost(url string) (*kiasu.Post, error) {
 	} else {
 		postID = split[1]
 	}
-	rsp, err := http.Get(url)
+	rsp, err := e.c.Get(url)
 	if err != nil {
 		return nil, err
 	}
