@@ -16,6 +16,8 @@ type Plugin struct {
 	Name string
 
 	Configs func(Client) ([]Config, error)
+
+	Validate func(Client, Config) error
 	// Entrypoint starts the scrape with the given config
 	Entrypoint func(Client, *Config) ([]Info, error)
 	// User input routes function

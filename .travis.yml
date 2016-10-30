@@ -1,12 +1,9 @@
 language: go
 go:
- - 1.7.1
+ - 1.7.3
 
 script:
- - ./test.sh
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+ - go test -v ./...
 
 notifications:
   slack: pandadog:cP1IszmFigKwUVyJgNGK2cGV
