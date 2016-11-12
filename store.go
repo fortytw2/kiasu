@@ -1,5 +1,7 @@
 package kiasu
 
+//go:generate moq -out store_moq_test.go . PrimitiveStore
+
 // Store is responsible for persistent (or not) data storage and retrieval
 // and abstracting that into business-logic level functions
 type Store struct {
@@ -30,5 +32,9 @@ func NewStore(ps PrimitiveStore) (*Store, error) {
 
 // CreateUser creates a new user from an email and password
 func (s *Store) CreateUser(email, password string) error {
-	return nil
+	_, err := s.Users.SaveUser(&User{
+		Email: email,
+	})
+
+	return err
 }
