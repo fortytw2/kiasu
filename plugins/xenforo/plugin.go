@@ -160,9 +160,9 @@ func getThreadmarkPost(c kiasu.Client, url string) (*kiasu.Post, error) {
 	}
 
 	return &kiasu.Post{
-		URL:       url,
-		CreatedAt: postTime,
-		Title:     title,
-		Content:   text,
+		URL:      url,
+		PostedAt: postTime,
+		Title:    title,
+		Content:  text,
 	}, nil
 }
