@@ -3,6 +3,7 @@ package bunt
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"testing"
 	"time"
 
@@ -27,7 +28,9 @@ func TestMemStore(t *testing.T) {
 }
 
 func TestDiskStore(t *testing.T) {
-	s, err := NewStore(fmt.Sprintf("/tmp/bunt-%d", rand.Int63()))
+	path := fmt.Sprintf("/tmp/bunt-%d", rand.Int63())
+
+	s, err := NewStore(path)
 	assert.Nil(t, err)
 	assert.NotNil(t, s)
 
@@ -36,4 +39,9 @@ func TestDiskStore(t *testing.T) {
 	stores.TestFeedStore(t, s)
 	stores.TestPostStore(t, s)
 	stores.TestSessionStore(t, s)
+
+	err = os.RemoveAll(path)
+	if err != nil {
+		fmt.Println("could not clean up after test")
+	}
 }
