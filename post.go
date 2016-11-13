@@ -4,7 +4,7 @@ import "time"
 
 // PostStore provides primitives for storing and retrieving posts
 type PostStore interface {
-	GetPost(id string) (*Post, error)
+	GetPost(feedID, postID string) (*Post, error)
 	SavePost(*Post) (*Post, error)
 	GetPosts(feedID string, pg *Pagination) ([]Post, error)
 }

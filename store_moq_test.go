@@ -8,7 +8,7 @@ package kiasu
 //     func TestSomethingThatUsesPrimitiveStore(t *testing.T) {
 //
 //         // make and configure a mocked PrimitiveStore
-//         mockedPrimitiveStore := &PrimitiveStoreMock{ 
+//         mockedPrimitiveStore := &PrimitiveStoreMock{
 //             GetFeedFunc: func(id string) (*Feed, error) {
 // 	               panic("TODO: mock out the GetFeed function")
 //             },
@@ -55,9 +55,9 @@ package kiasu
 // 	               panic("TODO: mock out the SaveUser function")
 //             },
 //         }
-//
+//s
 //         // TODO: use mockedPrimitiveStore in code that requires PrimitiveStore
-//     
+//
 //     }
 type PrimitiveStoreMock struct {
 	// GetFeedFunc mocks the GetFeed function.
@@ -65,7 +65,7 @@ type PrimitiveStoreMock struct {
 	// GetFeedsFunc mocks the GetFeeds function.
 	GetFeedsFunc func(pg *Pagination) ([]Feed, error)
 	// GetPostFunc mocks the GetPost function.
-	GetPostFunc func(id string) (*Post, error)
+	GetPostFunc func(fid, pid string) (*Post, error)
 	// GetPostsFunc mocks the GetPosts function.
 	GetPostsFunc func(feedID string, pg *Pagination) ([]Post, error)
 	// GetReadStatusFunc mocks the GetReadStatus function.
@@ -109,11 +109,11 @@ func (mock *PrimitiveStoreMock) GetFeeds(pg *Pagination) ([]Feed, error) {
 }
 
 // GetPost calls GetPostFunc.
-func (mock *PrimitiveStoreMock) GetPost(id string) (*Post, error) {
+func (mock *PrimitiveStoreMock) GetPost(feedID, postID string) (*Post, error) {
 	if mock.GetPostFunc == nil {
 		panic("moq: GetPostFunc is nil but was just called")
 	}
-	return mock.GetPostFunc(id)
+	return mock.GetPostFunc(feedID, postID)
 }
 
 // GetPosts calls GetPostsFunc.

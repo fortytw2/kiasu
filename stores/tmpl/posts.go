@@ -3,7 +3,7 @@ package tmpl
 import "github.com/fortytw2/kiasu"
 
 // GetPost returns a post by ID
-func (s *Store) GetPost(id string) (*kiasu.Post, error) {
+func (s *Store) GetPost(feedID, postID string) (*kiasu.Post, error) {
 	return nil, nil
 }
 
