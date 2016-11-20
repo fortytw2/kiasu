@@ -29,6 +29,6 @@ func TestAll(t *testing.T, s kiasu.PrimitiveStore) {
 	})
 
 	t.Run("fuzz user store", func(t *testing.T) {
-		FuzzUserStore(t, s, 256)
+		FuzzUserStore(t, s, 8192)
 	})
 }

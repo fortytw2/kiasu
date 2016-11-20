@@ -25,4 +25,6 @@ type User struct {
 
 	NotifyWindow   time.Duration `json:"notify_window"`
 	LastNotifiedAt *time.Time    `json:"last_notified_at"`
+
+	Feeds []Feed `json:"feeds"`
 }

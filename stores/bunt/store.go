@@ -16,10 +16,12 @@ func NewMemStore() (kiasu.PrimitiveStore, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	err = setup(db)
 	if err != nil {
 		return nil, err
 	}
+
 	return &Store{
 		db: db,
 	}, nil
@@ -31,10 +33,19 @@ func NewStore(filepath string) (kiasu.PrimitiveStore, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	err = setup(db)
 	if err != nil {
 		return nil, err
 	}
+
+	err = db.SetConfig(buntdb.Config{
+		SyncPolicy: buntdb.Always,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	return &Store{
 		db: db,
 	}, nil
