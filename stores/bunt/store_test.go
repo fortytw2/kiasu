@@ -20,13 +20,7 @@ func TestMemStore(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, s)
 
-	stores.TestUserStore(t, s)
-	stores.TestReadStatusStore(t, s)
-	stores.TestFeedStore(t, s)
-	stores.TestPostStore(t, s)
-	stores.TestSessionStore(t, s)
-
-	stores.FuzzUserStore(t, s, 256)
+	stores.TestAll(t, s)
 }
 
 func TestDiskStore(t *testing.T) {
@@ -36,13 +30,7 @@ func TestDiskStore(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, s)
 
-	stores.TestUserStore(t, s)
-	stores.TestReadStatusStore(t, s)
-	stores.TestFeedStore(t, s)
-	stores.TestPostStore(t, s)
-	stores.TestSessionStore(t, s)
-
-	stores.FuzzUserStore(t, s, 256)
+	stores.TestAll(t, s)
 
 	err = os.RemoveAll(path)
 	if err != nil {
