@@ -60,11 +60,10 @@ func (s *Store) CreateUser(email, password string) (*User, error) {
 
 	now := time.Now()
 	u, err := s.Users.SaveUser(&User{
-		CreatedAt:         &now,
 		Email:             email,
 		EncryptedPassword: *encPass,
 		Confirmed:         false,
-		TokenCreatedAt:    &now,
+		TokenCreatedAt:    now,
 	})
 	if err != nil {
 		return nil, err

@@ -2,6 +2,7 @@ package bunt
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/fortytw2/kiasu"
 	"github.com/fortytw2/kiasu/internal/uuid"
@@ -44,6 +45,7 @@ func (s *Store) SavePost(post *kiasu.Post) (*kiasu.Post, error) {
 
 	id := uuid.NewV4()
 	post.ID = id.String()
+	post.CreatedAt = time.Now()
 
 	buf, err := json.Marshal(post)
 	if err != nil {

@@ -3,6 +3,7 @@ package bunt
 import (
 	"encoding/json"
 	"strings"
+	"time"
 
 	"github.com/fortytw2/kiasu"
 	"github.com/fortytw2/kiasu/internal/uuid"
@@ -68,6 +69,7 @@ func (s *Store) GetUserByEmail(email string) (*kiasu.User, error) {
 func (s *Store) SaveUser(u *kiasu.User) (*kiasu.User, error) {
 	id := uuid.NewV4()
 	u.ID = id.String()
+	u.CreatedAt = time.Now()
 
 	buf, err := json.Marshal(u)
 	if err != nil {

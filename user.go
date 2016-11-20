@@ -17,7 +17,7 @@ type UserStore interface {
 
 // A User is a registered (or not) user
 type User struct {
-	CreatedAt *time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"created_at"`
 
 	ID                string `json:"id"`
 	Email             string `json:"email"`
@@ -26,13 +26,13 @@ type User struct {
 	LoginCount       int `json:"login_count"`
 	FailedLoginCount int `json:"failed_login_count"`
 
-	Active            bool       `json:"active"`
-	Confirmed         bool       `json:"confirmed"`
-	ConfirmationToken *string    `json:"confirmation_token"`
-	TokenCreatedAt    *time.Time `json:"token_created_at"`
+	Active            bool      `json:"active"`
+	Confirmed         bool      `json:"confirmed"`
+	ConfirmationToken string    `json:"confirmation_token"`
+	TokenCreatedAt    time.Time `json:"token_created_at"`
 
 	NotifyWindow   time.Duration `json:"notify_window"`
-	LastNotifiedAt *time.Time    `json:"last_notified_at"`
+	LastNotifiedAt time.Time     `json:"last_notified_at"`
 
 	Feeds []Feed `json:"feeds"`
 }

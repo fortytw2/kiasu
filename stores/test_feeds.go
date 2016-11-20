@@ -18,6 +18,10 @@ func TestFeedStore(t *testing.T, fs kiasu.FeedStore) {
 	assert.NotEmpty(t, f.Name)
 	assert.NotEmpty(t, f)
 
+	badOutF, err := fs.GetFeed("potatosImNotaRealUUID")
+	assert.NotNil(t, err)
+	assert.Empty(t, badOutF)
+
 	outF, err := fs.GetFeed(f.ID)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, outF.Name)
