@@ -8,6 +8,12 @@ func (s *Store) GetUser(id string) (*kiasu.User, error) {
 
 }
 
+// GetUserByEmail gets a yser by email
+func (s *Store) GetUserByEmail(email string) (*kiasu.User, error) {
+	return nil, nil
+
+}
+
 // SaveUser saves a user and returns it, with it's new ID
 func (s *Store) SaveUser(u *kiasu.User) (*kiasu.User, error) {
 	return nil, nil

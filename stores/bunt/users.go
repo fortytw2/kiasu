@@ -2,6 +2,7 @@ package bunt
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/fortytw2/kiasu"
 	"github.com/fortytw2/kiasu/internal/uuid"
@@ -28,6 +29,38 @@ func (s *Store) GetUser(id string) (*kiasu.User, error) {
 		return nil, err
 	}
 
+	return &u, nil
+}
+
+// GetUserByEmail gets a user by their email
+func (s *Store) GetUserByEmail(email string) (*kiasu.User, error) {
+	var u kiasu.User
+	err := s.db.View(func(tx *buntdb.Tx) error {
+		// TODO: read buntdb docs
+		err := tx.AscendGreaterOrEqual("user_email", email, func(key string, value string) bool {
+			if !strings.Contains(value, email) {
+				return true
+			}
+
+			var u2 kiasu.User
+			err := json.Unmarshal([]byte(value), &u2)
+			if err != nil {
+				return true
+			}
+
+			if u2.Email == email {
+				u = u2
+				return false
+			}
+
+			return true
+		})
+
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
 	return &u, nil
 }
 

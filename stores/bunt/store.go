@@ -52,7 +52,7 @@ func NewStore(filepath string) (kiasu.PrimitiveStore, error) {
 }
 
 func setup(db *buntdb.DB) error {
-	err := db.CreateIndex("feed_pkey", "feed:*", buntdb.IndexJSON("id"))
+	err := db.CreateIndex("user_email", "user:*", buntdb.IndexJSON("email"))
 	if err != nil {
 		if err == buntdb.ErrIndexExists {
 			// all is good

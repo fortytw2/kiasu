@@ -30,13 +30,23 @@ func FuzzUserStore(t *testing.T, us kiasu.UserStore, n int) {
 			Email:             u.Email,
 			EncryptedPassword: u.Password,
 		})
-		assert.Nil(t, err)
+		if err != nil {
+			if err == kiasu.ErrUserExists {
+				continue
+			}
+			assert.Nil(t, err)
+		}
 		assert.NotEmpty(t, newUser)
 
 		shouldMatch, err := us.GetUser(newUser.ID)
 		assert.Nil(t, err)
 		assert.Equal(t, shouldMatch.ID, newUser.ID)
 		assert.Equal(t, u.Email, shouldMatch.Email)
+
+		shouldMatchZwei, err := us.GetUserByEmail(u.Email)
+		assert.Nil(t, err)
+		assert.Equal(t, shouldMatchZwei.ID, newUser.ID)
+		assert.Equal(t, u.Email, shouldMatchZwei.Email)
 	}
 }
 
