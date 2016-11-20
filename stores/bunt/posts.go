@@ -2,7 +2,6 @@ package bunt
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/fortytw2/kiasu"
 	"github.com/fortytw2/kiasu/internal/uuid"
@@ -68,7 +67,6 @@ func (s *Store) GetPosts(feedID string, pg *kiasu.Pagination) ([]kiasu.Post, err
 	var posts []kiasu.Post
 	err := s.db.View(func(tx *buntdb.Tx) error {
 		err := tx.Ascend("post_feed_id_"+feedID, func(key string, value string) bool {
-			fmt.Println(key, value)
 			var p kiasu.Post
 			err := json.Unmarshal([]byte(value), &p)
 			if err != nil {

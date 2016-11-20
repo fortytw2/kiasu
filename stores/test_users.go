@@ -7,6 +7,39 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type userTest struct {
+	Email    string
+	Password string
+}
+
+func fuzz(len int) []userTest {
+	var out []userTest
+	for i := len; i > 0; i-- {
+		out = append(out, userTest{
+			Email:    randToken(8) + "@" + randToken(4) + ".com",
+			Password: randToken(24),
+		})
+	}
+	return out
+}
+
+// FuzzUserStore puts a lot of random users in the user store, then gets them back
+func FuzzUserStore(t *testing.T, us kiasu.UserStore, n int) {
+	for _, u := range fuzz(n) {
+		newUser, err := us.SaveUser(&kiasu.User{
+			Email:             u.Email,
+			EncryptedPassword: u.Password,
+		})
+		assert.Nil(t, err)
+		assert.NotEmpty(t, newUser)
+
+		shouldMatch, err := us.GetUser(newUser.ID)
+		assert.Nil(t, err)
+		assert.Equal(t, shouldMatch.ID, newUser.ID)
+		assert.Equal(t, u.Email, shouldMatch.Email)
+	}
+}
+
 // TestUserStore ensures a given userStore does what it should do
 func TestUserStore(t *testing.T, us kiasu.UserStore) {
 	u, err := us.SaveUser(&kiasu.User{
