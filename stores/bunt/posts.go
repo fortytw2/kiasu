@@ -63,6 +63,7 @@ func (s *Store) SavePost(post *kiasu.Post) (*kiasu.Post, error) {
 
 // GetPosts paginates through all posts for a feed
 func (s *Store) GetPosts(feedID string, pg *kiasu.Pagination) ([]kiasu.Post, error) {
+	var limit = pg.PageSize
 
 	var posts []kiasu.Post
 	err := s.db.View(func(tx *buntdb.Tx) error {
@@ -73,7 +74,10 @@ func (s *Store) GetPosts(feedID string, pg *kiasu.Pagination) ([]kiasu.Post, err
 				return true
 			}
 
-			posts = append(posts, p)
+			if limit != 0 {
+				posts = append(posts, p)
+				limit--
+			}
 
 			return true
 		})

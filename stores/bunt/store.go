@@ -16,7 +16,10 @@ func NewMemStore() (kiasu.PrimitiveStore, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	err = setup(db)
+	if err != nil {
+		return nil, err
+	}
 	return &Store{
 		db: db,
 	}, nil
@@ -28,8 +31,24 @@ func NewStore(filepath string) (kiasu.PrimitiveStore, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	err = setup(db)
+	if err != nil {
+		return nil, err
+	}
 	return &Store{
 		db: db,
 	}, nil
+}
+
+func setup(db *buntdb.DB) error {
+	err := db.CreateIndex("feed_pkey", "feed:*", buntdb.IndexJSON("id"))
+	if err != nil {
+		if err == buntdb.ErrIndexExists {
+			// all is good
+		} else {
+			return err
+		}
+	}
+
+	return nil
 }

@@ -35,7 +35,7 @@ func TestPostStore(t *testing.T, ss kiasu.PostStore) {
 	assert.Nil(t, err)
 	assert.Equal(t, p.Content, "3")
 
-	posts, err := ss.GetPosts("421", nil)
+	posts, err := ss.GetPosts("421", &kiasu.Pagination{Page: 0, PageSize: 10})
 	assert.Nil(t, err)
 	assert.Equal(t, 3, len(posts))
 }

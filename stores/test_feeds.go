@@ -22,4 +22,8 @@ func TestFeedStore(t *testing.T, fs kiasu.FeedStore) {
 	assert.Nil(t, err)
 	assert.NotEmpty(t, outF.Name)
 	assert.Equal(t, outF.Name, f.Name)
+
+	outFs, err := fs.GetFeeds(&kiasu.Pagination{Page: 0, PageSize: 10})
+	assert.Nil(t, err)
+	assert.Equal(t, len(outFs), 1)
 }

@@ -54,5 +54,30 @@ func (s *Store) SaveFeed(f *kiasu.Feed) (*kiasu.Feed, error) {
 
 // GetFeeds returns and filters on feeds
 func (s *Store) GetFeeds(pg *kiasu.Pagination) ([]kiasu.Feed, error) {
-	return nil, nil
+	var remaining = pg.PageSize
+
+	var feeds []kiasu.Feed
+	err := s.db.View(func(tx *buntdb.Tx) error {
+		err := tx.Ascend("feed_pkey", func(key string, value string) bool {
+			var f kiasu.Feed
+			err := json.Unmarshal([]byte(value), &f)
+			if err != nil {
+				return true
+			}
+
+			if remaining != 0 {
+				feeds = append(feeds, f)
+				remaining--
+			}
+
+			return true
+		})
+
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return feeds, nil
 }

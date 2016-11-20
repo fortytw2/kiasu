@@ -8,6 +8,7 @@ type Store struct {
 	Users        UserStore
 	Sessions     SessionStore
 	Feeds        FeedStore
+	Posts        PostStore
 	ReadStatuses ReadStatusStore
 }
 
@@ -26,6 +27,7 @@ func NewStore(ps PrimitiveStore) (*Store, error) {
 		Users:        ps,
 		Sessions:     ps,
 		Feeds:        ps,
+		Posts:        ps,
 		ReadStatuses: ps,
 	}, nil
 }
