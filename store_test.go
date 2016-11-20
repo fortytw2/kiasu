@@ -18,6 +18,9 @@ func TestCreateUser(t *testing.T) {
 		{true, false, "ian@fortytw2.com", "sa8dwu9djio23jl"},
 		{false, false, "joe@barbados.com", "no"}, // invalid password
 		{true, true, "ian@fortytw2.com", "sa8dwu9djio23jl"},
+		{true, true, "ian@fortytw2.com", "sa8dwu9djio23jl"},
+		{true, true, "ian@fortytw2.com", "sa8dwu9djio23jl"},
+		{true, true, "ian@fortytw2.com", "sa8dwu9djio23jl"},
 	}
 
 	ps, err := bunt.NewMemStore()
@@ -27,15 +30,19 @@ func TestCreateUser(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, u := range users {
-		_, err = s.CreateUser(u.Email, u.Password)
+		outU, err := s.CreateUser(u.Email, u.Password)
 		if err != nil {
-			if u.Dupe {
-				assert.Equal(t, kiasu.ErrUserExists, err)
-			}
 			if !u.Valid {
 				assert.NotNil(t, err)
+				continue
+			}
+			if u.Dupe {
+				assert.Equal(t, kiasu.ErrUserExists, err)
+				continue
 			}
 		}
+
+		assert.Equal(t, outU.Email, u.Email)
 
 		if u.Valid {
 			assert.Nil(t, err)
