@@ -26,7 +26,7 @@ func TestMemStore(t *testing.T) {
 	stores.TestPostStore(t, s)
 	stores.TestSessionStore(t, s)
 
-	stores.FuzzUserStore(t, s, 128)
+	stores.FuzzUserStore(t, s, 256)
 }
 
 func TestDiskStore(t *testing.T) {
@@ -42,7 +42,7 @@ func TestDiskStore(t *testing.T) {
 	stores.TestPostStore(t, s)
 	stores.TestSessionStore(t, s)
 
-	stores.FuzzUserStore(t, s, 128)
+	stores.FuzzUserStore(t, s, 256)
 
 	err = os.RemoveAll(path)
 	if err != nil {
