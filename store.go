@@ -36,6 +36,8 @@ type PrimitiveStore interface {
 }
 
 // NewStore builds a data storage layer out of the persistence primitives
+// It automatically sets and maintains all annotations such as "CreatedAt",
+// "UpdatedAt", etc, but the underlying PrimitiveStore is equally allowed to
 func NewStore(ps PrimitiveStore, encryptionKey []byte) (*Store, error) {
 	return &Store{
 		Users:         ps,
