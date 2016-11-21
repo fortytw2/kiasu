@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-kit/kit/log"
+	"github.com/fortytw2/kiasu/internal/log"
 )
 
 func main() {
