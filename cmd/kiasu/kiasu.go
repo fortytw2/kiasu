@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/fortytw2/kiasu/api"
 	"github.com/go-kit/kit/log"
 )
 
@@ -20,7 +19,7 @@ func main() {
 	// posts.POST("/read", api.ReadPost(l, db))
 	// posts.GET("/:id", api.GetSinglePost(l, db))
 
-	err := http.ListenAndServe(getPort(), api.Routes(l, nil, nil))
+	err := http.ListenAndServe(getPort(), nil)
 	if err != nil {
 		l.Log("msg", "could not start kiasu", "error", err)
 	}
