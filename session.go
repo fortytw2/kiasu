@@ -1,6 +1,10 @@
 package kiasu
 
-import "time"
+import (
+	"time"
+
+	"github.com/fortytw2/kiasu/internal/token"
+)
 
 // SessionStore stores sessions for users
 type SessionStore interface {
@@ -17,4 +21,16 @@ type Session struct {
 	CreatedAt time.Time `json:"created_at"`
 	ExpiresAt time.Time `json:"expires_at"`
 	Token     string    `json:"token"`
+}
+
+// CreateToken creates a new random token and stores it in the session
+func (s *Session) CreateToken() error {
+	tok, err := token.GenerateRandomString(32)
+	if err != nil {
+		return err
+	}
+
+	s.Token = tok
+
+	return nil
 }
