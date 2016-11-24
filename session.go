@@ -16,11 +16,12 @@ type SessionStore interface {
 
 // A Session is a single user session
 type Session struct {
-	ID        string    `json:"id"`
-	UserID    string    `json:"user_id"`
-	CreatedAt time.Time `json:"created_at"`
-	ExpiresAt time.Time `json:"expires_at"`
-	Token     string    `json:"token"`
+	ID            string    `json:"id"`
+	UserID        string    `json:"user_id"`
+	CreatedAt     time.Time `json:"created_at"`
+	InvalidatedAt time.Time `json:"invalidated_at"`
+	ExpiresAt     time.Time `json:"expires_at"`
+	Token         string    `json:"token"`
 }
 
 // CreateToken creates a new random token and stores it in the session
