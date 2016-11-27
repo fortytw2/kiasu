@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/NYTimes/gziphandler"
 	"github.com/felixge/httpsnoop"
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/internal/log"
@@ -28,7 +29,7 @@ func main() {
 	}
 
 	r := web.Routes(s)
-	err = http.ListenAndServe(getPort(), httpLogger(r, l))
+	err = http.ListenAndServe(getPort(), httpLogger(gziphandler.GzipHandler(r), l))
 	if err != nil {
 		l.Log("msg", "could not start hydrocarbon", "error", err)
 	}

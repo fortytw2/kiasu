@@ -1,0 +1,34 @@
+!#arg title string
+!#arg loggedIn bool
+!#arg unread int
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{s title}}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    {{!#insert "resetStyle.tmpl" }}
+    {{!#insert "baseStyle.tmpl" }}
+    </style>
+
+</head>
+<body>
+	<ul id="menu">
+		<li><a href="/">Kiasu</a></li>
+! if loggedIn {
+    <li>
+        <a href="/feeds">Feeds {{d unread}}</a>
+    </li>
+! } else {
+    <li><a href="/login">Login</a></li>
+    <li><a href="/register">Register</a></li>
+! }
+	</ul>
+
+!#include body
+
+!#include footer
+</body>
+</html>

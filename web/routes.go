@@ -20,6 +20,8 @@ const (
 	readStatusURL = "/mark_read"
 )
 
+//go:generate ftmpl -targetgo ./templates_generated.go templates/
+
 // Routes returns all routes for this application
 func Routes(s *hydrocarbon.Store) *httprouter.Router {
 	r := httprouter.New()
