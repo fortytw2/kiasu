@@ -34,6 +34,13 @@ func TMPLERRbase(title string, loggedIn bool, unread int) (string, error) {
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+    body {
+        --black: rgba(22, 32, 51, 1);
+        --alt-3: rgba(36, 89, 150, 1);
+        --alt-2: rgba(206, 45, 64, 1);
+        --alt-1: rgba(211, 67, 57, 1);
+        --white: rgba(225, 227, 232, 1);
+    }
     `)
 	_w(`/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -88,6 +95,7 @@ table {
     `)
 	_w(`body {
   font-family: Sans-Serif;
+  text-rendering: optimizeLegibility;
 }
 
 ul {
@@ -95,7 +103,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: var(--alt-3);
 }
 
 li {
@@ -112,7 +120,7 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-	background-color: #111;
+	background-color: var(--black);
 }
 `)
 	_w(`
@@ -166,6 +174,7 @@ func TMPLERRbaseStyle() (string, error) {
 
 	_w(`body {
   font-family: Sans-Serif;
+  text-rendering: optimizeLegibility;
 }
 
 ul {
@@ -173,7 +182,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: var(--alt-3);
 }
 
 li {
@@ -190,7 +199,7 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-	background-color: #111;
+	background-color: var(--black);
 }
 `)
 
@@ -226,6 +235,13 @@ func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+    body {
+        --black: rgba(22, 32, 51, 1);
+        --alt-3: rgba(36, 89, 150, 1);
+        --alt-2: rgba(206, 45, 64, 1);
+        --alt-1: rgba(211, 67, 57, 1);
+        --white: rgba(225, 227, 232, 1);
+    }
     `)
 	_w(`/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -280,6 +296,7 @@ table {
     `)
 	_w(`body {
   font-family: Sans-Serif;
+  text-rendering: optimizeLegibility;
 }
 
 ul {
@@ -287,7 +304,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: var(--alt-3);
 }
 
 li {
@@ -304,7 +321,7 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-	background-color: #111;
+	background-color: var(--black);
 }
 `)
 	_w(`
@@ -375,6 +392,13 @@ func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+    body {
+        --black: rgba(22, 32, 51, 1);
+        --alt-3: rgba(36, 89, 150, 1);
+        --alt-2: rgba(206, 45, 64, 1);
+        --alt-1: rgba(211, 67, 57, 1);
+        --white: rgba(225, 227, 232, 1);
+    }
     `)
 	_w(`/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -429,6 +453,7 @@ table {
     `)
 	_w(`body {
   font-family: Sans-Serif;
+  text-rendering: optimizeLegibility;
 }
 
 ul {
@@ -436,7 +461,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: var(--alt-3);
 }
 
 li {
@@ -453,7 +478,7 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-	background-color: #111;
+	background-color: var(--black);
 }
 `)
 	_w(`
@@ -486,7 +511,7 @@ li a:hover {
 	_w(`
 `)
 	_w(`
-<p> hi im footer</p>
+<p> hi im footer </p>
 `)
 	_w(`</body>
 </html>
@@ -524,6 +549,13 @@ func TMPLERRlogin(title string, loggedIn bool, unread int) (string, error) {
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+    body {
+        --black: rgba(22, 32, 51, 1);
+        --alt-3: rgba(36, 89, 150, 1);
+        --alt-2: rgba(206, 45, 64, 1);
+        --alt-1: rgba(211, 67, 57, 1);
+        --white: rgba(225, 227, 232, 1);
+    }
     `)
 	_w(`/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -578,6 +610,7 @@ table {
     `)
 	_w(`body {
   font-family: Sans-Serif;
+  text-rendering: optimizeLegibility;
 }
 
 ul {
@@ -585,7 +618,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: var(--alt-3);
 }
 
 li {
@@ -602,7 +635,7 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-	background-color: #111;
+	background-color: var(--black);
 }
 `)
 	_w(`
@@ -673,6 +706,13 @@ func TMPLERRpost(title string, loggedIn bool, unread int) (string, error) {
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+    body {
+        --black: rgba(22, 32, 51, 1);
+        --alt-3: rgba(36, 89, 150, 1);
+        --alt-2: rgba(206, 45, 64, 1);
+        --alt-1: rgba(211, 67, 57, 1);
+        --white: rgba(225, 227, 232, 1);
+    }
     `)
 	_w(`/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -727,6 +767,7 @@ table {
     `)
 	_w(`body {
   font-family: Sans-Serif;
+  text-rendering: optimizeLegibility;
 }
 
 ul {
@@ -734,7 +775,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: var(--alt-3);
 }
 
 li {
@@ -751,7 +792,7 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-	background-color: #111;
+	background-color: var(--black);
 }
 `)
 	_w(`
@@ -822,6 +863,13 @@ func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+    body {
+        --black: rgba(22, 32, 51, 1);
+        --alt-3: rgba(36, 89, 150, 1);
+        --alt-2: rgba(206, 45, 64, 1);
+        --alt-1: rgba(211, 67, 57, 1);
+        --white: rgba(225, 227, 232, 1);
+    }
     `)
 	_w(`/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -876,6 +924,7 @@ table {
     `)
 	_w(`body {
   font-family: Sans-Serif;
+  text-rendering: optimizeLegibility;
 }
 
 ul {
@@ -883,7 +932,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: var(--alt-3);
 }
 
 li {
@@ -900,7 +949,7 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-	background-color: #111;
+	background-color: var(--black);
 }
 `)
 	_w(`
