@@ -2,16 +2,28 @@ package web
 
 import "net/http"
 
-func renderFeeds(w http.ResponseWriter, r *http.Request) {
-
-}
-
 func renderFeed(w http.ResponseWriter, r *http.Request) {
+	out, err := TMPLERRfeed("Kiasu", false, 0)
+	if err != nil {
+		panic(err)
+	}
 
+	_, err = w.Write([]byte(out))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func renderPost(w http.ResponseWriter, r *http.Request) {
+	out, err := TMPLERRpost("Kiasu", false, 0)
+	if err != nil {
+		panic(err)
+	}
 
+	_, err = w.Write([]byte(out))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func reorderFeeds(w http.ResponseWriter, r *http.Request) {

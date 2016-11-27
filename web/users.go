@@ -4,12 +4,28 @@ import "net/http"
 
 // login renders a dummy page for logging in
 func renderLogin(w http.ResponseWriter, r *http.Request) {
+	out, err := TMPLERRlogin("Kiasu", false, 0)
+	if err != nil {
+		panic(err)
+	}
 
+	_, err = w.Write([]byte(out))
+	if err != nil {
+		panic(err)
+	}
 }
 
 // register displays a sign up page
 func renderRegister(w http.ResponseWriter, r *http.Request) {
+	out, err := TMPLERRregister("Kiasu", false, 0)
+	if err != nil {
+		panic(err)
+	}
 
+	_, err = w.Write([]byte(out))
+	if err != nil {
+		panic(err)
+	}
 }
 
 // newUser processes a post request

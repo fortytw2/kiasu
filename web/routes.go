@@ -38,7 +38,7 @@ func Routes(s *hydrocarbon.Store) *httprouter.Router {
 	r.POST(loginURL, newSession)
 	r.DELETE(loginURL, deleteSession)
 
-	r.GET(feedsURL, renderFeeds)
+	r.GET(feedsURL, renderFeed)
 	r.GET(oneFeedURL, renderFeed)
 
 	r.POST(feedsURL, addFeed)
