@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/NYTimes/gziphandler"
-	"github.com/felixge/httpsnoop"
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/internal/log"
 	"github.com/fortytw2/hydrocarbon/stores/bunt"
@@ -28,18 +26,11 @@ func main() {
 		return
 	}
 
-	r := web.Routes(s)
-	err = http.ListenAndServe(getPort(), httpLogger(gziphandler.GzipHandler(r), l))
+	r := web.Routes(s, l)
+	err = http.ListenAndServeTLS(getPort(), "cert.pem", "key.pem", r)
 	if err != nil {
 		l.Log("msg", "could not start hydrocarbon", "error", err)
 	}
-}
-
-func httpLogger(router http.Handler, l log.Logger) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		m := httpsnoop.CaptureMetrics(router, w, req)
-		l.Log("msg", "request", "method", req.Method, "url", req.URL.String(), "code", m.Code, "time", m.Duration, "bytes", m.Written)
-	})
 }
 
 func getPort() string {

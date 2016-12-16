@@ -33,8 +33,6 @@ func TMPLERRbase(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
-
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
@@ -94,8 +92,6 @@ func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
-
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
@@ -162,8 +158,6 @@ func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
-
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
@@ -230,8 +224,6 @@ func TMPLERRlogin(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
-
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
@@ -298,8 +290,6 @@ func TMPLERRpost(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
-
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
@@ -366,8 +356,6 @@ func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
-
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>

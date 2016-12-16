@@ -1,9 +1,15 @@
 package web
 
 import (
+	"net/http"
+	"time"
+
+	"github.com/felixge/httpsnoop"
 	"github.com/fortytw2/httpkit"
 	"github.com/fortytw2/hydrocarbon"
-	"github.com/neustar/httprouter"
+	"github.com/fortytw2/hydrocarbon/internal/log"
+	"github.com/pressly/chi"
+	"github.com/pressly/chi/middleware"
 )
 
 const (
@@ -24,32 +30,48 @@ const (
 //go:generate ftmpl -targetgo ./templates_generated.go templates/
 
 // Routes returns all routes for this application
-func Routes(s *hydrocarbon.Store) *httprouter.Router {
-	r := httprouter.New()
+func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
+	r := chi.NewRouter()
 
-	r.Handler("GET", "/hydrocarbon.min.css", httpkit.ErrorHandler(Stylesheet))
+	r.Use(middleware.RealIP)
+	r.Use(httplog(l))
+	r.Use(middleware.Timeout(5 * time.Second))
+	r.Use(middleware.DefaultCompress)
 
-	r.GET(homeURL, renderHome)
+	r.Handle("/hydrocarbon.min.css", httpkit.ErrorHandler(Stylesheet))
 
-	r.GET(registerURL, renderRegister)
-	r.POST(registerURL, newUser)
-	r.GET(confirmTokenURL, confirmUser)
+	r.Handle(homeURL, httpkit.ErrorHandler(renderHome))
 
-	r.POST(forgotPasswordURL, forgotPassword)
+	r.Get(registerURL, renderRegister)
+	r.Post(registerURL, newUser)
+	r.Get(confirmTokenURL, confirmUser)
 
-	r.GET(loginURL, renderLogin)
-	r.POST(loginURL, newSession)
-	r.DELETE(loginURL, deleteSession)
+	r.Post(forgotPasswordURL, forgotPassword)
 
-	r.GET(feedsURL, renderFeed)
-	r.GET(oneFeedURL, renderFeed)
+	r.Get(loginURL, renderLogin)
+	r.Post(loginURL, newSession)
+	r.Delete(loginURL, deleteSession)
 
-	r.POST(feedsURL, addFeed)
-	r.POST(reorderFeedsURL, reorderFeeds)
-	r.DELETE(feedsURL, deleteFeed)
+	r.Get(feedsURL, renderFeed)
+	r.Get(oneFeedURL, renderFeed)
 
-	r.GET(onePostURL, renderPost)
-	r.POST(readStatusURL, markRead)
+	r.Post(feedsURL, addFeed)
+	r.Post(reorderFeedsURL, reorderFeeds)
+	r.Delete(feedsURL, deleteFeed)
+
+	r.Get(onePostURL, renderPost)
+	r.Post(readStatusURL, markRead)
 
 	return r
+}
+
+func httplog(l log.Logger) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		fn := func(w http.ResponseWriter, req *http.Request) {
+			m := httpsnoop.CaptureMetrics(next, w, req)
+			l.Log("msg", "request", "method", req.Method, "url", req.URL.String(), "code", m.Code, "time", m.Duration, "bytes", m.Written)
+		}
+
+		return http.HandlerFunc(fn)
+	}
 }
