@@ -3,7 +3,7 @@ package web
 import "net/http"
 
 func renderFeed(w http.ResponseWriter, r *http.Request) {
-	out, err := TMPLERRfeed("Kiasu", false, 0)
+	out, err := TMPLERRfeed("Hydrocarbon", false, 0)
 	if err != nil {
 		panic(err)
 	}
@@ -15,7 +15,7 @@ func renderFeed(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderPost(w http.ResponseWriter, r *http.Request) {
-	out, err := TMPLERRpost("Kiasu", false, 0)
+	out, err := TMPLERRpost("Hydrocarbon", false, 0)
 	if err != nil {
 		panic(err)
 	}

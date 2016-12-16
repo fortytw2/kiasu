@@ -4,7 +4,7 @@ import "net/http"
 
 // login renders a dummy page for logging in
 func renderLogin(w http.ResponseWriter, r *http.Request) {
-	out, err := TMPLERRlogin("Kiasu", false, 0)
+	out, err := TMPLERRlogin("Hydrocarbon", false, 0)
 	if err != nil {
 		panic(err)
 	}
@@ -17,7 +17,7 @@ func renderLogin(w http.ResponseWriter, r *http.Request) {
 
 // register displays a sign up page
 func renderRegister(w http.ResponseWriter, r *http.Request) {
-	out, err := TMPLERRregister("Kiasu", false, 0)
+	out, err := TMPLERRregister("Hydrocarbon", false, 0)
 	if err != nil {
 		panic(err)
 	}
