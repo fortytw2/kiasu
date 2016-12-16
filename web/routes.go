@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/fortytw2/httpkit"
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/neustar/httprouter"
 )
@@ -25,6 +26,8 @@ const (
 // Routes returns all routes for this application
 func Routes(s *hydrocarbon.Store) *httprouter.Router {
 	r := httprouter.New()
+
+	r.Handler("GET", "/hydrocarbon.min.css", httpkit.ErrorHandler(Stylesheet))
 
 	r.GET(homeURL, renderHome)
 

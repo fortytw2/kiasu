@@ -33,98 +33,9 @@ func TMPLERRbase(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {
-        --black: rgba(22, 32, 51, 1);
-        --alt-3: rgba(36, 89, 150, 1);
-        --alt-2: rgba(206, 45, 64, 1);
-        --alt-1: rgba(211, 67, 57, 1);
-        --white: rgba(225, 227, 232, 1);
-    }
-    `)
-	_w(`/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`)
-	_w(`
-    `)
-	_w(`body {
-  font-family: Sans-Serif;
-  text-rendering: optimizeLegibility;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--alt-3);
-}
-
-li {
-	float: left;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-	background-color: var(--black);
-}
-`)
-	_w(`
-    </style>
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
 <body>
@@ -164,57 +75,6 @@ func TMPLbase(title string, loggedIn bool, unread int) string {
 	return html
 }
 
-// TMPLERRbaseStyle evaluates a template baseStyle.tmpl
-func TMPLERRbaseStyle() (string, error) {
-	_template := "baseStyle.tmpl"
-	_escape := html.EscapeString
-	var _ftmpl bytes.Buffer
-	_w := func(str string) { _, _ = _ftmpl.WriteString(str) }
-	_, _, _ = _template, _escape, _w
-
-	_w(`body {
-  font-family: Sans-Serif;
-  text-rendering: optimizeLegibility;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--alt-3);
-}
-
-li {
-	float: left;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-	background-color: var(--black);
-}
-`)
-
-	return _ftmpl.String(), nil
-}
-
-// TMPLbaseStyle evaluates a template baseStyle.tmpl
-func TMPLbaseStyle() string {
-	html, err := TMPLERRbaseStyle()
-	if err != nil {
-		_, _ = os.Stderr.WriteString("Error running template baseStyle.tmpl:" + err.Error())
-	}
-	return html
-}
-
 // TMPLERRfeed evaluates a template feed.tmpl
 func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
 	_template := "feed.tmpl"
@@ -234,98 +94,9 @@ func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {
-        --black: rgba(22, 32, 51, 1);
-        --alt-3: rgba(36, 89, 150, 1);
-        --alt-2: rgba(206, 45, 64, 1);
-        --alt-1: rgba(211, 67, 57, 1);
-        --white: rgba(225, 227, 232, 1);
-    }
-    `)
-	_w(`/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`)
-	_w(`
-    `)
-	_w(`body {
-  font-family: Sans-Serif;
-  text-rendering: optimizeLegibility;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--alt-3);
-}
-
-li {
-	float: left;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-	background-color: var(--black);
-}
-`)
-	_w(`
-    </style>
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
 <body>
@@ -391,98 +162,9 @@ func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {
-        --black: rgba(22, 32, 51, 1);
-        --alt-3: rgba(36, 89, 150, 1);
-        --alt-2: rgba(206, 45, 64, 1);
-        --alt-1: rgba(211, 67, 57, 1);
-        --white: rgba(225, 227, 232, 1);
-    }
-    `)
-	_w(`/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`)
-	_w(`
-    `)
-	_w(`body {
-  font-family: Sans-Serif;
-  text-rendering: optimizeLegibility;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--alt-3);
-}
-
-li {
-	float: left;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-	background-color: var(--black);
-}
-`)
-	_w(`
-    </style>
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
 <body>
@@ -548,98 +230,9 @@ func TMPLERRlogin(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {
-        --black: rgba(22, 32, 51, 1);
-        --alt-3: rgba(36, 89, 150, 1);
-        --alt-2: rgba(206, 45, 64, 1);
-        --alt-1: rgba(211, 67, 57, 1);
-        --white: rgba(225, 227, 232, 1);
-    }
-    `)
-	_w(`/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`)
-	_w(`
-    `)
-	_w(`body {
-  font-family: Sans-Serif;
-  text-rendering: optimizeLegibility;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--alt-3);
-}
-
-li {
-	float: left;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-	background-color: var(--black);
-}
-`)
-	_w(`
-    </style>
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
 <body>
@@ -705,98 +298,9 @@ func TMPLERRpost(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {
-        --black: rgba(22, 32, 51, 1);
-        --alt-3: rgba(36, 89, 150, 1);
-        --alt-2: rgba(206, 45, 64, 1);
-        --alt-1: rgba(211, 67, 57, 1);
-        --white: rgba(225, 227, 232, 1);
-    }
-    `)
-	_w(`/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`)
-	_w(`
-    `)
-	_w(`body {
-  font-family: Sans-Serif;
-  text-rendering: optimizeLegibility;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--alt-3);
-}
-
-li {
-	float: left;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-	background-color: var(--black);
-}
-`)
-	_w(`
-    </style>
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
 <body>
@@ -862,98 +366,9 @@ func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
 	_w(fmt.Sprintf(`%s`, _escape(title)))
 	_w(`</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {
-        --black: rgba(22, 32, 51, 1);
-        --alt-3: rgba(36, 89, 150, 1);
-        --alt-2: rgba(206, 45, 64, 1);
-        --alt-1: rgba(211, 67, 57, 1);
-        --white: rgba(225, 227, 232, 1);
-    }
-    `)
-	_w(`/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+	<link rel="preload" type="text/css" href="/hydrocarbon.min.css", as="style">
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`)
-	_w(`
-    `)
-	_w(`body {
-  font-family: Sans-Serif;
-  text-rendering: optimizeLegibility;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--alt-3);
-}
-
-li {
-	float: left;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-	background-color: var(--black);
-}
-`)
-	_w(`
-    </style>
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
 </head>
 <body>

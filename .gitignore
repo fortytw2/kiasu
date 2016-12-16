@@ -2,3 +2,6 @@ cmd/hydrocarbon/hydrocarbon
 
 *.ftmpl*
 *.txt
+
+web/dist/*
+!web/dist/.gitkeep
