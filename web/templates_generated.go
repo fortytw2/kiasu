@@ -129,7 +129,7 @@ li a:hover {
 </head>
 <body>
 	<ul id="menu">
-		<li><a href="/">Kiasu</a></li>
+		<li><a href="/">Hydrocarbon</a></li>
 `)
 	if loggedIn {
 		_w(`    <li>
@@ -330,7 +330,7 @@ li a:hover {
 </head>
 <body>
 	<ul id="menu">
-		<li><a href="/">Kiasu</a></li>
+		<li><a href="/">Hydrocarbon</a></li>
 `)
 	if loggedIn {
 		_w(`    <li>
@@ -487,7 +487,7 @@ li a:hover {
 </head>
 <body>
 	<ul id="menu">
-		<li><a href="/">Kiasu</a></li>
+		<li><a href="/">Hydrocarbon</a></li>
 `)
 	if loggedIn {
 		_w(`    <li>
@@ -644,7 +644,7 @@ li a:hover {
 </head>
 <body>
 	<ul id="menu">
-		<li><a href="/">Kiasu</a></li>
+		<li><a href="/">Hydrocarbon</a></li>
 `)
 	if loggedIn {
 		_w(`    <li>
@@ -801,7 +801,7 @@ li a:hover {
 </head>
 <body>
 	<ul id="menu">
-		<li><a href="/">Kiasu</a></li>
+		<li><a href="/">Hydrocarbon</a></li>
 `)
 	if loggedIn {
 		_w(`    <li>
@@ -958,7 +958,7 @@ li a:hover {
 </head>
 <body>
 	<ul id="menu">
-		<li><a href="/">Kiasu</a></li>
+		<li><a href="/">Hydrocarbon</a></li>
 `)
 	if loggedIn {
 		_w(`    <li>
