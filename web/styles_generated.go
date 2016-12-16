@@ -83,7 +83,7 @@ func distHydrocarbonMinCss() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "dist/hydrocarbon.min.css", size: 1146, mode: os.FileMode(420), modTime: time.Unix(1481918314, 0)}
+	info := bindataFileInfo{name: "dist/hydrocarbon.min.css", size: 1146, mode: os.FileMode(420), modTime: time.Unix(1481918966, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
