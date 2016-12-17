@@ -48,16 +48,20 @@ func TMPLERRbase(title string, loggedIn bool, unread int) (string, error) {
     </li>
 `)
 	} else {
-		_w(`    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
 `)
 	}
 	_w(`	</ul>
 
+	<div class="content">
 `)
-	_w(`
-`)
-	_w(`</body>
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
 </html>
 `)
 
@@ -107,23 +111,23 @@ func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
     </li>
 `)
 	} else {
-		_w(`    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
 `)
 	}
 	_w(`	</ul>
 
+	<div class="content">
 `)
 	_w(`
 <h1>view a feed and sidebar other feeds</h1>
+`)
+	_w(`	</div>
 
-`)
-	_w(`
-`)
-	_w(`
-<p> hi im still footer</p>
-`)
-	_w(`</body>
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
 </html>
 `)
 
@@ -173,23 +177,28 @@ func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
     </li>
 `)
 	} else {
-		_w(`    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
 `)
 	}
 	_w(`	</ul>
 
+	<div class="content">
 `)
 	_w(`
-<h1>Body!</h1>
+<h1>Welcome To Hydrocarbon</h1><br>
 
+<p>
+	Hydrocarbon is a no-nonsense, full text news reader, powered by
+	plugins (supporting RSS, as well).
+</p>
 `)
-	_w(`
-`)
-	_w(`
-<p> hi im footer </p>
-`)
-	_w(`</body>
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
 </html>
 `)
 
@@ -239,23 +248,34 @@ func TMPLERRlogin(title string, loggedIn bool, unread int) (string, error) {
     </li>
 `)
 	} else {
-		_w(`    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
 `)
 	}
 	_w(`	</ul>
 
+	<div class="content">
 `)
 	_w(`
-<h1>Login woot woot</h1>
+<div id="register">
 
+<h1>Login</h1>
+
+<form action="login" method="post">
+  Email <input type="email" name="email"><br>
+  Password <input type="password" name="pass"><br>
+  <a href="password_reset">forgot password?</a><br>
+  <input type="submit" value="Submit">
+</form>
+
+</div>
 `)
-	_w(`
-`)
-	_w(`
-<p> hi im still footer</p>
-`)
-	_w(`</body>
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
 </html>
 `)
 
@@ -305,23 +325,23 @@ func TMPLERRpost(title string, loggedIn bool, unread int) (string, error) {
     </li>
 `)
 	} else {
-		_w(`    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
 `)
 	}
 	_w(`	</ul>
 
+	<div class="content">
 `)
 	_w(`
 <h1>view one post </h1>
+`)
+	_w(`	</div>
 
-`)
-	_w(`
-`)
-	_w(`
-<p> hi im still footer</p>
-`)
-	_w(`</body>
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
 </html>
 `)
 
@@ -371,23 +391,34 @@ func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
     </li>
 `)
 	} else {
-		_w(`    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
 `)
 	}
 	_w(`	</ul>
 
+	<div class="content">
 `)
 	_w(`
-<h1>Register page</h1>
+<div id="register">
 
+<h1>Registration</h1>
+
+<form action="register" method="post">
+  Email <input type="email" name="email"><br>
+  Password <input type="password" name="pass"><br>
+  <a href="password_reset">already have an account? login</a><br>
+  <input type="submit" value="Submit">
+</form>
+
+</div>
 `)
-	_w(`
-`)
-	_w(`
-<p> hi im footer</p>
-`)
-	_w(`</body>
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
 </html>
 `)
 
@@ -399,76 +430,6 @@ func TMPLregister(title string, loggedIn bool, unread int) string {
 	html, err := TMPLERRregister(title, loggedIn, unread)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template register.tmpl:" + err.Error())
-	}
-	return html
-}
-
-// TMPLERRresetStyle evaluates a template resetStyle.tmpl
-func TMPLERRresetStyle() (string, error) {
-	_template := "resetStyle.tmpl"
-	_escape := html.EscapeString
-	var _ftmpl bytes.Buffer
-	_w := func(str string) { _, _ = _ftmpl.WriteString(str) }
-	_, _, _ = _template, _escape, _w
-
-	_w(`/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`)
-
-	return _ftmpl.String(), nil
-}
-
-// TMPLresetStyle evaluates a template resetStyle.tmpl
-func TMPLresetStyle() string {
-	html, err := TMPLERRresetStyle()
-	if err != nil {
-		_, _ = os.Stderr.WriteString("Error running template resetStyle.tmpl:" + err.Error())
 	}
 	return html
 }
