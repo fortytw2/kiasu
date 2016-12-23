@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"html"
 	"os"
+
+	"github.com/fortytw2/hydrocarbon"
 )
 
 func init() {
@@ -78,13 +80,15 @@ func TMPLbase(title string, loggedIn bool, unread int) string {
 }
 
 // TMPLERRfeed evaluates a template feed.tmpl
-func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
+func TMPLERRfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed, posts []hydrocarbon.Post) (string, error) {
 	_template := "feed.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
 	_w := func(str string) { _, _ = _ftmpl.WriteString(str) }
 	_, _, _ = _template, _escape, _w
 
+	_w(`
+`)
 	_w(`
 `)
 	_w(`
@@ -120,8 +124,22 @@ func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
 	<div class="content">
 `)
 	_w(`
-<h1>view a feed and sidebar other feeds</h1>
+
+<h1>`)
+	_w(fmt.Sprintf(`%v`, feed.Name))
+	_w(`</h1>
+
 `)
+	for _, post := range posts {
+		_w(`	<h2> `)
+		_w(fmt.Sprintf(`%v`, post.Title))
+		_w(`</h2>
+	<p> `)
+		_w(fmt.Sprintf(`%v`, post.Content))
+		_w(`</p>
+	<br>
+`)
+	}
 	_w(`	</div>
 
 	<footer>
@@ -135,8 +153,8 @@ func TMPLERRfeed(title string, loggedIn bool, unread int) (string, error) {
 }
 
 // TMPLfeed evaluates a template feed.tmpl
-func TMPLfeed(title string, loggedIn bool, unread int) string {
-	html, err := TMPLERRfeed(title, loggedIn, unread)
+func TMPLfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed, posts []hydrocarbon.Post) string {
+	html, err := TMPLERRfeed(title, loggedIn, unread, feed, posts)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template feed.tmpl:" + err.Error())
 	}
@@ -406,7 +424,7 @@ func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
 
 <form action="register" method="post">
   Email <input type="email" name="email"><br>
-  Password <input type="password" name="pass"><br>
+  Password <input type="password" name="password"><br>
   <a href="password_reset">already have an account? login</a><br>
   <input type="submit" value="Submit">
 </form>

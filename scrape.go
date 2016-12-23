@@ -1,11 +1,11 @@
 package hydrocarbon
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/fortytw2/hydrocarbon/internal/log"
 	multierror "github.com/hashicorp/go-multierror"
+	uuid "github.com/satori/go.uuid"
 )
 
 // ScrapeLoop starts the background scraper
@@ -62,7 +62,8 @@ func Scrape(ist Instantiator, f Feed, ps PostStore, c Client) error {
 
 	var e error
 	for _, p := range posts {
-		fmt.Printf("\n\n%+v\n\n", p)
+		p.ID = uuid.NewV4().String()
+		p.FeedID = f.ID
 		_, err := ps.SavePost(&p)
 		if err != nil {
 			e = multierror.Append(e, err)

@@ -8,7 +8,7 @@ import (
 
 	"github.com/Puerkitobio/goquery"
 	"github.com/fortytw2/hydrocarbon"
-	"github.com/jaytaylor/html2text"
+	"github.com/microcosm-cc/bluemonday"
 )
 
 var firstPost = "first"
@@ -153,15 +153,13 @@ func getThreadmarkPost(c hydrocarbon.Client, url string) (*hydrocarbon.Post, err
 	title := strings.Replace(sel.Find(".threadmarker > .label").Text(), "Threadmark:", "", -1)
 	title = strings.TrimSpace(title)
 
-	text, err := html2text.FromString(h)
-	if err != nil {
-		return nil, err
-	}
+	p := bluemonday.UGCPolicy()
+	html := p.Sanitize(h)
 
 	return &hydrocarbon.Post{
 		URL:      url,
 		PostedAt: postTime,
 		Title:    title,
-		Content:  text,
+		Content:  html,
 	}, nil
 }
