@@ -9,7 +9,7 @@ import (
 
 // TestPostStore ensures a given postStore does what it should
 func TestPostStore(t *testing.T, ps hydrocarbon.PrimitiveStore) {
-	f, err := ps.SaveFeed(&hydrocarbon.Feed{
+	f, err := ps.CreateFeed(&hydrocarbon.Feed{
 		Plugin:      "xenforo",
 		Name:        "totally-test-forum-96",
 		Description: "lol23",
@@ -21,7 +21,7 @@ func TestPostStore(t *testing.T, ps hydrocarbon.PrimitiveStore) {
 	assert.NotEmpty(t, f.Name)
 	assert.NotEmpty(t, f)
 
-	_, err = ps.SavePost(&hydrocarbon.Post{
+	_, err = ps.CreatePost(&hydrocarbon.Post{
 		FeedID:  f.ID,
 		Title:   "Best Post Ever",
 		URL:     "https://potatoes",
@@ -29,7 +29,7 @@ func TestPostStore(t *testing.T, ps hydrocarbon.PrimitiveStore) {
 	})
 
 	assert.Nil(t, err)
-	_, err = ps.SavePost(&hydrocarbon.Post{
+	_, err = ps.CreatePost(&hydrocarbon.Post{
 		FeedID:  f.ID,
 		Title:   "Best Post Everest",
 		URL:     "https://potatoes",
@@ -37,7 +37,7 @@ func TestPostStore(t *testing.T, ps hydrocarbon.PrimitiveStore) {
 	})
 
 	assert.Nil(t, err)
-	lastPost, err := ps.SavePost(&hydrocarbon.Post{
+	lastPost, err := ps.CreatePost(&hydrocarbon.Post{
 		FeedID:  f.ID,
 		Title:   "Best Post 4ever",
 		URL:     "https://potatoes",

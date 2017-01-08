@@ -18,8 +18,8 @@ func (s *Store) GetFeed(id string) (*hydrocarbon.Feed, error) {
 	return &f, nil
 }
 
-// SaveFeed saves a feed and returns it with it's new ID
-func (s *Store) SaveFeed(f *hydrocarbon.Feed) (*hydrocarbon.Feed, error) {
+// CreateFeed saves a feed and returns it with it's new ID
+func (s *Store) CreateFeed(f *hydrocarbon.Feed) (*hydrocarbon.Feed, error) {
 	row := s.db.QueryRowx(`
 		INSERT INTO feeds (plugin, initial_url, name, description, hex_color, icon_url)
 	    VALUES ($1, $2, $3, $4, $5, $6)

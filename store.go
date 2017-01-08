@@ -59,7 +59,7 @@ func (s *Store) CreateUser(email, password string) (*User, error) {
 	}
 
 	now := time.Now()
-	u, err := s.Users.SaveUser(&User{
+	u, err := s.Users.CreateUser(&User{
 		Email:             email,
 		EncryptedPassword: *encPass,
 		Confirmed:         false,

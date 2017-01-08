@@ -9,7 +9,7 @@ import (
 // PostStore provides primitives for storing and retrieving posts
 type PostStore interface {
 	GetPost(postID string) (*Post, error)
-	SavePost(*Post) (*Post, error)
+	CreatePost(*Post) (*Post, error)
 	GetPosts(feedID string, pg *Pagination) ([]Post, error)
 }
 

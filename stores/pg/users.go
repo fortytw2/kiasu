@@ -34,8 +34,8 @@ func (s *Store) GetUserByEmail(email string) (*hydrocarbon.User, error) {
 	return &u, nil
 }
 
-// SaveUser saves a user and returns it, with it's new ID
-func (s *Store) SaveUser(u *hydrocarbon.User) (*hydrocarbon.User, error) {
+// CreateUser saves a user and returns it, with it's new ID
+func (s *Store) CreateUser(u *hydrocarbon.User) (*hydrocarbon.User, error) {
 	row := s.db.QueryRowx(`
 		INSERT INTO users (email, encrypted_password, failed_login_count, active, confirmed, confirmation_token, token_created_at)
 	    VALUES ($1, $2, $3, $4, $5, $6, $7)

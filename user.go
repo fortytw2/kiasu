@@ -12,7 +12,7 @@ var (
 type UserStore interface {
 	GetUser(id string) (*User, error)
 	GetUserByEmail(email string) (*User, error)
-	SaveUser(*User) (*User, error)
+	CreateUser(*User) (*User, error)
 }
 
 // A User is a registered (or not) user

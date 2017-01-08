@@ -64,7 +64,7 @@ func Scrape(ist Instantiator, f Feed, ps PostStore, c Client) error {
 	for _, p := range posts {
 		p.ID = uuid.NewV4().String()
 		p.FeedID = f.ID
-		_, err := ps.SavePost(&p)
+		_, err := ps.CreatePost(&p)
 		if err != nil {
 			e = multierror.Append(e, err)
 		}

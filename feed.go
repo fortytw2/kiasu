@@ -9,7 +9,7 @@ import (
 // FeedStore saves and persists feeds and posts
 type FeedStore interface {
 	GetFeed(id string) (*Feed, error)
-	SaveFeed(*Feed) (*Feed, error)
+	CreateFeed(*Feed) (*Feed, error)
 	GetFeeds(pg *Pagination) ([]Feed, error)
 }
 

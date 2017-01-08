@@ -34,8 +34,8 @@ func (s *Store) GetReadStatusByPostID(postID, userID string) (*hydrocarbon.ReadS
 	return &rs, nil
 }
 
-// SaveReadStatus saves read status
-func (s *Store) SaveReadStatus(rs *hydrocarbon.ReadStatus) (*hydrocarbon.ReadStatus, error) {
+// CreateReadStatus saves read status
+func (s *Store) CreateReadStatus(rs *hydrocarbon.ReadStatus) (*hydrocarbon.ReadStatus, error) {
 	row := s.db.QueryRowx(`
 		INSERT INTO read_statuses (user_id, post_id, read_at, device_id, location)
 	    VALUES ($1, $2, $3, $4, $5)

@@ -18,8 +18,8 @@ func (s *Store) GetPost(postID string) (*hydrocarbon.Post, error) {
 	return &p, nil
 }
 
-// SavePost saves a post
-func (s *Store) SavePost(post *hydrocarbon.Post) (*hydrocarbon.Post, error) {
+// CreatePost saves a post
+func (s *Store) CreatePost(post *hydrocarbon.Post) (*hydrocarbon.Post, error) {
 	row := s.db.QueryRowx(`
 		INSERT INTO posts (feed_id, posted_at, title, url, content)
 		VALUES ($1, $2, $3, $4, $5)

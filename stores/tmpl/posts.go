@@ -7,8 +7,8 @@ func (s *Store) GetPost(postID string) (*hydrocarbon.Post, error) {
 	return nil, nil
 }
 
-// SavePost saves a post
-func (s *Store) SavePost(post *hydrocarbon.Post) (*hydrocarbon.Post, error) {
+// CreatePost saves a post
+func (s *Store) CreatePost(post *hydrocarbon.Post) (*hydrocarbon.Post, error) {
 	return nil, nil
 }
 

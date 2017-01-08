@@ -9,7 +9,7 @@ import (
 
 // TestFeedStore ensures a given feedStore does what it should
 func TestFeedStore(t *testing.T, fs hydrocarbon.FeedStore) {
-	f, err := fs.SaveFeed(&hydrocarbon.Feed{
+	f, err := fs.CreateFeed(&hydrocarbon.Feed{
 		Plugin:      "xenforo",
 		Name:        "totally-test-forum",
 		Description: "lol",
