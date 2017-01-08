@@ -17,9 +17,11 @@ type UserStore interface {
 
 // A User is a registered (or not) user
 type User struct {
-	CreatedAt time.Time `json:"created_at"`
+	ID string `json:"id"`
 
-	ID                string `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+
 	Email             string `json:"email"`
 	EncryptedPassword string `json:"encrypted_password"`
 

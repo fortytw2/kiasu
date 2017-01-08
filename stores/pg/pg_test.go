@@ -40,9 +40,9 @@ func TestStore(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, s)
 
-	// stores.TestUserStore(t, s)
+	stores.TestUserStore(t, s)
 	// stores.TestReadStatusStore(t, s)
 	stores.TestFeedStore(t, s)
-	// stores.TestPostStore(t, s)
+	stores.TestPostStore(t, s)
 	stores.TestSessionStore(t, s)
 }

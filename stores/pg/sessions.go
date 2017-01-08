@@ -55,11 +55,21 @@ func (s *Store) GetSessionByAccessToken(token string) (*hydrocarbon.Session, err
 }
 
 // SaveSession saves a new session
-func (s *Store) SaveSession(ses *hydrocarbon.Session) error {
-	_, err := s.db.Exec(`
+func (s *Store) SaveSession(ses *hydrocarbon.Session) (*hydrocarbon.Session, error) {
+	row := s.db.QueryRowx(`
 		INSERT INTO sessions (user_id, invalidated_at, expires_at, token, logins)
 	    VALUES ($1, $2, $3, $4, $5)
+		RETURNING *
 	`, ses.UserID, ses.InvalidatedAt, ses.ExpiresAt, ses.Token)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
 
-	return err
+	var sess hydrocarbon.Session
+	err := row.StructScan(&sess)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sess, nil
 }

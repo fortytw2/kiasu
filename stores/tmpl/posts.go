@@ -3,7 +3,7 @@ package tmpl
 import "github.com/fortytw2/hydrocarbon"
 
 // GetPost returns a post by ID
-func (s *Store) GetPost(feedID, postID string) (*hydrocarbon.Post, error) {
+func (s *Store) GetPost(postID string) (*hydrocarbon.Post, error) {
 	return nil, nil
 }
 
