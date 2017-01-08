@@ -5,6 +5,9 @@ import "github.com/fortytw2/hydrocarbon"
 // GetSession returns a session by ID
 func (s *Store) GetSession(id string) (*hydrocarbon.Session, error) {
 	row := s.db.QueryRowx("SELECT * FROM sessions WHERE id = $1", id)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
 
 	var sess hydrocarbon.Session
 	err := row.StructScan(&sess)
@@ -38,6 +41,9 @@ func (s *Store) GetSessionsByUserID(userID string, pg *hydrocarbon.Pagination) (
 // GetSessionByAccessToken returns the session by access token
 func (s *Store) GetSessionByAccessToken(token string) (*hydrocarbon.Session, error) {
 	row := s.db.QueryRowx("SELECT * FROM sessions WHERE token = $1", token)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
 
 	var sess hydrocarbon.Session
 	err := row.StructScan(&sess)

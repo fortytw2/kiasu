@@ -1,7 +1,6 @@
 package pg
 
 import (
-	"fmt"
 	"strings"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
@@ -37,18 +36,17 @@ func NewStore(dsn string) (hydrocarbon.PrimitiveStore, error) {
 	}, nil
 }
 
+// Migrate runs all migrations
 func Migrate(db *sqlx.DB) error {
 	migrations, err := pgmigrate.LoadMigrations(&assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: AssetInfo, Prefix: "schema"})
 	if err != nil {
 		return err
 	}
 
-	ran, err := pgmigrate.DefaultConfig.Migrate(db.DB, migrations)
+	_, err = pgmigrate.DefaultConfig.Migrate(db.DB, migrations)
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(ran)
 
 	return nil
 }

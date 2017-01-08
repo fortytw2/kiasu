@@ -13,6 +13,9 @@ func TestFeedStore(t *testing.T, fs hydrocarbon.FeedStore) {
 		Plugin:      "xenforo",
 		Name:        "totally-test-forum",
 		Description: "lol",
+		InitialURL:  "potatoes",
+		HexColor:    "xD",
+		IconURL:     "http://potato.com/",
 	})
 	assert.Nil(t, err)
 	assert.NotEmpty(t, f.Name)

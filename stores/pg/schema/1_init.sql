@@ -6,14 +6,15 @@ CREATE TABLE feeds (
   plugin TEXT NOT NULL,
   initial_url TEXT NOT NULL,
 
-  created_at TIMESTAMP NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP NOT NULL DEFAULT now(),
-  refreshed_at TIMESTAMP,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  refreshed_at TIMESTAMPTZ,
   name TEXT NOT NULL UNIQUE,
   description TEXT NOT NULL,
 
   hex_color TEXT NOT NULL,
   icon_url TEXT NOT NULL,
+
 
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM updated_at) = '0'),
@@ -24,10 +25,10 @@ CREATE TABLE posts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   feed_id UUID REFERENCES feeds NOT NULL,
 
-  created_at TIMESTAMP NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP NOT NULL DEFAULT now(),
-  refreshed_at TIMESTAMP,
-  posted_at TIMESTAMP,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  refreshed_at TIMESTAMPTZ,
+  posted_at TIMESTAMPTZ,
 
   title TEXT NOT NULL,
   url TEXT NOT NULL,
@@ -43,8 +44,8 @@ CREATE TABLE posts (
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
-  created_at TIMESTAMP NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP NOT NULL DEFAULT now(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
   email TEXT NOT NULL,
   encrypted_password TEXT NOT NULL,
@@ -53,7 +54,7 @@ CREATE TABLE users (
   active BOOLEAN NOT NULL DEFAULT 'false',
   confirmed BOOLEAN NOT NULL DEFAULT 'false',
   confirmation_token TEXT NOT NULL,
-  token_created_at TIMESTAMP NOT NULL DEFAULT now(),
+  token_created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
   CHECK(EXTRACT(TIMEZONE FROM token_created_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),
@@ -65,17 +66,17 @@ CREATE TABLE user_feeds (
   feed_id UUID REFERENCES feeds NOT NULL,
   user_id UUID REFERENCES users NOT NULL,
 
-  priority INT NOT NULL
+  priority INT NOT NULL DEFAULT 0
 );
 
-CREATE UNIQUE INDEX user_feed_unique_idx ON user_feeds(priority, feed_id, user_id
+CREATE UNIQUE INDEX user_feed_unique_idx ON user_feeds(priority, feed_id, user_id);
 
 CREATE TABLE read_statuses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES users NOT NULL,
   post_id  UUID REFERENCES posts NOT NULL,
 
-  read_at TIMESTAMP NOT NULL DEFAULT now(),
+  read_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   device_id TEXT NOT NULL,
   location TEXT NOT NULL,
 
@@ -86,9 +87,9 @@ CREATE TABLE sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES users NOT NULL,
 
-  created_at TIMESTAMP NOT NULL DEFAULT now(),
-  invalidated_at TIMESTAMP,
-  expires_at TIMESTAMP NOT NULL DEFAULT now() + interval '7 days',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  invalidated_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ NOT NULL DEFAULT now() + interval '7 days',
   token TEXT NOT NULL,
 
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),

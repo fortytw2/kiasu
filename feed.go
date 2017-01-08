@@ -1,6 +1,10 @@
 package hydrocarbon
 
-import "time"
+import (
+	"time"
+
+	"github.com/lib/pq"
+)
 
 // FeedStore saves and persists feeds and posts
 type FeedStore interface {
@@ -15,8 +19,9 @@ type Feed struct {
 	Plugin     string `json:"plugin,omitempty"`
 	InitialURL string `json:"initial_url,omitempty"`
 
-	CreatedAt   time.Time  `json:"created_at"`
-	RefreshedAt *time.Time `json:"refreshed_at"`
+	CreatedAt   time.Time   `json:"created_at"`
+	UpdatedAt   time.Time   `json:"updated_at"`
+	RefreshedAt pq.NullTime `json:"refreshed_at"`
 
 	URL         string `json:"url"`
 	Name        string `json:"name"`

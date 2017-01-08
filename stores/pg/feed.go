@@ -4,21 +4,56 @@ import "github.com/fortytw2/hydrocarbon"
 
 // GetFeed returns a feed by its ID
 func (s *Store) GetFeed(id string) (*hydrocarbon.Feed, error) {
-	// SELECT * FROM feeds WHERE id = $1
+	row := s.db.QueryRowx("SELECT * FROM feeds WHERE id = $1", id)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
 
-	return nil, nil
+	var f hydrocarbon.Feed
+	err := row.StructScan(&f)
+	if err != nil {
+		return nil, err
+	}
+
+	return &f, nil
 }
 
 // SaveFeed saves a feed and returns it with it's new ID
-func (s *Store) SaveFeed(*hydrocarbon.Feed) (*hydrocarbon.Feed, error) {
-	// INSERT
+func (s *Store) SaveFeed(f *hydrocarbon.Feed) (*hydrocarbon.Feed, error) {
+	row := s.db.QueryRowx(`
+		INSERT INTO feeds (plugin, initial_url, name, description, hex_color, icon_url)
+	    VALUES ($1, $2, $3, $4, $5, $6)
+		RETURNING *
+	`, f.Plugin, f.InitialURL, f.Name, f.Description, f.HexColor, f.IconURL)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
 
-	return nil, nil
+	var feed hydrocarbon.Feed
+	err := row.StructScan(&feed)
+	if err != nil {
+		return nil, err
+	}
+
+	return &feed, nil
 }
 
 // GetFeeds returns and filters on feeds
 func (s *Store) GetFeeds(pg *hydrocarbon.Pagination) ([]hydrocarbon.Feed, error) {
-	// SELECT * FROM feeds LIMIT $1 OFFSET $2
+	rows, err := s.db.Queryx("SELECT * FROM feeds OFFSET $1 LIMIT $2", pg.Page, pg.PageSize)
+	if err != nil {
+		return nil, err
+	}
 
-	return nil, nil
+	var feeds []hydrocarbon.Feed
+	for rows.Next() {
+		var tmpFeed hydrocarbon.Feed
+		err := rows.StructScan(&tmpFeed)
+		if err != nil {
+			return nil, err
+		}
+		feeds = append(feeds, tmpFeed)
+	}
+
+	return feeds, nil
 }

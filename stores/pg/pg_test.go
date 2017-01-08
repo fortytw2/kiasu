@@ -42,7 +42,7 @@ func TestStore(t *testing.T) {
 
 	// stores.TestUserStore(t, s)
 	// stores.TestReadStatusStore(t, s)
-	// stores.TestFeedStore(t, s)
+	stores.TestFeedStore(t, s)
 	// stores.TestPostStore(t, s)
 	stores.TestSessionStore(t, s)
 }

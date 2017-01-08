@@ -42,10 +42,10 @@ func Scrape(ist Instantiator, f Feed, ps PostStore, c Client) error {
 	}
 
 	var t time.Time
-	if f.RefreshedAt == nil {
+	if !f.RefreshedAt.Valid {
 		t = time.Time{}
 	} else {
-		t = *f.RefreshedAt
+		t = f.RefreshedAt.Time
 	}
 
 	err = plug.Validate(c, Config{InitialURL: f.InitialURL, Since: t})
