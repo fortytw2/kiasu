@@ -161,6 +161,88 @@ func TMPLfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed, p
 	return html
 }
 
+// TMPLERRfeeds evaluates a template feeds.tmpl
+func TMPLERRfeeds(title string, loggedIn bool, unread int, feeds []hydrocarbon.Feed) (string, error) {
+	_template := "feeds.tmpl"
+	_escape := html.EscapeString
+	var _ftmpl bytes.Buffer
+	_w := func(str string) { _, _ = _ftmpl.WriteString(str) }
+	_, _, _ = _template, _escape, _w
+
+	_w(`
+`)
+	_w(`
+`)
+	_w(`
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>`)
+	_w(fmt.Sprintf(`%s`, _escape(title)))
+	_w(`</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
+
+</head>
+<body>
+	<ul id="menu">
+		<li><a href="/">Hydrocarbon</a></li>
+`)
+	if loggedIn {
+		_w(`    <li>
+        <a href="/feeds">Feeds `)
+		_w(fmt.Sprintf(`%d`, unread))
+		_w(`</a>
+    </li>
+`)
+	} else {
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
+`)
+	}
+	_w(`	</ul>
+
+	<div class="content">
+`)
+	_w(`
+<h1>Feed Listing</h1>
+
+`)
+	for _, f := range feeds {
+		_w(`	<h2> `)
+		_w(fmt.Sprintf(`%v`, f.Name))
+		_w(`</h2>
+	<p> `)
+		_w(fmt.Sprintf(`%v`, f.Description))
+		_w(`</p>
+	<a href="/feeds?id=`)
+		_w(fmt.Sprintf(`%v`, f.ID))
+		_w(`">link</a>
+	<br>
+`)
+	}
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
+</html>
+`)
+
+	return _ftmpl.String(), nil
+}
+
+// TMPLfeeds evaluates a template feeds.tmpl
+func TMPLfeeds(title string, loggedIn bool, unread int, feeds []hydrocarbon.Feed) string {
+	html, err := TMPLERRfeeds(title, loggedIn, unread, feeds)
+	if err != nil {
+		_, _ = os.Stderr.WriteString("Error running template feeds.tmpl:" + err.Error())
+	}
+	return html
+}
+
 // TMPLERRhome evaluates a template home.tmpl
 func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
 	_template := "home.tmpl"

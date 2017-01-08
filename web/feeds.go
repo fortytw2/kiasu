@@ -11,6 +11,21 @@ func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		feedID := r.URL.Query().Get("id")
 
+		if feedID == "" {
+			fs, err := s.Feeds.GetFeeds(&hydrocarbon.Pagination{
+				Page:     0,
+				PageSize: 20,
+			})
+			if err != nil {
+				return httputil.Wrap(err, 404)
+			}
+
+			out := TMPLfeeds("Hydrocarbon", false, 0, fs)
+
+			_, err = w.Write([]byte(out))
+			return err
+		}
+
 		f, err := s.Feeds.GetFeed(feedID)
 		if err != nil {
 			return httputil.Wrap(err, 404)
