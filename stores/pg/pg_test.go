@@ -31,7 +31,10 @@ func TestMain(m *testing.M) {
 
 	// Run tests
 	result := m.Run()
-	c.KillRemove()
+	err = c.KillRemove()
+	if err != nil {
+		panic(err)
+	}
 	os.Exit(result)
 }
 

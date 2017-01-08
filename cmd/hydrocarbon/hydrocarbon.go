@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/internal/log"
@@ -34,32 +33,6 @@ func main() {
 	}
 
 	go launchScraper(l, s)
-	go func() {
-		for {
-			feeds, err := s.Feeds.GetFeeds(&hydrocarbon.Pagination{
-				Page:     0,
-				PageSize: 10,
-			})
-			if err != nil {
-				panic(err)
-			}
-
-			for _, f := range feeds {
-				l.Log("feed", f.ID, "name", f.Name)
-
-				// posts, _ := s.Posts.GetPosts(f.ID, &hydrocarbon.Pagination{
-				// 	Page:     0,
-				// 	PageSize: 10,
-				// })
-				//
-				// for _, p := range posts {
-				// 	l.Log("post", p.Title, "url", p.URL)
-				// }
-			}
-
-			time.Sleep(10 * time.Second)
-		}
-	}()
 
 	r := web.Routes(s, l)
 	err = http.ListenAndServeTLS(getPort(), "cert.pem", "key.pem", r)

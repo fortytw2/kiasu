@@ -27,10 +27,7 @@ func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 		out := TMPLfeed("Hydrocarbon", false, 0, f, posts)
 
 		_, err = w.Write([]byte(out))
-		if err != nil {
-			return err
-		}
-		return nil
+		return err
 	}
 }
 

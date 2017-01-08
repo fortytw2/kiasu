@@ -47,7 +47,7 @@ CREATE TABLE users (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
-  email TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
   encrypted_password TEXT NOT NULL,
   failed_login_count INT NOT NULL,
 

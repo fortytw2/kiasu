@@ -44,9 +44,5 @@ func Migrate(db *sqlx.DB) error {
 	}
 
 	_, err = pgmigrate.DefaultConfig.Migrate(db.DB, migrations)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
