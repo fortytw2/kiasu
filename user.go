@@ -23,16 +23,10 @@ type User struct {
 	Email             string `json:"email"`
 	EncryptedPassword string `json:"encrypted_password"`
 
-	LoginCount       int `json:"login_count"`
 	FailedLoginCount int `json:"failed_login_count"`
 
 	Active            bool      `json:"active"`
 	Confirmed         bool      `json:"confirmed"`
 	ConfirmationToken string    `json:"confirmation_token"`
 	TokenCreatedAt    time.Time `json:"token_created_at"`
-
-	NotifyWindow   time.Duration `json:"notify_window"`
-	LastNotifiedAt time.Time     `json:"last_notified_at"`
-
-	Feeds []Feed `json:"feeds"`
 }
