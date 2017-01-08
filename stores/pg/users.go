@@ -1,6 +1,11 @@
 package pg
 
-import "github.com/fortytw2/hydrocarbon"
+import (
+	"strings"
+
+	"github.com/fortytw2/hydrocarbon"
+	"github.com/lib/pq"
+)
 
 // GetUser saves a user by ID
 func (s *Store) GetUser(id string) (*hydrocarbon.User, error) {
@@ -42,6 +47,10 @@ func (s *Store) CreateUser(u *hydrocarbon.User) (*hydrocarbon.User, error) {
 		RETURNING *
 	`, u.Email, u.EncryptedPassword, u.FailedLoginCount, u.Active, u.Confirmed, u.ConfirmationToken, u.TokenCreatedAt)
 	if row.Err() != nil {
+		if pqE := row.Err().(*pq.Error); strings.Contains(pqE.Message, "users_email_key") {
+			return nil, hydrocarbon.ErrUserExists
+		}
+
 		return nil, row.Err()
 	}
 
