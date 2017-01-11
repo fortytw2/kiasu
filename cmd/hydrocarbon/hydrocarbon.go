@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"os"
 
 	"github.com/fortytw2/hydrocarbon"
@@ -33,10 +34,8 @@ func main() {
 
 	go launchScraper(l, s)
 
-	server := getHTTPServer("localhost", getPort())
-	server.Handler = web.Routes(s, l)
-
-	err = server.ListenAndServeTLS("", "")
+	r := web.Routes(s, l)
+	err = http.ListenAndServe(getPort(), r)
 	if err != nil {
 		l.Log("msg", "cannot start", "error", err)
 		return
