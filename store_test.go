@@ -9,8 +9,8 @@ import (
 	dockertest "gopkg.in/ory-am/dockertest.v2"
 
 	"github.com/fortytw2/hydrocarbon"
+	"github.com/fortytw2/hydrocarbon/internal/log"
 	"github.com/fortytw2/hydrocarbon/stores/pg"
-	"github.com/go-kit/kit/log"
 	"github.com/stretchr/testify/assert"
 )
 
