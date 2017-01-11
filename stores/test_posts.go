@@ -24,7 +24,7 @@ func TestPostStore(t *testing.T, ps hydrocarbon.PrimitiveStore) {
 	_, err = ps.CreatePost(&hydrocarbon.Post{
 		FeedID:  f.ID,
 		Title:   "Best Post Ever",
-		URL:     "https://potatoes",
+		URL:     "https://potatoes.com",
 		Content: "1",
 	})
 
@@ -32,7 +32,7 @@ func TestPostStore(t *testing.T, ps hydrocarbon.PrimitiveStore) {
 	_, err = ps.CreatePost(&hydrocarbon.Post{
 		FeedID:  f.ID,
 		Title:   "Best Post Everest",
-		URL:     "https://potatoes",
+		URL:     "https://potatoes.co",
 		Content: "2",
 	})
 
@@ -40,7 +40,7 @@ func TestPostStore(t *testing.T, ps hydrocarbon.PrimitiveStore) {
 	lastPost, err := ps.CreatePost(&hydrocarbon.Post{
 		FeedID:  f.ID,
 		Title:   "Best Post 4ever",
-		URL:     "https://potatoes",
+		URL:     "https://potatoes.io",
 		Content: "3",
 	})
 

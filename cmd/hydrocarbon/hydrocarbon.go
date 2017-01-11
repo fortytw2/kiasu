@@ -20,7 +20,7 @@ func main() {
 		return
 	}
 
-	store, err := pg.NewStore(os.Getenv("POSTGRES_DSN"))
+	store, err := pg.NewStore(l, os.Getenv("POSTGRES_DSN"))
 	if err != nil {
 		l.Log("msg", "cannot start", "error", err)
 		return

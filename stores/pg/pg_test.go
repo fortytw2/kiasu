@@ -2,13 +2,13 @@ package pg
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"testing"
 	"time"
 
 	dockertest "gopkg.in/ory-am/dockertest.v2"
 
+	"github.com/fortytw2/hydrocarbon/internal/log"
 	"github.com/fortytw2/hydrocarbon/stores"
 	"github.com/stretchr/testify/assert"
 )
@@ -26,7 +26,8 @@ func TestMain(m *testing.M) {
 		return true
 	})
 	if err != nil {
-		log.Fatalf("Could not connect to database: %s", err)
+		fmt.Printf("Could not connect to database: %s", err)
+		return
 	}
 
 	// Run tests
@@ -39,7 +40,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestStore(t *testing.T) {
-	s, err := NewStore(dsn)
+	s, err := NewStore(log.NewNopLogger(), dsn)
 	assert.Nil(t, err)
 	assert.NotNil(t, s)
 

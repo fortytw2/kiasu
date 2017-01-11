@@ -2,7 +2,6 @@ package hydrocarbon_test
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"testing"
 	"time"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/stores/pg"
+	"github.com/go-kit/kit/log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,7 +27,8 @@ func TestMain(m *testing.M) {
 		return true
 	})
 	if err != nil {
-		log.Fatalf("Could not connect to database: %s", err)
+		fmt.Printf("Could not connect to database: %s", err)
+		return
 	}
 
 	// Run tests
@@ -54,7 +55,7 @@ func TestCreateUser(t *testing.T) {
 		{true, true, "ian@fortytw2.com", "sa8dwu9djio23jl"},
 	}
 
-	ps, err := pg.NewStore(dsn)
+	ps, err := pg.NewStore(log.NewNopLogger(), dsn)
 	assert.Nil(t, err)
 
 	s, err := hydrocarbon.NewStore(ps, []byte{1, 2, 3, 4, 2})

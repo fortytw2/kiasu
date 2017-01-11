@@ -5,6 +5,7 @@ import (
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/fortytw2/hydrocarbon"
+	"github.com/fortytw2/hydrocarbon/internal/log"
 	"github.com/fortytw2/hydrocarbon/internal/pgmigrate"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmoiron/sqlx/reflectx"
@@ -18,7 +19,7 @@ type Store struct {
 }
 
 // NewStore creates a primitive persistence layer
-func NewStore(dsn string) (hydrocarbon.PrimitiveStore, error) {
+func NewStore(l log.Logger, dsn string) (hydrocarbon.PrimitiveStore, error) {
 	db, err := sqlx.Connect("postgres", dsn)
 	if err != nil {
 		return nil, err
@@ -26,7 +27,7 @@ func NewStore(dsn string) (hydrocarbon.PrimitiveStore, error) {
 
 	db.Mapper = reflectx.NewMapperFunc("json", strings.ToLower)
 
-	err = Migrate(db)
+	err = Migrate(l, db)
 	if err != nil {
 		return nil, err
 	}
@@ -37,12 +38,13 @@ func NewStore(dsn string) (hydrocarbon.PrimitiveStore, error) {
 }
 
 // Migrate runs all migrations
-func Migrate(db *sqlx.DB) error {
+func Migrate(l log.Logger, db *sqlx.DB) error {
 	migrations, err := pgmigrate.LoadMigrations(&assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: AssetInfo, Prefix: "schema"})
 	if err != nil {
 		return err
 	}
 
-	_, err = pgmigrate.DefaultConfig.Migrate(db.DB, migrations)
+	number, err := pgmigrate.DefaultConfig.Migrate(db.DB, migrations)
+	l.Log("msg", "migrated postgres", "count", number, "total_migrations", migrations.Len())
 	return err
 }
