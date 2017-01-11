@@ -15,7 +15,6 @@ CREATE TABLE feeds (
   hex_color TEXT NOT NULL,
   icon_url TEXT NOT NULL,
 
-
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM updated_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM refreshed_at) = '0')
@@ -31,9 +30,8 @@ CREATE TABLE posts (
   posted_at TIMESTAMPTZ,
 
   title TEXT NOT NULL,
-  url TEXT NOT NULL,
+  url TEXT NOT NULL UNIQUE,
   content TEXT NOT NULL,
-
 
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM updated_at) = '0'),
