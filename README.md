@@ -21,7 +21,7 @@ docker run -e "POSTGRES_PASSWORD=postgres" -d -p 5432:5432 postgres:9.6-alpine
 then to rebuild and reload hydrocarbon run ->
 
 ```
-cd $GOPATH/src/github.com/fortytw2/hydrocarbon/cmd/hydrocarbon && go generate github.com/fortytw2/hydrocarbon/... && go1.8beta2 build && POSTGRES_DSN=postgres://postgres:postgres@localhost:5432?sslmode=disable ./hydrocarbon
+cd $GOPATH/src/github.com/fortytw2/hydrocarbon/cmd/hydrocarbon && go generate github.com/fortytw2/hydrocarbon/... && go1.8beta2 build -tags dev && POSTGRES_DSN=postgres://postgres:postgres@localhost:5432?sslmode=disable ./hydrocarbon
 ```
 
 LICENSE
