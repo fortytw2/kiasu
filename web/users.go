@@ -1,11 +1,13 @@
 package web
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/internal/httputil"
+	"github.com/fortytw2/hydrocarbon/internal/token"
 	"github.com/mholt/binding"
 )
 
@@ -56,9 +58,31 @@ func newUser(s *hydrocarbon.Store) httputil.ErrorHandler {
 		if errs.Handle(w) {
 			return nil
 		}
-		fmt.Fprintf(w, "From:    %s\n", r.Email)
-		fmt.Fprintf(w, "Message: %s\n", r.Password)
-		return nil
+
+		user, err := s.CreateUser(r.Email, r.Password)
+		if err != nil {
+			return err
+		}
+
+		newToken, err := token.GenerateRandomString(32)
+		if err != nil {
+			return err
+		}
+		// right here should send a confirmation email
+		// user.ConfirmationToken
+		sesh, err := s.Sessions.CreateSession(&hydrocarbon.Session{
+			UserID:    user.ID,
+			ExpiresAt: time.Now().Add(14 * 24 * time.Hour),
+			Token:     newToken,
+		})
+		if err != nil {
+			return err
+		}
+
+		js, _ := json.Marshal(sesh)
+		_, err = w.Write(js)
+
+		return err
 	}
 }
 

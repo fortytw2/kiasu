@@ -57,7 +57,7 @@ func launchScraper(l log.Logger, s *hydrocarbon.Store) {
 		Description: "lol",
 	})
 	if err != nil {
-		panic(err)
+		// do nothing
 	}
 
 	plugins := map[string]hydrocarbon.Instantiator{
