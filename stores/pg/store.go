@@ -45,6 +45,6 @@ func Migrate(l log.Logger, db *sqlx.DB) error {
 	}
 
 	number, err := pgmigrate.DefaultConfig.Migrate(db.DB, migrations)
-	l.Log("msg", "migrated postgres", "count", number, "total_migrations", migrations.Len())
+	l.Log("msg", "migrated postgres", "count", number.Len(), "total_migrations", migrations.Len())
 	return err
 }
