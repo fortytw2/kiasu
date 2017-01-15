@@ -90,8 +90,10 @@ CREATE TABLE sessions (
   user_id UUID REFERENCES users NOT NULL,
 
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   invalidated_at TIMESTAMPTZ,
-  expires_at TIMESTAMPTZ NOT NULL DEFAULT now() + interval '7 days',
+
+  expires_at TIMESTAMPTZ NOT NULL DEFAULT now() + interval '28 days',
   token TEXT NOT NULL,
 
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),

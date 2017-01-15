@@ -9,6 +9,11 @@ import (
 
 func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 	return func(w http.ResponseWriter, r *http.Request) error {
+		if loggedIn(r) == nil {
+			http.Redirect(w, r, loginURL, http.StatusTemporaryRedirect)
+			return nil
+		}
+
 		feedID := r.URL.Query().Get("id")
 
 		if feedID == "" {
@@ -17,7 +22,7 @@ func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 				PageSize: 20,
 			})
 			if err != nil {
-				return httputil.Wrap(err, 404)
+				return httputil.Wrap(err, 500)
 			}
 
 			out := TMPLfeeds("Hydrocarbon", loggedIn(r), fs)

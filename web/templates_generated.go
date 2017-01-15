@@ -203,7 +203,9 @@ func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocar
 	<div class="content">
 `)
 	_w(`
-<h1>Feed Listing</h1>
+<h1>Feed Listing for `)
+	_w(fmt.Sprintf(`%v`, loggedInUser.Email))
+	_w(`</h1>
 
 `)
 	for _, f := range feeds {
@@ -358,7 +360,7 @@ func TMPLERRlogin(title string, loggedInUser *hydrocarbon.User) (string, error) 
 
 <form action="login" method="post">
   Email <input type="email" name="email"><br>
-  Password <input type="password" name="pass"><br>
+  Password <input type="password" name="password"><br>
   <a href="password_reset">forgot password?</a><br>
   <input type="submit" value="Submit">
 </form>
@@ -451,6 +453,75 @@ func TMPLpost(title string, loggedInUser *hydrocarbon.User) string {
 	return html
 }
 
+// TMPLERRprivacy evaluates a template privacy.tmpl
+func TMPLERRprivacy(title string, loggedInUser *hydrocarbon.User) (string, error) {
+	_template := "privacy.tmpl"
+	_escape := html.EscapeString
+	var _ftmpl bytes.Buffer
+	_w := func(str string) { _, _ = _ftmpl.WriteString(str) }
+	_, _, _ = _template, _escape, _w
+
+	_w(`
+`)
+	_w(`
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>`)
+	_w(fmt.Sprintf(`%s`, _escape(title)))
+	_w(`</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
+
+</head>
+<body>
+	<ul id="menu">
+		<li><a href="/">Hydrocarbon</a></li>
+`)
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
+`)
+	} else {
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
+`)
+	}
+	_w(`	</ul>
+
+	<div class="content">
+`)
+	_w(`
+<h1>Privacy Policy and ToS</h1><br>
+
+<p>
+	TODO
+</p>
+`)
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
+</html>
+`)
+
+	return _ftmpl.String(), nil
+}
+
+// TMPLprivacy evaluates a template privacy.tmpl
+func TMPLprivacy(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRprivacy(title, loggedInUser)
+	if err != nil {
+		_, _ = os.Stderr.WriteString("Error running template privacy.tmpl:" + err.Error())
+	}
+	return html
+}
+
 // TMPLERRregister evaluates a template register.tmpl
 func TMPLERRregister(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_template := "register.tmpl"
@@ -523,6 +594,75 @@ func TMPLregister(title string, loggedInUser *hydrocarbon.User) string {
 	html, err := TMPLERRregister(title, loggedInUser)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template register.tmpl:" + err.Error())
+	}
+	return html
+}
+
+// TMPLERRsettings evaluates a template settings.tmpl
+func TMPLERRsettings(title string, loggedInUser *hydrocarbon.User) (string, error) {
+	_template := "settings.tmpl"
+	_escape := html.EscapeString
+	var _ftmpl bytes.Buffer
+	_w := func(str string) { _, _ = _ftmpl.WriteString(str) }
+	_, _, _ = _template, _escape, _w
+
+	_w(`
+`)
+	_w(`
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>`)
+	_w(fmt.Sprintf(`%s`, _escape(title)))
+	_w(`</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
+
+</head>
+<body>
+	<ul id="menu">
+		<li><a href="/">Hydrocarbon</a></li>
+`)
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
+`)
+	} else {
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
+`)
+	}
+	_w(`	</ul>
+
+	<div class="content">
+`)
+	_w(`
+<h1>User Settings Page</h1><br>
+
+<p>
+	TODO
+</p>
+`)
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+	</footer>
+</body>
+</html>
+`)
+
+	return _ftmpl.String(), nil
+}
+
+// TMPLsettings evaluates a template settings.tmpl
+func TMPLsettings(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRsettings(title, loggedInUser)
+	if err != nil {
+		_, _ = os.Stderr.WriteString("Error running template settings.tmpl:" + err.Error())
 	}
 	return html
 }

@@ -54,7 +54,7 @@ func launchScraper(l log.Logger, s *hydrocarbon.Store) {
 	// 	Plugin:      "xenforo",
 	// 	InitialURL:  "https://forums.spacebattles.com/threads/skein-worm-altpower-au.437953/threadmarks",
 	// 	Name:        "spacebattles-skein",
-	// 	Description: "lol",
+	// 	Description: "skein - a worm story",
 	// })
 	// if err != nil {
 	// 	// do nothing

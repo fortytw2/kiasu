@@ -10,7 +10,17 @@ import (
 
 type userKey struct{}
 
+type tokenKey struct{}
+
 var userCookieToken = "hydrocarbontok"
+
+func sessionToken(r *http.Request) string {
+	s := r.Context().Value(tokenKey{})
+	if s == nil {
+		return ""
+	}
+	return s.(string)
+}
 
 func loggedIn(r *http.Request) *hydrocarbon.User {
 	u := r.Context().Value(userKey{})
@@ -22,7 +32,7 @@ func loggedIn(r *http.Request) *hydrocarbon.User {
 
 func authenticate(s *hydrocarbon.Store, l log.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, req *http.Request) {
+		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			token, err := req.Cookie(userCookieToken)
 			if err != nil {
 				next.ServeHTTP(w, req)
@@ -36,9 +46,8 @@ func authenticate(s *hydrocarbon.Store, l log.Logger) func(http.Handler) http.Ha
 			}
 
 			newCtx := context.WithValue(req.Context(), userKey{}, user)
-			next.ServeHTTP(w, req.WithContext(newCtx))
-		}
-
-		return http.HandlerFunc(fn)
+			newCtx2 := context.WithValue(newCtx, tokenKey{}, token.Value)
+			next.ServeHTTP(w, req.WithContext(newCtx2))
+		})
 	}
 }

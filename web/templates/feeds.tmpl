@@ -6,7 +6,7 @@
 
 !#sub body
 
-<h1>Feed Listing</h1>
+<h1>Feed Listing for {{ loggedInUser.Email }}</h1>
 
 ! for _, f := range feeds {
 	<h2> {{ f.Name }}</h2>

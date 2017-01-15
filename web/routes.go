@@ -17,6 +17,8 @@ import (
 const (
 	homeURL           = "/"
 	loginURL          = "/login"
+	logoutURL         = "/logout"
+	privacyURL        = "/privacy"
 	registerURL       = "/register"
 	confirmTokenURL   = "/confirm"
 	forgotPasswordURL = "/password_reset"
@@ -27,6 +29,8 @@ const (
 
 	onePostURL    = "/posts/:postID"
 	readStatusURL = "/mark_read"
+
+	settingsURL = "/settings"
 )
 
 //go:generate ftmpl -targetgo ./templates_generated.go templates/
@@ -45,19 +49,20 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 	r.Handle("/hydrocarbon.min.css", httputil.ErrorHandler(Stylesheet))
 
 	r.With(authenticate(s, l)).Handle(homeURL, httputil.ErrorHandler(renderHome))
+	r.With(authenticate(s, l)).Handle(privacyURL, httputil.ErrorHandler(renderPrivacy))
 
 	r.With(authenticate(s, l)).Get(registerURL, httputil.ErrorHandler(renderRegister).Func())
 	r.Post(registerURL, newUser(s).Func())
 	r.With(authenticate(s, l)).Get(confirmTokenURL, confirmUser)
+	r.With(authenticate(s, l)).Get(settingsURL, httputil.ErrorHandler(renderSettings).Func())
 
 	r.Post(forgotPasswordURL, forgotPassword)
 
 	r.With(authenticate(s, l)).Handle(loginURL, httputil.ErrorHandler(renderLogin))
 	r.Post(loginURL, newSession)
-	r.Delete(loginURL, deleteSession)
+	r.With(authenticate(s, l)).Get(logoutURL, deleteSession(s).Func())
 
 	r.With(authenticate(s, l)).Get(feedsURL, renderFeed(s).Func())
-	// r.Get(oneFeedURL, renderFeed(s).Func())
 
 	r.Post(feedsURL, addFeed)
 	r.Post(reorderFeedsURL, reorderFeeds)

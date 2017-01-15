@@ -36,6 +36,20 @@ func renderRegister(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+func renderSettings(w http.ResponseWriter, r *http.Request) error {
+	out, err := TMPLERRsettings("Hydrocarbon", loggedIn(r))
+	if err != nil {
+		return httputil.Wrap(err, http.StatusInternalServerError)
+	}
+
+	_, err = w.Write([]byte(out))
+	if err != nil {
+		return httputil.Wrap(err, http.StatusInternalServerError)
+	}
+
+	return nil
+}
+
 type registration struct {
 	Email    string
 	Password string
@@ -89,7 +103,7 @@ func newUser(s *hydrocarbon.Store) httputil.ErrorHandler {
 			Value: sesh.Token,
 		})
 
-		http.Redirect(w, req, "/feeds", http.StatusSeeOther)
+		http.Redirect(w, req, feedsURL, http.StatusSeeOther)
 
 		return nil
 	}
@@ -111,6 +125,20 @@ func forgotPassword(w http.ResponseWriter, r *http.Request) {
 }
 
 // deleteSession invalidates an existing session
-func deleteSession(w http.ResponseWriter, r *http.Request) {
+func deleteSession(s *hydrocarbon.Store) httputil.ErrorHandler {
+	return func(w http.ResponseWriter, req *http.Request) error {
+		token := sessionToken(req)
+		if token == "" {
+			return errors.New("no session exists")
+		}
 
+		err := s.Sessions.InvalidateSessionByToken(token)
+		if err != nil {
+			return err
+		}
+
+		http.Redirect(w, req, loginURL, http.StatusTemporaryRedirect)
+
+		return nil
+	}
 }
