@@ -1,7 +1,6 @@
 package web
 
 import (
-	"context"
 	"net/http"
 	"time"
 
@@ -72,11 +71,6 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 	r.Post(readStatusURL, markRead)
 
 	return r
-}
-
-func setUser(u *hydrocarbon.User, ctx context.Context) context.Context {
-	return nil
-
 }
 
 // secureHeader sets security headers
