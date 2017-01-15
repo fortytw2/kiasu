@@ -645,6 +645,9 @@ func TMPLERRsettings(title string, loggedInUser *hydrocarbon.User) (string, erro
 <p>
 	TODO
 </p>
+
+<h3> Delete my Account </h3>
+<p>To fully delete your account, please email ian@hydrocarbon.io</p>
 `)
 	_w(`	</div>
 
