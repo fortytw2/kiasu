@@ -17,6 +17,11 @@ func (s *Store) GetSessionByAccessToken(token string) (*hydrocarbon.Session, err
 	return nil, nil
 }
 
+// InvalidateSessionByToken invalidates a given session
+func (s *Store) InvalidateSessionByToken(token string) error {
+	return nil
+}
+
 // CreateSession saves a new session
 func (s *Store) CreateSession(ses *hydrocarbon.Session) (*hydrocarbon.Session, error) {
 	return nil, nil
