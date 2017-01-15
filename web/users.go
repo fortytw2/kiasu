@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/fortytw2/abdi"
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/internal/httputil"
 	"github.com/fortytw2/hydrocarbon/internal/token"
@@ -50,12 +51,12 @@ func renderSettings(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-type registration struct {
+type registrationOrLogin struct {
 	Email    string
 	Password string
 }
 
-func (r *registration) Valid() error {
+func (r *registrationOrLogin) Valid() error {
 	if r.Email == "" {
 		return errors.New("email is required")
 	}
@@ -68,7 +69,7 @@ func (r *registration) Valid() error {
 // newUser processes a post request
 func newUser(s *hydrocarbon.Store) httputil.ErrorHandler {
 	return func(w http.ResponseWriter, req *http.Request) error {
-		r := registration{
+		r := registrationOrLogin{
 			Email:    req.FormValue("email"),
 			Password: req.FormValue("password"),
 		}
@@ -110,8 +111,52 @@ func newUser(s *hydrocarbon.Store) httputil.ErrorHandler {
 }
 
 // newSession creates a new session
-func newSession(w http.ResponseWriter, r *http.Request) {
+func newSession(s *hydrocarbon.Store) httputil.ErrorHandler {
+	return func(w http.ResponseWriter, req *http.Request) error {
+		r := registrationOrLogin{
+			Email:    req.FormValue("email"),
+			Password: req.FormValue("password"),
+		}
 
+		err := r.Valid()
+		if err != nil {
+			return err
+		}
+
+		user, err := s.Users.GetUserByEmail(r.Email)
+		if err != nil {
+			return err
+		}
+
+		err = abdi.Check(r.Password, user.EncryptedPassword, s.EncryptionKey)
+		if err != nil {
+			return err
+		}
+
+		newToken, err := token.GenerateRandomString(32)
+		if err != nil {
+			return err
+		}
+		// right here should send a confirmation email
+		// user.ConfirmationToken
+		sesh, err := s.Sessions.CreateSession(&hydrocarbon.Session{
+			UserID:    user.ID,
+			ExpiresAt: time.Now().Add(28 * 24 * time.Hour),
+			Token:     newToken,
+		})
+		if err != nil {
+			return err
+		}
+
+		http.SetCookie(w, &http.Cookie{
+			Name:  userCookieToken,
+			Value: sesh.Token,
+		})
+
+		http.Redirect(w, req, feedsURL, http.StatusSeeOther)
+
+		return nil
+	}
 }
 
 // confirmUser asserts that the user has a valid email

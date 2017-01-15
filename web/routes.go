@@ -45,10 +45,10 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 	r.Use(middleware.Timeout(5 * time.Second))
 	r.Use(middleware.DefaultCompress)
 
-	r.Handle("/hydrocarbon.min.css", httputil.ErrorHandler(Stylesheet))
+	r.Handle("/hydrocarbon.min.css", httputil.ErrorHandler(Stylesheet).Func())
 
-	r.With(authenticate(s, l)).Handle(homeURL, httputil.ErrorHandler(renderHome))
-	r.With(authenticate(s, l)).Handle(privacyURL, httputil.ErrorHandler(renderPrivacy))
+	r.With(authenticate(s, l)).Get(homeURL, httputil.ErrorHandler(renderHome).Func())
+	r.With(authenticate(s, l)).Get(privacyURL, httputil.ErrorHandler(renderPrivacy).Func())
 
 	r.With(authenticate(s, l)).Get(registerURL, httputil.ErrorHandler(renderRegister).Func())
 	r.Post(registerURL, newUser(s).Func())
@@ -57,8 +57,8 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 
 	r.Post(forgotPasswordURL, forgotPassword)
 
-	r.With(authenticate(s, l)).Handle(loginURL, httputil.ErrorHandler(renderLogin))
-	r.Post(loginURL, newSession)
+	r.With(authenticate(s, l)).Get(loginURL, httputil.ErrorHandler(renderLogin).Func())
+	r.Post(loginURL, httputil.ErrorHandler(newSession(s)).Func())
 	r.With(authenticate(s, l)).Get(logoutURL, deleteSession(s).Func())
 
 	r.With(authenticate(s, l)).Get(feedsURL, renderFeed(s).Func())

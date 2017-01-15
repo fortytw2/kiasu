@@ -48,7 +48,7 @@ func (s *Store) GetUser(id string) (*hydrocarbon.User, error) {
 
 // GetUserByEmail gets a yser by email
 func (s *Store) GetUserByEmail(email string) (*hydrocarbon.User, error) {
-	row := s.db.QueryRowx("SELECT * FROM users WHERE email = $1", email)
+	row := s.db.QueryRowx("SELECT id, created_at, updated_at, email, encrypted_password, failed_login_count, active, confirmed, confirmation_token, token_created_at FROM users WHERE email = $1", email)
 	if row.Err() != nil {
 		return nil, row.Err()
 	}
