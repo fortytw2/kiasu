@@ -20,7 +20,7 @@ func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 				return httputil.Wrap(err, 404)
 			}
 
-			out := TMPLfeeds("Hydrocarbon", false, 0, fs)
+			out := TMPLfeeds("Hydrocarbon", loggedIn(r), fs)
 
 			_, err = w.Write([]byte(out))
 			return err
@@ -39,7 +39,7 @@ func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 			return err
 		}
 
-		out := TMPLfeed("Hydrocarbon", false, 0, f, posts)
+		out := TMPLfeed("Hydrocarbon", loggedIn(r), f, posts)
 
 		_, err = w.Write([]byte(out))
 		return err
@@ -47,7 +47,7 @@ func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 }
 
 func renderPost(w http.ResponseWriter, r *http.Request) {
-	out, err := TMPLERRpost("Hydrocarbon", false, 0)
+	out, err := TMPLERRpost("Hydrocarbon", loggedIn(r))
 	if err != nil {
 		panic(err)
 	}

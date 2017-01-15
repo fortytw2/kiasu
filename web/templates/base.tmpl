@@ -1,6 +1,5 @@
 !#arg title string
-!#arg loggedIn bool
-!#arg unread int
+!#arg loggedInUser *hydrocarbon.User
 
 <!doctype html>
 <html lang="en">
@@ -14,10 +13,9 @@
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
-! if loggedIn {
-    <li>
-        <a href="/feeds">Feeds {{d unread}}</a>
-    </li>
+! if loggedInUser != nil {
+	<li class="right"><a href="/settings">{{s loggedInUser.Email}}</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 ! } else {
     <li class="right"><a href="/login">Login</a></li>
     <li class="right"><a href="/register">Register</a></li>

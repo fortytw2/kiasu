@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -43,19 +44,19 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 
 	r.Handle("/hydrocarbon.min.css", httputil.ErrorHandler(Stylesheet))
 
-	r.Handle(homeURL, httputil.ErrorHandler(renderHome))
+	r.With(authenticate(s, l)).Handle(homeURL, httputil.ErrorHandler(renderHome))
 
-	r.Get(registerURL, httputil.ErrorHandler(renderRegister).Func())
+	r.With(authenticate(s, l)).Get(registerURL, httputil.ErrorHandler(renderRegister).Func())
 	r.Post(registerURL, newUser(s).Func())
-	r.Get(confirmTokenURL, confirmUser)
+	r.With(authenticate(s, l)).Get(confirmTokenURL, confirmUser)
 
 	r.Post(forgotPasswordURL, forgotPassword)
 
-	r.Handle(loginURL, httputil.ErrorHandler(renderLogin))
+	r.With(authenticate(s, l)).Handle(loginURL, httputil.ErrorHandler(renderLogin))
 	r.Post(loginURL, newSession)
 	r.Delete(loginURL, deleteSession)
 
-	r.Get(feedsURL, renderFeed(s).Func())
+	r.With(authenticate(s, l)).Get(feedsURL, renderFeed(s).Func())
 	// r.Get(oneFeedURL, renderFeed(s).Func())
 
 	r.Post(feedsURL, addFeed)
@@ -66,6 +67,11 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 	r.Post(readStatusURL, markRead)
 
 	return r
+}
+
+func setUser(u *hydrocarbon.User, ctx context.Context) context.Context {
+	return nil
+
 }
 
 // secureHeader sets security headers

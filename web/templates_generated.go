@@ -19,7 +19,7 @@ func init() {
 }
 
 // TMPLERRbase evaluates a template base.tmpl
-func TMPLERRbase(title string, loggedIn bool, unread int) (string, error) {
+func TMPLERRbase(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_template := "base.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
@@ -42,12 +42,11 @@ func TMPLERRbase(title string, loggedIn bool, unread int) (string, error) {
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
 `)
-	if loggedIn {
-		_w(`    <li>
-        <a href="/feeds">Feeds `)
-		_w(fmt.Sprintf(`%d`, unread))
-		_w(`</a>
-    </li>
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 `)
 	} else {
 		_w(`    <li class="right"><a href="/login">Login</a></li>
@@ -71,8 +70,8 @@ func TMPLERRbase(title string, loggedIn bool, unread int) (string, error) {
 }
 
 // TMPLbase evaluates a template base.tmpl
-func TMPLbase(title string, loggedIn bool, unread int) string {
-	html, err := TMPLERRbase(title, loggedIn, unread)
+func TMPLbase(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRbase(title, loggedInUser)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template base.tmpl:" + err.Error())
 	}
@@ -80,7 +79,7 @@ func TMPLbase(title string, loggedIn bool, unread int) string {
 }
 
 // TMPLERRfeed evaluates a template feed.tmpl
-func TMPLERRfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed, posts []hydrocarbon.Post) (string, error) {
+func TMPLERRfeed(title string, loggedInUser *hydrocarbon.User, feed *hydrocarbon.Feed, posts []hydrocarbon.Post) (string, error) {
 	_template := "feed.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
@@ -107,12 +106,11 @@ func TMPLERRfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
 `)
-	if loggedIn {
-		_w(`    <li>
-        <a href="/feeds">Feeds `)
-		_w(fmt.Sprintf(`%d`, unread))
-		_w(`</a>
-    </li>
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 `)
 	} else {
 		_w(`    <li class="right"><a href="/login">Login</a></li>
@@ -153,8 +151,8 @@ func TMPLERRfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed
 }
 
 // TMPLfeed evaluates a template feed.tmpl
-func TMPLfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed, posts []hydrocarbon.Post) string {
-	html, err := TMPLERRfeed(title, loggedIn, unread, feed, posts)
+func TMPLfeed(title string, loggedInUser *hydrocarbon.User, feed *hydrocarbon.Feed, posts []hydrocarbon.Post) string {
+	html, err := TMPLERRfeed(title, loggedInUser, feed, posts)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template feed.tmpl:" + err.Error())
 	}
@@ -162,7 +160,7 @@ func TMPLfeed(title string, loggedIn bool, unread int, feed *hydrocarbon.Feed, p
 }
 
 // TMPLERRfeeds evaluates a template feeds.tmpl
-func TMPLERRfeeds(title string, loggedIn bool, unread int, feeds []hydrocarbon.Feed) (string, error) {
+func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocarbon.Feed) (string, error) {
 	_template := "feeds.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
@@ -189,12 +187,11 @@ func TMPLERRfeeds(title string, loggedIn bool, unread int, feeds []hydrocarbon.F
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
 `)
-	if loggedIn {
-		_w(`    <li>
-        <a href="/feeds">Feeds `)
-		_w(fmt.Sprintf(`%d`, unread))
-		_w(`</a>
-    </li>
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 `)
 	} else {
 		_w(`    <li class="right"><a href="/login">Login</a></li>
@@ -235,8 +232,8 @@ func TMPLERRfeeds(title string, loggedIn bool, unread int, feeds []hydrocarbon.F
 }
 
 // TMPLfeeds evaluates a template feeds.tmpl
-func TMPLfeeds(title string, loggedIn bool, unread int, feeds []hydrocarbon.Feed) string {
-	html, err := TMPLERRfeeds(title, loggedIn, unread, feeds)
+func TMPLfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocarbon.Feed) string {
+	html, err := TMPLERRfeeds(title, loggedInUser, feeds)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template feeds.tmpl:" + err.Error())
 	}
@@ -244,7 +241,7 @@ func TMPLfeeds(title string, loggedIn bool, unread int, feeds []hydrocarbon.Feed
 }
 
 // TMPLERRhome evaluates a template home.tmpl
-func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
+func TMPLERRhome(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_template := "home.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
@@ -269,12 +266,11 @@ func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
 `)
-	if loggedIn {
-		_w(`    <li>
-        <a href="/feeds">Feeds `)
-		_w(fmt.Sprintf(`%d`, unread))
-		_w(`</a>
-    </li>
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 `)
 	} else {
 		_w(`    <li class="right"><a href="/login">Login</a></li>
@@ -306,8 +302,8 @@ func TMPLERRhome(title string, loggedIn bool, unread int) (string, error) {
 }
 
 // TMPLhome evaluates a template home.tmpl
-func TMPLhome(title string, loggedIn bool, unread int) string {
-	html, err := TMPLERRhome(title, loggedIn, unread)
+func TMPLhome(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRhome(title, loggedInUser)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template home.tmpl:" + err.Error())
 	}
@@ -315,7 +311,7 @@ func TMPLhome(title string, loggedIn bool, unread int) string {
 }
 
 // TMPLERRlogin evaluates a template login.tmpl
-func TMPLERRlogin(title string, loggedIn bool, unread int) (string, error) {
+func TMPLERRlogin(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_template := "login.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
@@ -340,12 +336,11 @@ func TMPLERRlogin(title string, loggedIn bool, unread int) (string, error) {
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
 `)
-	if loggedIn {
-		_w(`    <li>
-        <a href="/feeds">Feeds `)
-		_w(fmt.Sprintf(`%d`, unread))
-		_w(`</a>
-    </li>
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 `)
 	} else {
 		_w(`    <li class="right"><a href="/login">Login</a></li>
@@ -383,8 +378,8 @@ func TMPLERRlogin(title string, loggedIn bool, unread int) (string, error) {
 }
 
 // TMPLlogin evaluates a template login.tmpl
-func TMPLlogin(title string, loggedIn bool, unread int) string {
-	html, err := TMPLERRlogin(title, loggedIn, unread)
+func TMPLlogin(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRlogin(title, loggedInUser)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template login.tmpl:" + err.Error())
 	}
@@ -392,7 +387,7 @@ func TMPLlogin(title string, loggedIn bool, unread int) string {
 }
 
 // TMPLERRpost evaluates a template post.tmpl
-func TMPLERRpost(title string, loggedIn bool, unread int) (string, error) {
+func TMPLERRpost(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_template := "post.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
@@ -417,12 +412,11 @@ func TMPLERRpost(title string, loggedIn bool, unread int) (string, error) {
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
 `)
-	if loggedIn {
-		_w(`    <li>
-        <a href="/feeds">Feeds `)
-		_w(fmt.Sprintf(`%d`, unread))
-		_w(`</a>
-    </li>
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 `)
 	} else {
 		_w(`    <li class="right"><a href="/login">Login</a></li>
@@ -449,8 +443,8 @@ func TMPLERRpost(title string, loggedIn bool, unread int) (string, error) {
 }
 
 // TMPLpost evaluates a template post.tmpl
-func TMPLpost(title string, loggedIn bool, unread int) string {
-	html, err := TMPLERRpost(title, loggedIn, unread)
+func TMPLpost(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRpost(title, loggedInUser)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template post.tmpl:" + err.Error())
 	}
@@ -458,7 +452,7 @@ func TMPLpost(title string, loggedIn bool, unread int) string {
 }
 
 // TMPLERRregister evaluates a template register.tmpl
-func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
+func TMPLERRregister(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_template := "register.tmpl"
 	_escape := html.EscapeString
 	var _ftmpl bytes.Buffer
@@ -483,12 +477,11 @@ func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
 `)
-	if loggedIn {
-		_w(`    <li>
-        <a href="/feeds">Feeds `)
-		_w(fmt.Sprintf(`%d`, unread))
-		_w(`</a>
-    </li>
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
 `)
 	} else {
 		_w(`    <li class="right"><a href="/login">Login</a></li>
@@ -526,8 +519,8 @@ func TMPLERRregister(title string, loggedIn bool, unread int) (string, error) {
 }
 
 // TMPLregister evaluates a template register.tmpl
-func TMPLregister(title string, loggedIn bool, unread int) string {
-	html, err := TMPLERRregister(title, loggedIn, unread)
+func TMPLregister(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRregister(title, loggedInUser)
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Error running template register.tmpl:" + err.Error())
 	}
