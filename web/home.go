@@ -1,12 +1,8 @@
 package web
 
-import (
-	"fmt"
-	"net/http"
-)
+import "net/http"
 
 func renderHome(w http.ResponseWriter, r *http.Request) error {
-	fmt.Printf("%+v", r.Context())
 	out, err := TMPLERRhome("Hydrocarbon", loggedIn(r))
 	if err != nil {
 		return err
