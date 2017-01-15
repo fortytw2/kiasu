@@ -29,4 +29,6 @@ type Feed struct {
 
 	HexColor string `json:"hex_color"`
 	IconURL  string `json:"icon_url"`
+
+	Unread int `json:"unread,omitempty"`
 }

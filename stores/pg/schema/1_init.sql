@@ -54,20 +54,24 @@ CREATE TABLE users (
   confirmation_token TEXT NOT NULL,
   token_created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
+  folder_ids text[] NOT NULL,
+
   CHECK(EXTRACT(TIMEZONE FROM token_created_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM updated_at) = '0')
 );
 
-CREATE TABLE user_feeds (
+CREATE TABLE folders (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  feed_id UUID REFERENCES feeds NOT NULL,
-  user_id UUID REFERENCES users NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
-  priority INT NOT NULL DEFAULT 0
+  name text NOT NULL,
+  feed_ids text[] NOT NULL,
+
+  CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),
+  CHECK(EXTRACT(TIMEZONE FROM updated_at) = '0')
 );
-
-CREATE UNIQUE INDEX user_feed_unique_idx ON user_feeds(priority, feed_id, user_id);
 
 CREATE TABLE read_statuses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

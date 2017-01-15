@@ -31,4 +31,6 @@ type User struct {
 	Confirmed         bool      `json:"confirmed"`
 	ConfirmationToken string    `json:"confirmation_token"`
 	TokenCreatedAt    time.Time `json:"token_created_at"`
+
+	Folders []Folder `json:"folders"`
 }
