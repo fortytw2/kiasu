@@ -14,7 +14,7 @@ func (s *Store) GetUser(id string) (*hydrocarbon.User, error) {
 			SELECT unnest(folder_ids) id
 			FROM users WHERE
 			id = $1
-		) SELECT folders.name, folders.id
+		) SELECT folders.name, folders.created_at, folders.updated_at, folders.id
 		FROM folders
 		LEFT JOIN user_folders uf on folders.id=uf.id::uuid`, id)
 	if err != nil {
