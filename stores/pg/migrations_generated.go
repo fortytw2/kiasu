@@ -85,7 +85,7 @@ func schema1_initSql() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "schema/1_init.sql", size: 3011, mode: os.FileMode(420), modTime: time.Unix(1485014754, 0)}
+	info := bindataFileInfo{name: "schema/1_init.sql", size: 3011, mode: os.FileMode(420), modTime: time.Unix(1485019493, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
