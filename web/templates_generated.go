@@ -635,7 +635,7 @@ func TMPLERRpassword_reset(title string, loggedInUser *hydrocarbon.User) (string
 
 <form action="password_reset" method="post">
   Email <input type="email" name="email"><br>
-  if your email is registered, we'll send you an email
+  if your email is registered, we'll send you an email<br>
   <input type="submit" value="Submit">
 </form>
 
@@ -1006,10 +1006,16 @@ No Customer ID! Unpaid!
     data-email="`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`"
-    data-locale="auto"
+    data-locale="en"
     data-name="Hydrocarbon"
-    data-description="Yearly Subscription"
-    data-amount="2499">
+    data-description="Monthly Subscription"
+    data-amount="2499"
+    data-currency="usd"
+    data-bitcoin="true"
+    data-alipay="true"
+    data-zip-code="true"
+    data-panel-label="Subscribe"
+    data-label="Pay with Card, Bitcoin, or Alipay">
   </script>
 </form>
 
