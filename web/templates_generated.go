@@ -54,7 +54,7 @@ func TMPLERRbase(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -135,7 +135,7 @@ func TMPLERRfeed(title string, loggedInUser *hydrocarbon.User, feed *hydrocarbon
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -233,7 +233,7 @@ func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocar
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -254,24 +254,28 @@ func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocar
 	<div class="content">
 `)
 	_w(`
-<h1>Feed Listing for `)
-	_w(fmt.Sprintf(`%v`, loggedInUser.Email))
-	_w(`</h1>
+<div class="sidebar">
 
+<ul>
+	<li class="sidebar-content"><a href="/feeds/new">New Feed</a></li>
 `)
 	for _, f := range feeds {
-		_w(`	<h2> `)
+		_w(`	<li class="sidebar-content">`)
 		_w(fmt.Sprintf(`%v`, f.Name))
-		_w(`</h2>
-	<p> `)
-		_w(fmt.Sprintf(`%v`, f.Description))
-		_w(`</p>
-	<a href="/feeds?id=`)
+		_w(`<a href="/feeds?id=`)
 		_w(fmt.Sprintf(`%v`, f.ID))
-		_w(`">link</a>
-	<br>
+		_w(`">link</a></li>
 `)
 	}
+	_w(`</ul>
+
+</div>
+
+<div class="posts">
+
+
+</div>
+`)
 	_w(`	</div>
 
 	<footer>
@@ -331,7 +335,7 @@ func TMPLERRhome(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -418,7 +422,7 @@ func TMPLERRlogin(title string, loggedInUser *hydrocarbon.User) (string, error) 
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -473,6 +477,99 @@ func TMPLlogin(title string, loggedInUser *hydrocarbon.User) string {
 	return html
 }
 
+// TMPLERRnew_feed evaluates a template new_feed.tmpl
+func TMPLERRnew_feed(title string, loggedInUser *hydrocarbon.User) (string, error) {
+	_template := "new_feed.tmpl"
+	_escape := html.EscapeString
+	var _ftmpl bytes.Buffer
+	_w := func(str string) { _, _ = _ftmpl.WriteString(str) }
+	_, _, _ = _template, _escape, _w
+
+	_w(`
+`)
+	_w(`
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>`)
+	_w(fmt.Sprintf(`%s`, _escape(title)))
+	_w(`</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
+
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
+<body>
+	<ul id="header">
+		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
+`)
+	if loggedInUser != nil {
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
+		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
+		_w(`</a></li>
+    <li class="right"><a href="/feeds">Feeds</a></li>
+`)
+	} else {
+		_w(`    <li class="right"><a href="/login">Login</a></li>
+    <li class="right"><a href="/register">Register</a></li>
+`)
+	}
+	_w(`	</ul>
+
+	<div class="content">
+`)
+	_w(`
+<div id="new-feed">
+
+<h1>New Feed</h1>
+
+<form action="/feeds/new" method="post">
+  Name <input type="text" name="name"><br>
+  Plugin <input type="text" name="plugin"><br>
+  URL  <input type="text" name="url"><br>
+  <input type="submit" value="Submit">
+</form>
+
+</div>
+`)
+	_w(`	</div>
+
+	<footer>
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
+	</footer>
+</body>
+</html>
+`)
+
+	return _ftmpl.String(), nil
+}
+
+// TMPLnew_feed evaluates a template new_feed.tmpl
+func TMPLnew_feed(title string, loggedInUser *hydrocarbon.User) string {
+	html, err := TMPLERRnew_feed(title, loggedInUser)
+	if err != nil {
+		_, _ = os.Stderr.WriteString("Error running template new_feed.tmpl:" + err.Error())
+	}
+	return html
+}
+
 // TMPLERRpost evaluates a template post.tmpl
 func TMPLERRpost(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_template := "post.tmpl"
@@ -511,7 +608,7 @@ func TMPLERRpost(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -593,7 +690,7 @@ func TMPLERRprivacy(title string, loggedInUser *hydrocarbon.User) (string, error
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -679,7 +776,7 @@ func TMPLERRregister(title string, loggedInUser *hydrocarbon.User) (string, erro
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)
@@ -774,7 +871,7 @@ func TMPLERRsettings(title string, loggedInUser *hydrocarbon.User) (string, erro
 	}
 	_w(`</head>
 <body>
-	<ul id="menu">
+	<ul id="header">
 		<li><a href="/">Hydrocarbon</a></li>
 <!-- if loggedIn header -->
 `)

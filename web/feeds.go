@@ -7,6 +7,13 @@ import (
 	"github.com/fortytw2/hydrocarbon/internal/httputil"
 )
 
+func renderNewFeed(w http.ResponseWriter, r *http.Request) {
+	_, err := w.Write([]byte(TMPLnew_feed("Hydrocarbon", loggedIn(r))))
+	if err != nil {
+		panic(err)
+	}
+}
+
 func renderFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		if loggedIn(r) == nil {
@@ -67,10 +74,28 @@ func reorderFeeds(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func addFeed(w http.ResponseWriter, r *http.Request) {
+func addFeed(s *hydrocarbon.Store) httputil.ErrorHandler {
+	return func(w http.ResponseWriter, r *http.Request) error {
+		if loggedIn(r) == nil {
+			http.Redirect(w, r, loginURL, http.StatusTemporaryRedirect)
+			return nil
+		}
+
+		_, err := s.Feeds.CreateFeed(&hydrocarbon.Feed{
+			Plugin:     r.FormValue("plugin"),
+			InitialURL: r.FormValue("url"),
+			Name:       r.FormValue("name"),
+		})
+		if err != nil {
+			panic(err)
+		}
+
+		http.Redirect(w, r, feedsURL, http.StatusSeeOther)
+
+		return nil
+	}
 
 }
-
 func deleteFeed(w http.ResponseWriter, r *http.Request) {
 
 }

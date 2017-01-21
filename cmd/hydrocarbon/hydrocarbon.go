@@ -6,6 +6,7 @@ import (
 
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/internal/log"
+	"github.com/fortytw2/hydrocarbon/plugins/xenforo"
 	"github.com/fortytw2/hydrocarbon/stores/pg"
 	"github.com/fortytw2/hydrocarbon/web"
 )
@@ -31,7 +32,7 @@ func main() {
 		return
 	}
 
-	go launchScraper(l, s)
+	// go launchScraper(l, s)
 
 	r := web.Routes(s, l)
 	err = http.ListenAndServe(getPort(), r)
@@ -50,19 +51,9 @@ func getPort() string {
 }
 
 func launchScraper(l log.Logger, s *hydrocarbon.Store) {
-	// _, err := s.Feeds.CreateFeed(&hydrocarbon.Feed{
-	// 	Plugin:      "xenforo",
-	// 	InitialURL:  "https://forums.spacebattles.com/threads/skein-worm-altpower-au.437953/threadmarks",
-	// 	Name:        "spacebattles-skein",
-	// 	Description: "skein - a worm story",
-	// })
-	// if err != nil {
-	// 	// do nothing
-	// }
-	//
-	// plugins := map[string]hydrocarbon.Instantiator{
-	// 	"xenforo": xenforo.NewPlugin,
-	// }
-	//
-	// hydrocarbon.ScrapeLoop(l, s.Feeds, s.Posts, plugins)
+	plugins := map[string]hydrocarbon.Instantiator{
+		"xenforo": xenforo.NewPlugin,
+	}
+
+	hydrocarbon.ScrapeLoop(l, s.Feeds, s.Posts, plugins)
 }
