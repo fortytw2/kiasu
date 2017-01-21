@@ -33,7 +33,10 @@ func activateAccount(s *hydrocarbon.Store, l log.Logger) httputil.ErrorHandler {
 		customerParams := &stripe.CustomerParams{
 			Email: user.Email,
 		}
-		customerParams.SetSource(token)
+		err := customerParams.SetSource(token)
+		if err != nil {
+			return httputil.Wrap(err, http.StatusBadRequest)
+		}
 
 		customer, err := customer.New(customerParams)
 		if err != nil {

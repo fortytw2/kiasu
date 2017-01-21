@@ -26,7 +26,12 @@ func main() {
 		l.Log("msg", "could not open geoip2 db", "err", err)
 		return
 	}
-	defer geoipDB.Close()
+	defer func() {
+		err = geoipDB.Close()
+		if err != nil {
+			l.Log("msg", "could not safely close geoip db", "err", err)
+		}
+	}()
 
 	store, err := pg.NewStore(l, os.Getenv("POSTGRES_DSN"))
 	if err != nil {
