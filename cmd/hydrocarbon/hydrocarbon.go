@@ -9,6 +9,7 @@ import (
 	"github.com/fortytw2/hydrocarbon/plugins/xenforo"
 	"github.com/fortytw2/hydrocarbon/stores/pg"
 	"github.com/fortytw2/hydrocarbon/web"
+	geoip2 "github.com/oschwald/geoip2-golang"
 )
 
 func main() {
@@ -19,6 +20,13 @@ func main() {
 		l.Log("msg", "env POSTGRES_DSN must be set")
 		return
 	}
+
+	geoipDB, err := geoip2.Open("GeoLite2-Country.mmdb")
+	if err != nil {
+		l.Log("msg", "could not open geoip2 db", "err", err)
+		return
+	}
+	defer geoipDB.Close()
 
 	store, err := pg.NewStore(l, os.Getenv("POSTGRES_DSN"))
 	if err != nil {
@@ -34,7 +42,7 @@ func main() {
 
 	// go launchScraper(l, s)
 
-	r := web.Routes(s, l)
+	r := web.Routes(s, l, geoipDB)
 	err = http.ListenAndServe(getPort(), r)
 	if err != nil {
 		l.Log("msg", "cannot start", "error", err)

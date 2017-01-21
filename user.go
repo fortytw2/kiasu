@@ -12,6 +12,7 @@ var (
 type UserStore interface {
 	GetUser(id string) (*User, error)
 	GetUserByEmail(email string) (*User, error)
+	SetStripeCustomerID(userID, stripeID string) error
 	CreateUser(*User) (*User, error)
 }
 
@@ -26,12 +27,13 @@ type User struct {
 	Email             string `json:"email"`
 	EncryptedPassword string `json:"encrypted_password"`
 
-	FailedLoginCount int `json:"failed_login_count"`
-
 	Active            bool      `json:"active"`
 	Confirmed         bool      `json:"confirmed"`
 	ConfirmationToken string    `json:"confirmation_token"`
 	TokenCreatedAt    time.Time `json:"token_created_at"`
+
+	StripeCustomerID string `json:"stripe_customer_id"`
+	PaidUntil        string `json:"paid_until"`
 
 	Folders []Folder `json:"folders"`
 }

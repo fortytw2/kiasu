@@ -48,16 +48,19 @@ CREATE TABLE users (
   analytics BOOLEAN NOT NULL DEFAULT false,
   email TEXT NOT NULL UNIQUE,
   encrypted_password TEXT NOT NULL,
-  failed_login_count INT NOT NULL,
 
   active BOOLEAN NOT NULL DEFAULT 'false',
   confirmed BOOLEAN NOT NULL DEFAULT 'false',
   confirmation_token TEXT NOT NULL,
   token_created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
+  stripe_customer_id TEXT NOT NULL DEFAULT '',
+  paid_until TIMESTAMPTZ NOT NULL DEFAULT now() + interval '28 days',
+
   folder_ids text[] NOT NULL,
 
   CHECK(EXTRACT(TIMEZONE FROM token_created_at) = '0'),
+  CHECK(EXTRACT(TIMEZONE FROM paid_until) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM created_at) = '0'),
   CHECK(EXTRACT(TIMEZONE FROM updated_at) = '0')
 );

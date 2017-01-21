@@ -3,6 +3,7 @@ package web
 import (
 	"errors"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/fortytw2/abdi"
@@ -37,13 +38,19 @@ func renderRegister(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func renderSettings(w http.ResponseWriter, r *http.Request) error {
-	out, err := TMPLERRsettings("Hydrocarbon", loggedIn(r))
+func renderPasswordReset(w http.ResponseWriter, r *http.Request) error {
+	out := TMPLpassword_reset("Hydrocarbon", loggedIn(r))
+	_, err := w.Write([]byte(out))
 	if err != nil {
 		return httputil.Wrap(err, http.StatusInternalServerError)
 	}
 
-	_, err = w.Write([]byte(out))
+	return nil
+}
+
+func renderSettings(w http.ResponseWriter, r *http.Request) error {
+	out := TMPLsettings("Hydrocarbon", loggedIn(r), os.Getenv("STRIPE_PUBLIC_KEY"))
+	_, err := w.Write([]byte(out))
 	if err != nil {
 		return httputil.Wrap(err, http.StatusInternalServerError)
 	}

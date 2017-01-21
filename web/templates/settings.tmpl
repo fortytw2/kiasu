@@ -1,6 +1,6 @@
-!#extends base
+!#arg stripePublishableKey string
 
-!#sub head
+!#extends base
 
 !#sub body
 
@@ -8,7 +8,28 @@
 
 <h3> Manage Subscription </h3>
 
-<p> stripe stuff will go here </p>
+{{! if loggedInUser.StripeCustomerID == "" }}
+
+No Customer ID! Unpaid!
+
+<form action="/charge" method="POST">
+  <script
+    src="https://checkout.stripe.com/checkout.js"
+    class="stripe-button"
+    data-key="{{s stripePublishableKey}}"
+    data-email="{{s loggedInUser.Email }}"
+    data-locale="auto"
+    data-name="Hydrocarbon"
+    data-description="Yearly Subscription"
+    data-amount="2499">
+  </script>
+</form>
+
+{{! else }}
+
+All Paid Up! {{s loggedInUser.PaidUntil }}
+
+{{! end }}
 
 <h3> Delete my Account </h3>
 <p>To fully delete your account, please email ian@hydrocarbon.io</p>

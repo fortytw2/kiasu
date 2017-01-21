@@ -1,6 +1,7 @@
 package web
 
 import (
+	"net"
 	"net/http"
 	"time"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/internal/httputil"
 	"github.com/fortytw2/hydrocarbon/internal/log"
+	geoip2 "github.com/oschwald/geoip2-golang"
 	"github.com/pressly/chi"
 	"github.com/pressly/chi/middleware"
 	"github.com/unrolled/secure"
@@ -36,12 +38,12 @@ const (
 //go:generate goimports -w ./templates_generated.go
 
 // Routes returns all routes for this application
-func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
+func Routes(s *hydrocarbon.Store, l log.Logger, db *geoip2.Reader) *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Use(middleware.RealIP)
 	r.Use(secureHeader(true))
-	r.Use(httplog(l))
+	r.Use(httplog(l, db))
 	r.Use(middleware.Timeout(5 * time.Second))
 	r.Use(middleware.DefaultCompress)
 
@@ -55,6 +57,7 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 	r.With(authenticate(s, l)).Get(confirmTokenURL, confirmUser)
 	r.With(authenticate(s, l)).Get(settingsURL, httputil.ErrorHandler(renderSettings).Func())
 
+	r.Get(forgotPasswordURL, httputil.ErrorHandler(renderPasswordReset).Func())
 	r.Post(forgotPasswordURL, forgotPassword)
 
 	r.With(authenticate(s, l)).Get(loginURL, httputil.ErrorHandler(renderLogin).Func())
@@ -67,6 +70,9 @@ func Routes(s *hydrocarbon.Store, l log.Logger) *chi.Mux {
 	r.With(authenticate(s, l)).Post(newFeedURL, addFeed(s).Func())
 	r.With(authenticate(s, l)).Post(reorderFeedsURL, reorderFeeds)
 	r.With(authenticate(s, l)).Delete(feedsURL, deleteFeed)
+
+	r.With(authenticate(s, l)).Post("/charge", activateAccount(s, l).Func())
+	r.Handle("/stripe_webhooks", stripeWebhookHandler(s, l))
 
 	r.Get(onePostURL, renderPost)
 	r.Post(readStatusURL, markRead)
@@ -98,11 +104,20 @@ func secureHeader(dev bool) func(http.Handler) http.Handler {
 	return s.Handler
 }
 
-func httplog(l log.Logger) func(http.Handler) http.Handler {
+func httplog(l log.Logger, db *geoip2.Reader) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, req *http.Request) {
 			m := httpsnoop.CaptureMetrics(next, w, req)
-			l.Log("msg", "request", "method", req.Method, "url", req.URL.String(), "code", m.Code, "time", m.Duration, "bytes", m.Written)
+
+			ip := net.ParseIP(req.Header.Get("x-real-ip"))
+			c, err := db.Country(ip)
+			if err != nil {
+				l.Log("msg", "request", "method", req.Method, "url", req.URL.String(), "ip", req.RemoteAddr, "code", m.Code, "time", m.Duration, "bytes", m.Written)
+
+			} else {
+				l.Log("msg", "request", "method", req.Method, "url", req.URL.String(), "ip", req.RemoteAddr, "country", c.Country.IsoCode, "code", m.Code, "time", m.Duration, "bytes", m.Written)
+
+			}
 		}
 
 		return http.HandlerFunc(fn)
