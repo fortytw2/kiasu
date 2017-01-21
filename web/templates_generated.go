@@ -37,13 +37,30 @@ func TMPLERRbase(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -60,7 +77,7 @@ func TMPLERRbase(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -101,13 +118,30 @@ func TMPLERRfeed(title string, loggedInUser *hydrocarbon.User, feed *hydrocarbon
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -141,7 +175,7 @@ func TMPLERRfeed(title string, loggedInUser *hydrocarbon.User, feed *hydrocarbon
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -182,13 +216,30 @@ func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocar
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -224,7 +275,7 @@ func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocar
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -263,13 +314,30 @@ func TMPLERRhome(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -294,7 +362,7 @@ func TMPLERRhome(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -333,13 +401,30 @@ func TMPLERRlogin(title string, loggedInUser *hydrocarbon.User) (string, error) 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -370,7 +455,7 @@ func TMPLERRlogin(title string, loggedInUser *hydrocarbon.User) (string, error) 
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -409,13 +494,30 @@ func TMPLERRpost(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -435,7 +537,7 @@ func TMPLERRpost(title string, loggedInUser *hydrocarbon.User) (string, error) {
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -474,13 +576,30 @@ func TMPLERRprivacy(title string, loggedInUser *hydrocarbon.User) (string, error
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -504,7 +623,7 @@ func TMPLERRprivacy(title string, loggedInUser *hydrocarbon.User) (string, error
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -543,13 +662,30 @@ func TMPLERRregister(title string, loggedInUser *hydrocarbon.User) (string, erro
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -571,7 +707,9 @@ func TMPLERRregister(title string, loggedInUser *hydrocarbon.User) (string, erro
 <form action="register" method="post">
   Email <input type="email" name="email"><br>
   Password <input type="password" name="password"><br>
-  <a href="password_reset">already have an account? login</a><br>
+  opt-in to <a rel="nofollow" href="/privacy">analytics?</a> <input type="checkbox" name="analytics"/><br>
+  <a href="/login">already have an account? login</a><br>
+  <a href="/password_reset">forgot your password?</a><br>
   <input type="submit" value="Submit">
 </form>
 
@@ -580,7 +718,7 @@ func TMPLERRregister(title string, loggedInUser *hydrocarbon.User) (string, erro
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>
@@ -619,13 +757,30 @@ func TMPLERRsettings(title string, loggedInUser *hydrocarbon.User) (string, erro
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/hydrocarbon.min.css">
 
-</head>
+<!--  Analytics is EXPLICITLY OPT IN ONLY -->
+`)
+	if loggedInUser != nil {
+		_w(`	`)
+		if loggedInUser.Analytics {
+			_w(`
+	<script type="text/javascript">
+	    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	      heap.load("80357719");
+	</script>
+	`)
+		}
+		_w(`
+`)
+	}
+	_w(`</head>
 <body>
 	<ul id="menu">
 		<li><a href="/">Hydrocarbon</a></li>
+<!-- if loggedIn header -->
 `)
 	if loggedInUser != nil {
-		_w(`	<li class="right"><a href="/settings">`)
+		_w(`	<li class="right"><a href="/logout">Logout</a></li>
+	<li class="right"><a href="/settings">`)
 		_w(fmt.Sprintf(`%s`, _escape(loggedInUser.Email)))
 		_w(`</a></li>
     <li class="right"><a href="/feeds">Feeds</a></li>
@@ -642,9 +797,9 @@ func TMPLERRsettings(title string, loggedInUser *hydrocarbon.User) (string, erro
 	_w(`
 <h1>User Settings Page</h1><br>
 
-<p>
-	TODO
-</p>
+<h3> Manage Subscription </h3>
+
+<p> stripe stuff will go here </p>
 
 <h3> Delete my Account </h3>
 <p>To fully delete your account, please email ian@hydrocarbon.io</p>
@@ -652,7 +807,7 @@ func TMPLERRsettings(title string, loggedInUser *hydrocarbon.User) (string, erro
 	_w(`	</div>
 
 	<footer>
-		(c) 2017 <a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">[GitHub]</a>[Twitter][Email]
+		(c) 2017 Hydrocarbon [<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">GitHub</a>][<a rel="nofollow" href="https://twitter.com/hydrocarbonio">Twitter</a>][<a rel="nofollow" href="https://github.com/fortytw2/hydrocarbon">Email</a>]
 	</footer>
 </body>
 </html>

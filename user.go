@@ -22,6 +22,7 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
+	Analytics         bool   `json:"analytics"`
 	Email             string `json:"email"`
 	EncryptedPassword string `json:"encrypted_password"`
 

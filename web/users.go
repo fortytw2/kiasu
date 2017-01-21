@@ -52,8 +52,9 @@ func renderSettings(w http.ResponseWriter, r *http.Request) error {
 }
 
 type registrationOrLogin struct {
-	Email    string
-	Password string
+	Email     string
+	Password  string
+	Analytics string
 }
 
 func (r *registrationOrLogin) Valid() error {
@@ -66,12 +67,17 @@ func (r *registrationOrLogin) Valid() error {
 	return nil
 }
 
+func (r *registrationOrLogin) analytics() bool {
+	return r.Analytics == "on"
+}
+
 // newUser processes a post request
 func newUser(s *hydrocarbon.Store) httputil.ErrorHandler {
 	return func(w http.ResponseWriter, req *http.Request) error {
 		r := registrationOrLogin{
-			Email:    req.FormValue("email"),
-			Password: req.FormValue("password"),
+			Email:     req.FormValue("email"),
+			Password:  req.FormValue("password"),
+			Analytics: req.FormValue("analytics"),
 		}
 
 		err := r.Valid()
@@ -79,7 +85,7 @@ func newUser(s *hydrocarbon.Store) httputil.ErrorHandler {
 			return err
 		}
 
-		user, err := s.CreateUser(r.Email, r.Password)
+		user, err := s.CreateUser(r.Email, r.Password, r.analytics())
 		if err != nil {
 			return err
 		}
