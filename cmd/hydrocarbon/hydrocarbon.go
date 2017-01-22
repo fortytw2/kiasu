@@ -46,7 +46,7 @@ func main() {
 		return
 	}
 
-	// go launchScraper(l, s)
+	go launchScraper(l, s)
 
 	r := web.Routes(s, l, geoipDB)
 	err = http.ListenAndServe(getPort(), r)
@@ -70,5 +70,5 @@ func launchScraper(l log.Logger, s *hydrocarbon.Store) {
 		"fanfictionnet": fanfictionnet.NewPlugin,
 	}
 
-	hydrocarbon.ScrapeLoop(l, s.Feeds, s.Posts, plugins)
+	hydrocarbon.ScrapeLoop(l, s, plugins)
 }
