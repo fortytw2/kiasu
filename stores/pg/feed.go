@@ -64,7 +64,9 @@ func (s *Store) GetFeeds(pg *hydrocarbon.Pagination) ([]hydrocarbon.Feed, error)
 	return feeds, nil
 }
 
-// GetFeeds returns and filters on feeds
+// GetFeedsToUpdate returns a list of feeds that have either
+// 1. never been refreshed
+// or 2. not been refreshed in the last 5 minutes
 func (s *Store) GetFeedsToUpdate(max int) ([]hydrocarbon.Feed, error) {
 	rows, err := s.db.Queryx(`
 		UPDATE feeds
