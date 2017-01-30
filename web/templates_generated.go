@@ -254,24 +254,28 @@ func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocar
 	<div class="content">
 `)
 	_w(`
-<ul class="sidebar">
-	<li><a href="/feeds/new">New Feed</a></li>
+<a href="/feeds/new">New Feed</a>
+<ul class="sidebar folder-list">
 `)
 	for _, f := range loggedInUser.Folders {
-		_w(`	<li>Folder `)
+		_w(`	<li class="folder-group">
+		<span class="folder-handle">|HANDLE|</span> `)
 		_w(fmt.Sprintf(`%s`, _escape(f.Name)))
-		_w(`</li>
-	`)
+		_w(`</p>
+		<ul class="feed-list">
+		`)
 		for _, fd := range f.Feeds {
 			_w(`
-	    <li><a href="/feeds?id=`)
+	    	<li><span class="feed-handle">|HANDLE|</span><a href="/feeds?id=`)
 			_w(fmt.Sprintf(`%s`, _escape(fd.ID)))
 			_w(`">`)
 			_w(fmt.Sprintf(`%s`, _escape(fd.Name)))
 			_w(`</a></li>
-	`)
+		`)
 		}
 		_w(`
+		</ul>
+	</li>
 `)
 	}
 	_w(`</ul>
@@ -280,6 +284,24 @@ func TMPLERRfeeds(title string, loggedInUser *hydrocarbon.User, feeds []hydrocar
 
 
 </div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/Sortable/1.5.0-rc1/Sortable.min.js"></script>
+
+<script>
+var feeds = document.getElementsByClassName("feed-list");
+for (var i=0, feed; feed = feeds[i]; i++) {
+	Sortable.create(feed, {
+	    handle: ".feed-handle"
+	});
+};
+
+var folders = document.getElementsByClassName("folder-list");
+for (var i=0, folder; folder = folders[i]; i++) {
+	Sortable.create(folder, {
+	    handle: ".folder-handle"
+	});
+};
+</script>
 `)
 	_w(`	</div>
 
