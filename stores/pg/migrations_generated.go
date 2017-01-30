@@ -3,6 +3,7 @@
 // schema/1_init.sql
 // schema/2_auto_update_column.sql
 // schema/3_favorites.sql
+// schema/4_indexes.sql
 // DO NOT EDIT!
 
 package pg
@@ -85,7 +86,7 @@ func schema1_initSql() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "schema/1_init.sql", size: 3156, mode: os.FileMode(420), modTime: time.Unix(1485090991, 0)}
+	info := bindataFileInfo{name: "schema/1_init.sql", size: 3156, mode: os.FileMode(420), modTime: time.Unix(1485725125, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -126,6 +127,26 @@ func schema3_favoritesSql() (*asset, error) {
 	}
 
 	info := bindataFileInfo{name: "schema/3_favorites.sql", size: 496, mode: os.FileMode(420), modTime: time.Unix(1484486749, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
+var _schema4_indexesSql = []byte("\x1f\x8b\x08\x00\x00\x09\x6e\x88\x00\xff\x72\x0e\x72\x75\x0c\x71\x55\x08\xf5\xf3\x0c\x0c\x75\x55\xf0\xf4\x73\x71\x8d\x50\x28\xc8\x2f\x2e\x29\x8e\xcf\x4c\x89\xcf\x4c\xa9\x50\xf0\xf7\x83\xf0\x15\x34\x32\x53\x34\xad\xb9\xb8\xa0\x1a\x90\x55\xa6\xa5\xa6\x82\xd4\xc6\x83\x78\xa9\x29\xf1\x89\x25\x68\x1a\xa1\xf2\x3a\x0a\x70\x05\x18\x06\x15\xa7\x16\x17\x67\xe6\xe7\x15\xc7\x97\x16\xa7\x16\xc5\x67\xa6\x80\x74\xc3\xc4\x14\x34\xa0\x82\x9a\xd6\x5c\x80\x00\x00\x00\xff\xff\x15\x8e\xdc\xfa\xaf\x00\x00\x00")
+
+func schema4_indexesSqlBytes() ([]byte, error) {
+	return bindataRead(
+		_schema4_indexesSql,
+		"schema/4_indexes.sql",
+	)
+}
+
+func schema4_indexesSql() (*asset, error) {
+	bytes, err := schema4_indexesSqlBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "schema/4_indexes.sql", size: 175, mode: os.FileMode(420), modTime: time.Unix(1485806571, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -185,6 +206,7 @@ var _bindata = map[string]func() (*asset, error){
 	"schema/1_init.sql": schema1_initSql,
 	"schema/2_auto_update_column.sql": schema2_auto_update_columnSql,
 	"schema/3_favorites.sql": schema3_favoritesSql,
+	"schema/4_indexes.sql": schema4_indexesSql,
 }
 
 // AssetDir returns the file names below a certain
@@ -231,6 +253,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		"1_init.sql": &bintree{schema1_initSql, map[string]*bintree{}},
 		"2_auto_update_column.sql": &bintree{schema2_auto_update_columnSql, map[string]*bintree{}},
 		"3_favorites.sql": &bintree{schema3_favoritesSql, map[string]*bintree{}},
+		"4_indexes.sql": &bintree{schema4_indexesSql, map[string]*bintree{}},
 	}},
 }}
 
