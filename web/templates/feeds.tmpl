@@ -7,11 +7,11 @@
 <a href="/feeds/new">New Feed</a>
 <ul class="sidebar folder-list">
 ! for _, f := range loggedInUser.Folders {
-	<li class="folder-group">
-		<span class="folder-handle">|HANDLE|</span> {{s f.Name }}</p>
+	<li data-folder-id="{{s f.ID}}" class="folder-group">
+		<span class="folder-handle">|HANDLE|</span> {{s f.Name }}
 		<ul class="feed-list">
 		{{! for _, fd := range f.Feeds }}
-	    	<li><span class="feed-handle">|HANDLE|</span><a href="/feeds?id={{s fd.ID}}">{{s fd.Name }}</a></li>
+	    	<li data-feed-id="{{s fd.ID}}"><span class="feed-handle">|HANDLE|</span><a href="/feeds?id={{s fd.ID}}">{{s fd.Name }}</a></li>
 		{{! end }}
 		</ul>
 	</li>
