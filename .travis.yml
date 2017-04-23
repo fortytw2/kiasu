@@ -21,7 +21,6 @@ cache:
     - ui/node_modules
 
 script:
-  - go get -u github.com/jteeuwen/go-bindata/...
   - cd ui
   - yarn install
   - cd ../
