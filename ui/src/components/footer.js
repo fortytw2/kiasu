@@ -24,7 +24,6 @@ export default {
             class: svgLinkClass,
             style: "height: 16px;",
             href: "https://github.com/fortytw2/hydrocarbon?ref=hc",
-            oncreate: m.route.link
           },
           m(
             "svg",
