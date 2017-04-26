@@ -21,12 +21,15 @@ func main() {
 		log.Fatal("could not connect to postgres", err)
 	}
 
-	var redirect bool
-	if redir := os.Getenv("HTTPS_REDIRECT"); redir != "" {
-		redirect = true
+	var domain string
+	if os.Getenv("DOMAIN") != "" {
+		// assume port is OK
+		domain = os.Getenv("DOMAIN")
+	} else {
+		domain = "http://localhost" + getPort()
 	}
 
-	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, &hydrocarbon.StdoutMailer{}), redirect)
+	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, &hydrocarbon.StdoutMailer{}), domain)
 	err = http.ListenAndServe(getPort(), gziphandler.GzipHandler(r))
 	if err != nil {
 		log.Fatal(err)
