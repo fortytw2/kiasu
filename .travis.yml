@@ -26,6 +26,7 @@ script:
   - yarn install
   - cd ../
   - go generate $(go list ./... | grep -v vendor)
+  - test $(git status --porcelain | wc -l) -eq 0 || { git diff; false; }
   - go test -race -v ./...
 
 notifications:
