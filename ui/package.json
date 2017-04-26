@@ -7,8 +7,7 @@
     "build": "rollup -c -m inline --output=build/js/bundle.min.js -- src/main.js"
   },
   "dependencies": {
-    "mithril": "^1.1.1",
-    "rollup-plugin-uglify": "^1.0.2"
+    "mithril": "^1.1.1"
   },
   "devDependencies": {
     "rollup": "^0.41.6",
