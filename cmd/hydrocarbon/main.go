@@ -28,6 +28,7 @@ func main() {
 	} else {
 		domain = "http://localhost" + getPort()
 	}
+	log.Println("ui will target", domain+"/api", "for api requests")
 
 	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, &hydrocarbon.StdoutMailer{}), domain)
 	err = http.ListenAndServe(getPort(), gziphandler.GzipHandler(r))
