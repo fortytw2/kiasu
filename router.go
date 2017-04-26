@@ -16,6 +16,7 @@ import (
 //go:generate bash -c "cd ui && yarn run build-dist"
 //go:generate bash -c "go-bindata -pkg public -mode 0644 -modtime 499137600 -o public/assets_generated.go ui/build/..."
 
+// NewRouter configures a new http.Handler that serves hydrocarbon
 func NewRouter(ua *UserAPI, domain string) http.Handler {
 	m := httprouter.New()
 
