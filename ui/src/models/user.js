@@ -15,14 +15,12 @@ export default {
           email: email
         }
       })
-      .then(
-        function(result) {
-          console.log(result);
-          flash.flashMessage = result.note;
-        },
-        function(error) {
-          raven.captureException(error);
-        }
-      );
+      .then(function(result) {
+        console.log(result);
+        flash.flashMessage = result.note;
+      })
+      .catch(function(error) {
+        raven.captureException(error);
+      });
   }
 };
