@@ -33,7 +33,7 @@ func main() {
 	sentryPublic := os.Getenv("SENTRY_PUBLIC_DSN")
 	log.Println("using SENTRY_PUBLIC_DSN", sentryPublic)
 
-	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, &hydrocarbon.StdoutMailer{}), domain, sentryPublic)
+	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, &hydrocarbon.StdoutMailer{Domain: domain}), domain, sentryPublic)
 	err = http.ListenAndServe(getPort(), gziphandler.GzipHandler(r))
 	if err != nil {
 		log.Fatal(err)
