@@ -30,8 +30,8 @@ func main() {
 	}
 	log.Println("ui will target", domain+"/api", "for api requests")
 
-	sentryPublic := os.Getenv("SENTRY_PUBLIC")
-	log.Println("using SENTRY PUBLIC DSN", sentryPublic)
+	sentryPublic := os.Getenv("SENTRY_PUBLIC_DSN")
+	log.Println("using SENTRY_PUBLIC_DSN", sentryPublic)
 
 	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, &hydrocarbon.StdoutMailer{}), domain, sentryPublic)
 	err = http.ListenAndServe(getPort(), gziphandler.GzipHandler(r))
