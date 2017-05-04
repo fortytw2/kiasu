@@ -3,7 +3,6 @@ package hydrocarbon
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -143,11 +142,20 @@ func (ua *UserAPI) Deactivate(w http.ResponseWriter, r *http.Request) {
 func getRemoteIP(r *http.Request) string {
 	realIP := r.Header.Get("X-Real-IP")
 	if realIP != "" {
-		fmt.Println(realIP)
 		return realIP
 	}
 
+	fwdIP := r.Header.Get("X-Forwarded-For")
+	fwdSplit := strings.Split(fwdIP, ",")
+	if fwdIP != "" {
+		// pick the leftmost x-forwarded-for addr
+		return fwdSplit[0]
+	}
+
 	// this literally can't fail on r.RemoteAddr
-	ip, _, _ := net.SplitHostPort(r.RemoteAddr)
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return r.RemoteAddr
+	}
 	return ip
 }
