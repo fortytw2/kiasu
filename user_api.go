@@ -3,7 +3,9 @@ package hydrocarbon
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"strings"
 )
@@ -57,7 +59,7 @@ func (ua *UserAPI) RequestToken(w http.ResponseWriter, r *http.Request) {
 		// something
 	}
 
-	lt, err := ua.s.CreateLoginToken(r.Context(), userID, r.UserAgent(), r.RemoteAddr)
+	lt, err := ua.s.CreateLoginToken(r.Context(), userID, r.UserAgent(), getRemoteIP(r))
 	if err != nil {
 		panic(err)
 		// something
@@ -89,7 +91,7 @@ func (ua *UserAPI) Activate(w http.ResponseWriter, r *http.Request) {
 		// do something
 	}
 
-	key, err := ua.s.CreateSession(r.Context(), userID, r.UserAgent(), r.RemoteAddr)
+	key, err := ua.s.CreateSession(r.Context(), userID, r.UserAgent(), getRemoteIP(r))
 	if err != nil {
 		panic(err)
 		// do something
@@ -136,4 +138,16 @@ func (ua *UserAPI) Deactivate(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// do something
 	}
+}
+
+func getRemoteIP(r *http.Request) string {
+	realIP := r.Header.Get("X-Real-IP")
+	if realIP != "" {
+		fmt.Println(realIP)
+		return realIP
+	}
+
+	// this literally can't fail on r.RemoteAddr
+	ip, _, _ := net.SplitHostPort(r.RemoteAddr)
+	return ip
 }
