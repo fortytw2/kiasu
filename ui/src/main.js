@@ -25,12 +25,12 @@ m.route(document.body, "/", {
   },
   "/privacy-policy": {
     render: function() {
-      return m(layout, m("p", "this is privacy policy"));
+      return m(layout, m("p", config.PRIVACY));
     }
   },
   "/terms-and-conditions": {
     render: function() {
-      return m(layout, m("p", "this is terms and conditions"));
+      return m(layout, m("p", config.TERMS));
     }
   },
   "/promise": {
