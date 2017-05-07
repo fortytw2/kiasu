@@ -45,6 +45,7 @@ func NewRouter(ua *UserAPI, domain, sentryPublic string) http.Handler {
 	m.POST("/api/token/request", ua.RequestToken)
 	m.POST("/api/token/activate", ua.Activate)
 	m.POST("/api/key/deactivate", ua.Deactivate)
+	m.POST("/api/key/list", ua.ListSessions)
 
 	if httpsOnly(domain) {
 		return redirectHTTPS(m)

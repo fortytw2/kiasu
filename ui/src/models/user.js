@@ -68,5 +68,20 @@ export default {
       return window.localStorage.getItem("hydrocarbon-email");
     }
     return "";
+  },
+  sessions: [],
+  getSessions: function() {
+    m
+      .request({
+        method: "POST",
+        url: config.URL + "/key/list",
+        withCredentials: true,
+        headers: {
+          "x-hydrocarbon-key": window.localStorage.getItem("hydrocarbon-key")
+        }
+      })
+      .then(function(result) {
+        this.sessions = result;
+      });
   }
 };

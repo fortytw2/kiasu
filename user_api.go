@@ -17,6 +17,7 @@ type UserStore interface {
 	CreateLoginToken(ctx context.Context, userID, userAgent, ip string) (string, error)
 	ActivateLoginToken(ctx context.Context, token string) (string, error)
 	CreateSession(ctx context.Context, userID, userAgent, ip string) (string, string, error)
+	ListSessions(ctx context.Context, key string, page int) ([]*Session, error)
 	DeactivateSession(ctx context.Context, key string) error
 }
 
@@ -72,6 +73,24 @@ func (ua *UserAPI) RequestToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(registerSuccess)
+}
+
+// ListSessions writes out all of a users current / past sessions
+func (ua *UserAPI) ListSessions(w http.ResponseWriter, r *http.Request) {
+	key := r.Header.Get("X-Hydrocarbon-Key")
+	if key == "" {
+		return
+	}
+
+	sess, err := ua.s.ListSessions(r.Context(), key, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	err = json.NewEncoder(w).Encode(sess)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (ua *UserAPI) Activate(w http.ResponseWriter, r *http.Request) {

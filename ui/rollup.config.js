@@ -13,7 +13,8 @@ export default {
     commonjs(),
     babel(),
     babili({
-      comments: false
+      comments: false,
+      sourceMap: true
     })
   ]
 };

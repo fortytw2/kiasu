@@ -22,6 +22,7 @@ export default {
           "a",
           {
             class: svgLinkClass,
+            target: "_blank",
             style: "height: 16px;",
             href: "https://github.com/fortytw2/hydrocarbon?ref=hc"
           },
