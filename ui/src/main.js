@@ -6,6 +6,7 @@ import login from "./components/login";
 import logout from "./components/logout";
 import logincallback from "./components/login-callback";
 import settings from "./components/settings";
+import sessions from "./components/sessions";
 import config from "./config";
 import raven from "raven-js";
 
@@ -55,6 +56,11 @@ m.route(document.body, "/", {
   "/settings": {
     render: function() {
       return m(layout, m(settings));
+    }
+  },
+  "/settings/sessions": {
+    render: function() {
+      return m(layout, m(sessions));
     }
   }
 });
