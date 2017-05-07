@@ -3,8 +3,10 @@
 import m from "mithril";
 import layout from "./components/layout";
 import login from "./components/login";
+import logout from "./components/logout";
 import logincallback from "./components/login-callback";
 import settings from "./components/settings";
+import sessions from "./components/sessions";
 import config from "./config";
 import raven from "raven-js";
 
@@ -23,12 +25,12 @@ m.route(document.body, "/", {
   },
   "/privacy-policy": {
     render: function() {
-      return m(layout, m("p", "this is privacy policy"));
+      return m(layout, m("p", config.PRIVACY));
     }
   },
   "/terms-and-conditions": {
     render: function() {
-      return m(layout, m("p", "this is terms and conditions"));
+      return m(layout, m("p", config.TERMS));
     }
   },
   "/promise": {
@@ -41,6 +43,11 @@ m.route(document.body, "/", {
       return m(layout, m(login));
     }
   },
+  "/logout": {
+    render: function() {
+      return m(layout, m(logout));
+    }
+  },
   "/login-callback": {
     render: function() {
       return m(layout, m(logincallback));
@@ -49,6 +56,11 @@ m.route(document.body, "/", {
   "/settings": {
     render: function() {
       return m(layout, m(settings));
+    }
+  },
+  "/settings/sessions": {
+    render: function() {
+      return m(layout, m(sessions));
     }
   }
 });
