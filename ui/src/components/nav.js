@@ -16,15 +16,27 @@ export default {
         "hydrocarbon"
       ),
       user.loggedIn()
-        ? m(
-            "a",
-            {
-              class: linkClass,
-              href: "/settings",
-              oncreate: m.route.link
-            },
-            "settings"
-          )
+        ? [
+            m("a", { class: linkClass }, user.loggedInUser()),
+            m(
+              "a",
+              {
+                class: linkClass,
+                href: "/settings",
+                oncreate: m.route.link
+              },
+              "settings"
+            ),
+            m(
+              "a",
+              {
+                class: linkClass,
+                href: "/logout",
+                oncreate: m.route.link
+              },
+              "logout"
+            )
+          ]
         : m(
             "a",
             { class: linkClass, href: "/login", oncreate: m.route.link },

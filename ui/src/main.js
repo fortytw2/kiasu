@@ -3,6 +3,7 @@
 import m from "mithril";
 import layout from "./components/layout";
 import login from "./components/login";
+import logout from "./components/logout";
 import logincallback from "./components/login-callback";
 import settings from "./components/settings";
 import config from "./config";
@@ -39,6 +40,11 @@ m.route(document.body, "/", {
   "/login": {
     render: function() {
       return m(layout, m(login));
+    }
+  },
+  "/logout": {
+    render: function() {
+      return m(layout, m(logout));
     }
   },
   "/login-callback": {

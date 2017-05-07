@@ -16,7 +16,7 @@ type UserStore interface {
 	CreateUser(ctx context.Context, email string) (string, error)
 	CreateLoginToken(ctx context.Context, userID, userAgent, ip string) (string, error)
 	ActivateLoginToken(ctx context.Context, token string) (string, error)
-	CreateSession(ctx context.Context, userID, userAgent, ip string) (string, error)
+	CreateSession(ctx context.Context, userID, userAgent, ip string) (string, string, error)
 	DeactivateSession(ctx context.Context, key string) error
 }
 
@@ -91,7 +91,7 @@ func (ua *UserAPI) Activate(w http.ResponseWriter, r *http.Request) {
 		// do something
 	}
 
-	key, err := ua.s.CreateSession(r.Context(), userID, r.UserAgent(), getRemoteIP(r))
+	email, key, err := ua.s.CreateSession(r.Context(), userID, r.UserAgent(), getRemoteIP(r))
 	if err != nil {
 		panic(err)
 		// do something
@@ -99,9 +99,11 @@ func (ua *UserAPI) Activate(w http.ResponseWriter, r *http.Request) {
 
 	var activateSuccess = struct {
 		Status string `json:"status"`
+		Email  string `json:"email"`
 		Key    string `json:"key"`
 	}{
 		"success",
+		email,
 		key,
 	}
 

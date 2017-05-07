@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 
 	_ "github.com/lib/pq"
 )
@@ -90,27 +91,35 @@ func (db *DB) ActivateLoginToken(ctx context.Context, token string) (string, err
 
 // CreateSession creates a new session for the user ID and returns the
 // session key
-func (db *DB) CreateSession(ctx context.Context, userID, userAgent, ip string) (string, error) {
+func (db *DB) CreateSession(ctx context.Context, userID, userAgent, ip string) (email string, key string, err error) {
 	row := db.sql.QueryRowContext(ctx, `INSERT INTO sessions 
 										(user_id, user_agent, ip)
 										VALUES ($1, $2, $3::cidr)
 										RETURNING key;`, userID, userAgent, ip)
-
-	var key string
-	err := row.Scan(&key)
+	err = row.Scan(&key)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
-	return key, nil
+	row = db.sql.QueryRowContext(ctx, `SELECT email
+										FROM users
+										WHERE id = $1`, userID)
+	err = row.Scan(&email)
+	if err != nil {
+		return "", "", err
+	}
+
+	return email, key, nil
 }
 
 // DeactivateSession invalidates the current session
 func (db *DB) DeactivateSession(ctx context.Context, key string) error {
+	fmt.Println(key)
 	_, err := db.sql.QueryContext(ctx, `UPDATE 
 										sessions
 										SET (active) = (false)
 										WHERE key = $1;`, key)
+
 	return err
 }
 
