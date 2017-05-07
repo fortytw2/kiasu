@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
 
 	_ "github.com/lib/pq"
 )
@@ -114,7 +113,6 @@ func (db *DB) CreateSession(ctx context.Context, userID, userAgent, ip string) (
 
 // DeactivateSession invalidates the current session
 func (db *DB) DeactivateSession(ctx context.Context, key string) error {
-	fmt.Println(key)
 	_, err := db.sql.QueryContext(ctx, `UPDATE 
 										sessions
 										SET (active) = (false)
