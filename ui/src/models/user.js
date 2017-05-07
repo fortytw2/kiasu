@@ -37,5 +37,11 @@ export default {
       .catch(function(error) {
         raven.captureException(error);
       });
+  },
+  loggedIn: function() {
+    if (window.localStorage.getItem("hydrocarbon-key") !== null) {
+      return true;
+    }
+    return false;
   }
 };
