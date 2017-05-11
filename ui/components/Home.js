@@ -1,8 +1,9 @@
 import { h, Component, render } from "preact";
+import Fridge from "../state/Freezer";
 
 class Home extends Component {
   setText = e => {
-    this.setState({ text: e.target.value });
+    Fridge.trigger("changeHomepage", e.target.value);
   };
   render({}, { text = "Some Text" }) {
     return (

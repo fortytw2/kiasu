@@ -1,5 +1,6 @@
 import { h, Component, render } from "preact";
 import { Link } from "preact-router/match";
+import Fridge from "../state/Freezer";
 
 class Nav extends Component {
   render(props, state) {
@@ -10,7 +11,7 @@ class Nav extends Component {
           activeClassName="red"
           href="/"
         >
-          hydrocarbon
+          hydrocarbon - {state.loggedIn}
         </Link>
         <Link
           class="link dim gray f6 f5-ns dib mr3"

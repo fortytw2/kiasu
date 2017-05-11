@@ -1,5 +1,5 @@
 import { h, Component, render } from "preact";
-
+import Fridge from "../state/Freezer";
 class Login extends Component {
   render(props, state) {
     return (
