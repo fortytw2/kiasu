@@ -4,8 +4,20 @@ import commonjs from "rollup-plugin-commonjs";
 import babel from "rollup-plugin-babel";
 
 export default {
-  entry: "./main.js",
+  entry: "./main.jsx",
   format: "iife",
   sourceMap: true,
-  plugins: [resolve({ jsnext: true, main: true }), commonjs(), babel()]
+  plugins: [
+    babel({
+      exclude: "node_modules/**"
+      // plugins appears to be ignored. use .babelrc
+    }),
+    resolve({ jsnext: true, main: true }),
+    commonjs({
+      extensions: [".jsx", ".js"],
+      namedExports: {
+        'node_modules/preact/devtools.js"': ["preact/devtools"]
+      }
+    })
+  ]
 };

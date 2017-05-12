@@ -35,4 +35,6 @@ const App = function() {
   );
 };
 
+require("preact/devtools");
+
 render(<Container />, document.body);

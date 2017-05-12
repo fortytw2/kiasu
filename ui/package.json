@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "build-dist": "rollup -c --output=build/js/bundle.min.js -- main.js",
-    "build": "rollup -c -m inline --output=build/js/bundle.min.js -- main.js"
+    "build-dist": "rollup -c --output=build/js/bundle.min.js -- main.jsx",
+    "build": "rollup -c -m inline --output=build/js/bundle.min.js -- main.jsx"
   },
   "dependencies": {
     "freezer-js": "^0.11.2",
@@ -16,6 +16,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "rollup": "^0.41.6",
+    "rollup-plugin-alias": "^1.3.1",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0"
