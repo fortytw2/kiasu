@@ -1,7 +1,10 @@
 import { h, Component, render } from "preact";
+import { Store } from "../state/Store";
 
 class Login extends Component {
   render(props, state) {
+    Store.dispatch("hello");
+
     return (
       <div class="fl w-100 pa2 h-auto">
         <form class="measure center">

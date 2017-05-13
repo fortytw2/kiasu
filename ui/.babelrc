@@ -1,8 +1,13 @@
 {
     "presets": [
         [
-            "es2015",
+            "env",
             {
+                "targets": {
+                    "browsers": [
+                        "> 5%"
+                    ]
+                },
                 "modules": false
             }
         ]
@@ -10,13 +15,6 @@
     "plugins": [
         "external-helpers",
         "transform-class-properties",
-        [
-            "transform-es2015-classes",
-            {
-                "loose": true
-            }
-        ],
-        "transform-object-assign",
         [
             "transform-react-jsx",
             {
