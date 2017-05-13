@@ -7,6 +7,10 @@ import Login from "./components/Login";
 import TextContent from "./components/TextContent";
 import Fridge from "./state/Freezer";
 
+import { initDevTools } from "./vendor/devtools";
+
+initDevTools();
+
 class Container extends Component {
   render() {
     // 1. Your app receives the state
@@ -34,7 +38,5 @@ const App = function() {
     </div>
   );
 };
-
-require("preact/devtools");
 
 render(<Container />, document.body);

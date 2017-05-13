@@ -2,7 +2,6 @@
 import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import babel from "rollup-plugin-babel";
-
 export default {
   entry: "./main.jsx",
   format: "iife",
@@ -14,10 +13,7 @@ export default {
     }),
     resolve({ jsnext: true, main: true }),
     commonjs({
-      extensions: [".jsx", ".js"],
-      namedExports: {
-        'node_modules/preact/devtools.js"': ["preact/devtools"]
-      }
+      extensions: [".jsx", ".js"]
     })
   ]
 };
