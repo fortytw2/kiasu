@@ -1,8 +1,9 @@
-import { createStore, combineReducers } from "redux";
-import { syncHistoryWithStore, routerReducer } from "preact-router-redux";
-import createBrowserHistory from "history/createBrowserHistory";
-
 import * as reducers from "./Reducers";
+
+import { combineReducers, createStore } from "redux";
+import { routerReducer, syncHistoryWithStore } from "preact-router-redux";
+
+import createBrowserHistory from "history/createBrowserHistory";
 
 let h = createBrowserHistory();
 

@@ -1,4 +1,4 @@
-import { h, Component, render } from "preact";
+import { Component, h, render } from "preact";
 
 class TextContent extends Component {
   render({ text = "" }, {}) {

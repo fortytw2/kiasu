@@ -1,14 +1,12 @@
-import { h, Component, render } from "preact";
-import Redux from "preact-redux";
-import { Router, Route } from "preact-router";
-
+import { Component, h, render } from "preact";
+import { Route, Router } from "preact-router";
 import { Store, history } from "./state/Store";
 
-import Nav from "./components/Nav";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Nav from "./components/Nav";
+import Redux from "preact-redux";
 import TextContent from "./components/TextContent";
-
 import { initDevTools } from "./vendor/devtools";
 
 initDevTools();

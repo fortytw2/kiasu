@@ -1,9 +1,8 @@
-// rollup.config.js
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
 import babel from "rollup-plugin-babel";
 import babili from "rollup-plugin-babili";
+import commonjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
+import resolve from "rollup-plugin-node-resolve";
 
 export default {
   entry: "./main.jsx",

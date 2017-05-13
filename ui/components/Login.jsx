@@ -1,4 +1,5 @@
-import { h, Component, render } from "preact";
+import { Component, h, render } from "preact";
+
 import { Store } from "../state/Store";
 
 class Login extends Component {

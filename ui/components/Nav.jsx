@@ -1,4 +1,5 @@
-import { h, Component, render } from "preact";
+import { Component, h, render } from "preact";
+
 import { Link } from "preact-router/match";
 
 class Nav extends Component {

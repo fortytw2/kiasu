@@ -1,6 +1,6 @@
 import {
+  SEND_LOGIN_TOKEN_FAILURE,
   SEND_LOGIN_TOKEN_SUCCESS,
-  SEND_LOGIN_TOKEN_FAILURE
 } from "./UserActions";
 
 export function sendLoginToken(state = [], action) {
