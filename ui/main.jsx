@@ -1,8 +1,8 @@
 import { h, Component, render } from "preact";
 import Redux from "preact-redux";
-import Router from "preact-router";
+import { Router, Route } from "preact-router";
 
-import Store from "./state/Store";
+import { Store, history } from "./state/Store";
 
 import Nav from "./components/Nav";
 import Home from "./components/Home";
@@ -23,11 +23,11 @@ const App = function() {
   return (
     <Redux.Provider store={Store}>
       <div class="min-vh-100">
-        <Nav state={this.state} />
-        <Router>
-          <Home path="/" />
-          <TextContent path="/about" text="this is the about page" />
-          <Login path="/login" />
+        <Nav />
+        <Router history={history}>
+          <Route path="/" component={Home} />
+          <Route path="/about" component={TextContent} />
+          <Route path="/login" component={Login} />
         </Router>
       </div>
     </Redux.Provider>

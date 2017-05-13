@@ -2,6 +2,7 @@
 import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import babel from "rollup-plugin-babel";
+import babili from "rollup-plugin-babili";
 import replace from "rollup-plugin-replace";
 
 export default {
@@ -23,6 +24,9 @@ export default {
       namedExports: {
         "preact-redux": ["connect", "Provider", "connectAdvanced"]
       }
+    }),
+    babili({
+      comments: false
     })
   ]
 };
