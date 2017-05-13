@@ -11,18 +11,15 @@ export default {
   plugins: [
     babel({
       exclude: "node_modules/**"
-      // plugins appears to be ignored. use .babelrc
     }),
+    // redux puts this crap in their npm package...
     replace({
       "process.env.NODE_ENV": JSON.stringify("production")
     }),
     resolve({ jsnext: true, main: true }),
     commonjs({
       extensions: [".jsx", ".js"],
-      include: ["node_modules/**/*"],
-      namedExports: {
-        "preact-redux": ["connect", "Provider", "connectAdvanced"]
-      }
+      include: ["node_modules/**/*"]
     }),
     babili({
       comments: false
