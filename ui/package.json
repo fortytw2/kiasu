@@ -1,12 +1,13 @@
 {
   "scripts": {
     "build-dist": "rollup -c --output=build/js/bundle.min.js -- main.jsx",
-    "build": "rollup -c -m inline --output=build/js/bundle.min.js -- main.jsx"
+    "build": "ollup -c -m inline --output=build/js/bundle.min.js -- main.jsx"
   },
   "dependencies": {
-    "freezer-js": "^0.11.2",
     "preact": "^8.1.0",
-    "preact-router": "^2.5.2"
+    "preact-redux": "^2.0.1",
+    "preact-router": "^2.5.2",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-plugin-external-helpers": "^6.22.0",
@@ -19,6 +20,7 @@
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.0.2",
-    "rollup-plugin-node-resolve": "^3.0.0"
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^1.1.1"
   }
 }

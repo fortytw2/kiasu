@@ -2,6 +2,8 @@
 import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import babel from "rollup-plugin-babel";
+import replace from "rollup-plugin-replace";
+
 export default {
   entry: "./main.jsx",
   format: "iife",
@@ -11,9 +13,16 @@ export default {
       exclude: "node_modules/**"
       // plugins appears to be ignored. use .babelrc
     }),
+    replace({
+      "process.env.NODE_ENV": JSON.stringify("production")
+    }),
     resolve({ jsnext: true, main: true }),
     commonjs({
-      extensions: [".jsx", ".js"]
+      extensions: [".jsx", ".js"],
+      include: ["node_modules/**/*"],
+      namedExports: {
+        "preact-redux": ["connect", "Provider", "connectAdvanced"]
+      }
     })
   ]
 };
