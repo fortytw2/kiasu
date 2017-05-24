@@ -1,12 +1,13 @@
 import { Component, h, render } from "preact";
 import { Route, Router } from "preact-router";
-import { Store, history } from "./state/Store";
 
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Nav from "./components/Nav";
 import NotFound from "./components/NotFound";
+import NotificationWindow from "./components/NotificationWindow";
 import Redux from "preact-redux";
+import { Store } from "./state/Store";
 import TextContent from "./components/TextContent";
 import { initDevTools } from "./vendor/devtools";
 
@@ -17,7 +18,8 @@ const App = function() {
     <Redux.Provider store={Store}>
       <div class="min-vh-100">
         <Nav />
-        <Router history={history}>
+        <NotificationWindow />
+        <Router>
           <Route
             path="/"
             component={TextContent}

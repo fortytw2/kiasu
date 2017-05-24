@@ -4,12 +4,12 @@
     "build": "ollup -c -m inline --output=build/js/bundle.min.js -- main.jsx"
   },
   "dependencies": {
-    "history": "^4.6.1",
+    "nanoajax": "^0.4.3",
     "preact": "^8.1.0",
     "preact-redux": "^2.0.1",
     "preact-router": "^2.5.2",
-    "preact-router-redux": "^4.1.0",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-persist": "^4.8.0"
   },
   "devDependencies": {
     "babel-plugin-external-helpers": "^6.22.0",

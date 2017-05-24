@@ -18,11 +18,11 @@ export default {
     }),
     resolve({ jsnext: true, main: true }),
     commonjs({
-      extensions: [".jsx", ".js"],
-      include: ["node_modules/**/*"]
-    }),
-    babili({
-      comments: false
+      extensions: [".jsx", ".js"]
+      // include: ["node_modules/**/*"]
     })
+    // babili({
+    //   comments: false
+    // })
   ]
 };
