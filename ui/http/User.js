@@ -20,6 +20,16 @@ export function RequestLoginToken(email) {
       })
     },
     function(code, responseText, request) {
+      if (code === 0) {
+        Store.dispatch(
+          addNotification(
+            NOTIFICATION_LEVEL_INFO,
+            "unable to connect to internet"
+          )
+        );
+
+        return;
+      }
       if (code !== 200) {
         alert("something terrible has happened", responseText);
         return;
