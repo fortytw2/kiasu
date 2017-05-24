@@ -6,17 +6,17 @@ class NotificationWindow extends Component {
   render() {
     return (
       <div>
-        <h1>notifications</h1>
-        {this.props.notifications.map(n => {
-          return <h1>{n.message}</h1>;
-        })}
+        {this.props.notifications.map(n => (
+          <div class="flex items-center justify-center pa2 bg-lightest-blue navy">
+            <span class="lh-title ml1">{n.message}</span>
+          </div>
+        ))}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log("mapSTateTOProps", state);
   return {
     notifications: state.notifications
   };

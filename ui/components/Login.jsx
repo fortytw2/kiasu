@@ -5,10 +5,7 @@ import { RequestLoginToken } from "../http/User";
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { emailValue: "" };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.setState({ emailValue: "" });
   }
 
   handleChange(event) {
@@ -16,23 +13,22 @@ class Login extends Component {
   }
 
   handleSubmit(event) {
-    alert("A name was submitted: " + this.state.emailValue);
     RequestLoginToken(this.state.emailValue);
     event.preventDefault();
   }
 
   render(props, state) {
     return (
-      <div class="fl w-100 pa2 h-auto">
-        <form class="measure center" onSubmit={this.handleSubmit}>
+      <div class="fl w-100 pa5 h-auto">
+        <form class="measure center" onSubmit={this.handleSubmit.bind(this)}>
           <fieldset class="ba b--transparent ph0 mh0">
             <div class="mt3">
               <label for="email-address" class="db fw6 lh-copy f6">
                 we'll send you a link to login
               </label>
               <input
-                value={this.state.value}
-                onChange={this.handleChange}
+                value={this.state.emailValue}
+                onChange={this.handleChange.bind(this)}
                 placeholder="example@example.com"
                 id="email"
                 type="email"
