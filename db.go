@@ -46,6 +46,7 @@ func (db *DB) CreateOrGetUser(ctx context.Context, email string) (string, error)
 	var userID string
 	err := row.Scan(&userID)
 	if err != nil {
+		// this is exactly what it looks like.
 		if strings.Contains(err.Error(), "users_email_uniq_idx") {
 			err = nil
 			row := db.sql.QueryRowContext(ctx, `SELECT id FROM users 
