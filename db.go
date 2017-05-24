@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"strings"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -35,8 +36,8 @@ func NewDB(dsn string) (*DB, error) {
 	}, nil
 }
 
-// CreateUser creates a new user and returns the users ID
-func (db *DB) CreateUser(ctx context.Context, email string) (string, error) {
+// CreateOrGetUser creates a new user and returns the users ID
+func (db *DB) CreateOrGetUser(ctx context.Context, email string) (string, error) {
 	row := db.sql.QueryRowContext(ctx, `INSERT INTO users 
 										(email) 
 										VALUES ($1)
@@ -45,7 +46,17 @@ func (db *DB) CreateUser(ctx context.Context, email string) (string, error) {
 	var userID string
 	err := row.Scan(&userID)
 	if err != nil {
-		return "", err
+		if strings.Contains(err.Error(), "users_email_uniq_idx") {
+			err = nil
+			row := db.sql.QueryRowContext(ctx, `SELECT id FROM users 
+										WHERE email = $1;`, email)
+			err = row.Scan(&userID)
+			if err != nil {
+				return "", err
+			}
+		} else {
+			return "", err
+		}
 	}
 
 	return userID, nil

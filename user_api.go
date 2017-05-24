@@ -14,7 +14,7 @@ import (
 // A UserStore is an interface used to seperate the UserAPI from knowledge of the
 // actual underlying database
 type UserStore interface {
-	CreateUser(ctx context.Context, email string) (string, error)
+	CreateOrGetUser(ctx context.Context, email string) (string, error)
 	CreateLoginToken(ctx context.Context, userID, userAgent, ip string) (string, error)
 	ActivateLoginToken(ctx context.Context, token string) (string, error)
 	CreateSession(ctx context.Context, userID, userAgent, ip string) (string, string, error)
@@ -55,7 +55,7 @@ func (ua *UserAPI) RequestToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID, err := ua.s.CreateUser(r.Context(), registerData.Email)
+	userID, err := ua.s.CreateOrGetUser(r.Context(), registerData.Email)
 	if err != nil {
 		writeErr(w, err)
 		return
