@@ -27,7 +27,7 @@ class Login extends Component {
                 we'll send you a link to login
               </label>
               <input
-                value={this.state.emailValue}
+                value={state.emailValue}
                 onChange={this.handleChange.bind(this)}
                 placeholder="example@example.com"
                 id="email"

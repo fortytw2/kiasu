@@ -1,5 +1,6 @@
 import {
   NOTIFICATION_LEVEL_INFO,
+  NOTIFICATION_LEVEL_WARNING,
   addNotification,
 } from "../state/Notifications";
 
@@ -20,13 +21,18 @@ export function RequestLoginToken(email) {
     },
     function(code, responseText, request) {
       if (code !== 200) {
-        alert(responseText);
+        alert("something terrible has happened", responseText);
         return;
       }
-      console.log(JSON.parse(responseText));
-      Store.dispatch(
-        addNotification(NOTIFICATION_LEVEL_INFO, JSON.parse(responseText).note)
-      );
+
+      var parsed = JSON.parse(responseText);
+      if (parsed.status === "error") {
+        Store.dispatch(
+          addNotification(NOTIFICATION_LEVEL_WARNING, parsed.error)
+        );
+      } else if (parsed.status === "success") {
+        Store.dispatch(addNotification(NOTIFICATION_LEVEL_INFO, parsed.note));
+      }
     }
   );
 }
