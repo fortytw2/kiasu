@@ -38,7 +38,7 @@ func createUser(db *DB) func(t *testing.T) {
 
 		_, err = db.CreateOrGetUser(context.Background(), "ian@HYDroCARBon.io")
 		if err != nil {
-			t.Fatal("error on creating same user twice")
+			t.Fatal("error on creating same user twice:", err)
 		}
 	}
 }

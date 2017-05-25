@@ -5,7 +5,7 @@
             {
                 "targets": {
                     "browsers": [
-                        "> 5%"
+                        "last 2 versions"
                     ]
                 },
                 "modules": false
@@ -14,7 +14,6 @@
     ],
     "plugins": [
         "external-helpers",
-        "transform-class-properties",
         [
             "transform-react-jsx",
             {

@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"strings"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -41,23 +40,14 @@ func (db *DB) CreateOrGetUser(ctx context.Context, email string) (string, error)
 	row := db.sql.QueryRowContext(ctx, `INSERT INTO users 
 										(email) 
 										VALUES ($1)
+										ON CONFLICT (email)
+										DO UPDATE SET email = EXCLUDED.email
 										RETURNING id;`, email)
 
 	var userID string
 	err := row.Scan(&userID)
 	if err != nil {
-		// this is exactly what it looks like.
-		if strings.Contains(err.Error(), "users_email_uniq_idx") {
-			err = nil
-			row := db.sql.QueryRowContext(ctx, `SELECT id FROM users 
-										WHERE email = $1;`, email)
-			err = row.Scan(&userID)
-			if err != nil {
-				return "", err
-			}
-		} else {
-			return "", err
-		}
+		return "", err
 	}
 
 	return userID, nil
