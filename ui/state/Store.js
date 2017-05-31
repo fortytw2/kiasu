@@ -1,21 +1,16 @@
 import * as reducers from "./Reducers";
 
-import { autoRehydrate, persistStore } from "redux-persist";
 import { combineReducers, compose, createStore } from "redux";
 
 let initialState = {
-  notifications: []
+  notifications: [],
+  login: { apiKey: "", email: "" }
 };
 
 let Store = createStore(
   combineReducers(reducers),
   initialState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  compose(autoRehydrate())
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
-
-persistStore(Store, { blacklist: ["notifications"] }, () => {
-  console.log("rehydrated");
-});
 
 export { Store };

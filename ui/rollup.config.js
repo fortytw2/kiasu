@@ -20,9 +20,9 @@ export default {
     commonjs({
       extensions: [".jsx", ".js"]
       // include: ["node_modules/**/*"]
-    }),
-    babili({
-      comments: false
     })
+    // babili({
+    //   comments: false
+    // })
   ]
 };

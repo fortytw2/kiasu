@@ -2,13 +2,14 @@ import { Component, h, render } from "preact";
 import { Route, Router } from "preact-router";
 
 import Footer from "./components/Footer";
-import Login from "./components/Login";
-import Nav from "./components/Nav";
-import NotFound from "./components/NotFound";
-import NotificationWindow from "./components/NotificationWindow";
+import Login from "./Components/Login";
+import LoginCallback from "./Components/LoginCallback";
+import Nav from "./Components/Nav";
+import NotFound from "./Components/NotFound";
+import NotificationWindow from "./Components/NotificationWindow";
 import Redux from "preact-redux";
 import { Store } from "./state/Store";
-import TextContent from "./components/TextContent";
+import TextContent from "./Components/TextContent";
 import { initDevTools } from "./vendor/devtools";
 
 initDevTools();
@@ -31,6 +32,7 @@ const App = function() {
             text="hi this is about page"
           />
           <Route path="/login" component={Login} />
+          <Route path="/login-callback" component={LoginCallback} />
           <Route component={NotFound} default />
         </Router>
         <Footer />

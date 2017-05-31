@@ -1,4 +1,4 @@
-import { Component, h, render } from "preact";
+import { Component, h } from "preact";
 
 import { RequestLoginToken } from "../http/User";
 
