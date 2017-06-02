@@ -7,7 +7,7 @@ import LoginCallback from "./Components/LoginCallback";
 import Nav from "./Components/Nav";
 import NotFound from "./Components/NotFound";
 import NotificationWindow from "./Components/NotificationWindow";
-import Redux from "preact-redux";
+import RehydrateProvider from "./Components/RehydrateProvider";
 import { Store } from "./state/Store";
 import TextContent from "./Components/TextContent";
 import { initDevTools } from "./vendor/devtools";
@@ -16,7 +16,7 @@ initDevTools();
 
 const App = function() {
   return (
-    <Redux.Provider store={Store}>
+    <RehydrateProvider store={Store}>
       <div class="min-vh-100">
         <Nav />
         <NotificationWindow />
@@ -37,7 +37,7 @@ const App = function() {
         </Router>
         <Footer />
       </div>
-    </Redux.Provider>
+    </RehydrateProvider>
   );
 };
 

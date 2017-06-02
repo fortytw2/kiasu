@@ -1,15 +1,15 @@
 import * as reducers from "./Reducers";
 
-import { combineReducers, compose, createStore } from "redux";
+import { applyMiddleware, combineReducers, compose, createStore } from "redux";
+import { autoRehydrate, persistStore } from "redux-persist";
 
 let initialState = {
   notifications: [],
   login: { apiKey: "", email: "" }
 };
 
-let Store = createStore(
+let Store = compose(autoRehydrate({ log: true }))(createStore)(
   combineReducers(reducers),
-  initialState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
