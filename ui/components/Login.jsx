@@ -13,8 +13,8 @@ class Login extends Component {
   }
 
   handleSubmit(event) {
-    RequestLoginToken(this.state.emailValue);
     event.preventDefault();
+    RequestLoginToken(this.state.emailValue);
   }
 
   render(props, state) {

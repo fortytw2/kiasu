@@ -1,6 +1,7 @@
 import { Component, h } from "preact";
 
 import { Link } from "preact-router/match";
+import Logout from "./Logout";
 import Redux from "preact-redux";
 
 class Nav extends Component {
@@ -21,13 +22,19 @@ class Nav extends Component {
           hydrocarbon
         </Link>
         {this.loggedIn()
-          ? <Link
-              class="link dim gray f6 f5-ns dib mr3"
-              activeClassName="blue"
-              href="/feed"
-            >
-              {props.login.email}
-            </Link>
+          ? <div class="dib">
+              <Link
+                class="link dim gray f6 f5-ns dib mr3"
+                activeClassName="blue"
+                href="/feed"
+              >
+                {props.login.email}
+              </Link>
+              <Logout
+                class="link dim gray f6 f5-ns dib mr3"
+                apiKey={props.login.apiKey}
+              />
+            </div>
           : <Link
               class="link dim gray f6 f5-ns dib mr3"
               activeClassName="blue"

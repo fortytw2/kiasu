@@ -5,18 +5,20 @@ import Redux from "preact-redux";
 
 class NotificationWindow extends Component {
   render(props, state) {
+    if (props.notifications.length === 0) {
+      return null;
+    }
+
     return (
       <div>
-        {props.notifications.map(function(n) {
-          return (
-            <Notification
-              dispatch={props.dispatch}
-              sKey={n.key}
-              message={n.message}
-              level={n.level}
-            />
-          );
-        })}
+        {props.notifications.map(n => (
+          <Notification
+            dispatch={props.dispatch}
+            sKey={n.key}
+            message={n.message}
+            level={n.level}
+          />
+        ))}
       </div>
     );
   }
