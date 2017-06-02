@@ -1,4 +1,5 @@
 import { Component, h, render } from "preact";
+import { History, Store } from "./state/Store";
 import { Route, Router } from "preact-router";
 
 import Footer from "./components/Footer";
@@ -8,7 +9,6 @@ import Nav from "./Components/Nav";
 import NotFound from "./Components/NotFound";
 import NotificationWindow from "./Components/NotificationWindow";
 import RehydrateProvider from "./Components/RehydrateProvider";
-import { Store } from "./state/Store";
 import TextContent from "./Components/TextContent";
 import { initDevTools } from "./vendor/devtools";
 
@@ -20,7 +20,7 @@ const App = function() {
       <div class="min-vh-100">
         <Nav />
         <NotificationWindow />
-        <Router>
+        <Router history={History}>
           <Route
             path="/"
             component={TextContent}

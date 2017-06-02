@@ -10,7 +10,7 @@ class RehydrateProvider extends Component {
   }
 
   componentWillMount() {
-    persistStore(this.props.store, {}, () => {
+    persistStore(this.props.store, { blacklist: ["routing"] }, () => {
       this.setState({ rehydrated: true });
     });
   }
