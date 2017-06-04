@@ -3,13 +3,13 @@ import { History, Store } from "./state/Store";
 import { Route, Router } from "preact-router";
 
 import Footer from "./components/Footer";
-import Login from "./Components/Login";
-import LoginCallback from "./Components/LoginCallback";
-import Nav from "./Components/Nav";
-import NotFound from "./Components/NotFound";
-import NotificationWindow from "./Components/NotificationWindow";
-import RehydrateProvider from "./Components/RehydrateProvider";
-import TextContent from "./Components/TextContent";
+import Login from "./components/Login";
+import LoginCallback from "./components/LoginCallback";
+import Nav from "./components/Nav";
+import NotFound from "./components/NotFound";
+import NotificationWindow from "./components/NotificationWindow";
+import RehydrateProvider from "./components/RehydrateProvider";
+import TextContent from "./components/TextContent";
 import { initDevTools } from "./vendor/devtools";
 
 initDevTools();
