@@ -8,7 +8,7 @@ services:
 
 before_install:
   # Repo for newer Node.js versions
-  - curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  - curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
   # Repo for Yarn
   - npm install -g yarn
 
