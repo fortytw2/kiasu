@@ -16,7 +16,7 @@ export default {
     replace({
       "process.env.NODE_ENV": JSON.stringify("production")
     }),
-    resolve({ jsnext: true, main: true }),
+    resolve({ jsnext: true, main: true, extensions: [".js", ".jsx"] }),
     commonjs({
       extensions: [".jsx", ".js"]
       // include: ["node_modules/**/*"]
