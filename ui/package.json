@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "build-dist": "rollup -c --output=build/js/bundle.min.js -- main.jsx",
-    "build": "rollup -c -m inline --output=build/js/bundle.min.js -- main.jsx"
+    "build": "rollup -c --output=build/js/bundle.min.js -- main.jsx"
   },
   "dependencies": {
     "history": "^4.6.1",
