@@ -6,11 +6,10 @@ sudo: required
 services:
   - docker
 
+env:
+  - TRAVIS_NODE_VERSION="7"
+
 before_install:
-  # Repo for newer Node.js versions
-  - curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-  - sudo apt-get install -yq nodejs
-  - node -v
   # Repo for Yarn
   - npm install -g yarn
 
