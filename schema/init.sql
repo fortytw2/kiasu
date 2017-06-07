@@ -54,25 +54,40 @@ CREATE TABLE payments (
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- feed_folders are folders of feeds
-CREATE TABLE feed_folders (
+-- folders are used to maintain collections of feeds
+CREATE TABLE folders (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-
+	user_id UUID REFERENCES USERS NOT NULL,
+	
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+	name TEXT NOT NULL DEFAULT 'default'
 );
 
 -- feeds are individual feeds
 CREATE TABLE feeds (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-	feed_folder_id UUID REFERENCES feed_folders NOT NULL,
 
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
 	plugin TEXT NOT NULL,
 	url TEXT NOT NULL,
-	title TEXT NOT NULL
+	title TEXT NOT NULL,
+
+	UNIQUE (plugin, url)
+);
+
+-- feed_folders is a join table between feeds and folders
+CREATE TABLE feed_folders (
+	folder_id UUID REFERENCES folders NOT NULL,
+	feed_id UUID REFERENCES feeds NOT NULL,
+
+	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+	priority INT NOT NULL DEFAULT 0
 );
 
 CREATE UNIQUE INDEX feed_plugin_url_idx ON feeds(plugin, url);

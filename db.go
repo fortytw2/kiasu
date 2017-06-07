@@ -172,3 +172,13 @@ func (db *DB) ActiveUserFromKey(ctx context.Context, key string) (string, error)
 
 	return userID, nil
 }
+
+// AddFeed adds the given URL to the users default folder
+func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, plugin, feedURL string) error {
+	return nil
+}
+
+// RemoveFeed removes the given feed ID from the user
+func (db *DB) RemoveFeed(ctx context.Context, sessionKey, folderID, feedID string) error {
+	return nil
+}
