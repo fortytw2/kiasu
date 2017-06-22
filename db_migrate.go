@@ -57,7 +57,7 @@ func verifyMigrationsTable(db *sql.DB) error {
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS migrations (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-		name TEXT NOT NULL UNIQUE
+		name TEXT NOT NULL UNIQUE CHECK (name <> '')
 	);`)
 	return err
 }
