@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -20,7 +21,10 @@ func runMigrations(db *sql.DB) error {
 		return err
 	}
 
-	for i, file := range AssetNames() {
+	fileNames := AssetNames()
+	sort.Strings(fileNames)
+
+	for i, file := range fileNames {
 		// skip running ones we've clearly already ran
 		if count > 0 {
 			count--
