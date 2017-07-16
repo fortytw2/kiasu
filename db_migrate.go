@@ -96,9 +96,5 @@ func runMigration(num int, buf []byte, db *sql.DB) error {
 
 func recordMigration(name string, db *sql.DB) error {
 	_, err := db.Query("INSERT INTO migrations (name) VALUES ($1);", name)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
