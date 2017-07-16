@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/fortytw2/hydrocarbon/httputil"
+	"github.com/fortytw2/hydrocarbon/httpx"
 )
 
 // Mailer sends mails via Postmark
@@ -59,7 +59,11 @@ func (m *Mailer) Send(email string, body string) error {
 	if err != nil {
 		return err
 	}
-	defer httputil.DrainAndClose(resp.Body)
+
+	err = httpx.DrainAndClose(resp.Body)
+	if err != nil {
+		return err
+	}
 
 	if resp.StatusCode == http.StatusUnprocessableEntity {
 		return errors.New("error sending to postmark, got 422")
