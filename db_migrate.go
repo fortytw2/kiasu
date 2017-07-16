@@ -34,7 +34,7 @@ func runMigrations(db *sql.DB) error {
 			return err
 		}
 
-		cleanName := strings.TrimLeft("schema/", file)
+		cleanName := strings.TrimPrefix("schema/", file)
 		err = recordMigration(cleanName, db)
 		if err != nil {
 			return err
