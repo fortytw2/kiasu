@@ -41,6 +41,7 @@ class Login extends Component {
             <input
               type="submit"
               class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+              value="Submit"
             />
           </div>
         </form>
