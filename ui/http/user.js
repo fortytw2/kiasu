@@ -1,11 +1,11 @@
 import {
   NOTIFICATION_LEVEL_INFO,
   NOTIFICATION_LEVEL_WARNING,
-  addNotification,
-} from "../state/Notifications";
+} from "../state/notifications/types";
 
-import { Store } from "../state/Store";
-import { activateApiKey } from "../state/UserActions";
+import { Store } from "../state/store";
+import { activateApiKey } from "../state/login/actions";
+import { addNotification } from "../state/notifications/actions";
 import { ajax } from "nanoajax";
 
 export function RequestLoginToken(email) {

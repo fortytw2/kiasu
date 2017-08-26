@@ -1,11 +1,9 @@
 import { Component, h, render } from "preact";
-import {
-  NOTIFICATION_LEVEL_WARNING,
-  addNotification,
-} from "../state/Notifications";
 
-import { ActivateLoginToken } from "../http/User";
+import { ActivateLoginToken } from "../http/user";
+import { NOTIFICATION_LEVEL_WARNING } from "../state/notifications/types";
 import Redux from "preact-redux";
+import { addNotification } from "../state/notifications/actions";
 import { route } from "preact-router";
 
 class LoginCallback extends Component {

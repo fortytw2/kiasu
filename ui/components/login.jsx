@@ -1,6 +1,6 @@
 import { Component, h } from "preact";
 
-import { RequestLoginToken } from "../http/User";
+import { RequestLoginToken } from "../http/user";
 
 class Login extends Component {
   constructor(props) {

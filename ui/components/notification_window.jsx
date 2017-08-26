@@ -1,6 +1,6 @@
 import { Component, h } from "preact";
 
-import Notification from "./Notification";
+import Notification from "./notification";
 import Redux from "preact-redux";
 
 class NotificationWindow extends Component {

@@ -1,8 +1,4 @@
-export const NOTIFICATION_ADD = "NOTIFICATION_ADD";
-export const NOTIFICATION_REMOVE = "NOTIFICATION_REMOVE";
-
-export const NOTIFICATION_LEVEL_INFO = "NOTIFICATION_LEVEL_INFO";
-export const NOTIFICATION_LEVEL_WARNING = "NOTIFICATION_LEVEL_WARNING";
+import { NOTIFICATION_ADD, NOTIFICATION_REMOVE } from "./types";
 
 export function addNotification(level, message) {
   return {

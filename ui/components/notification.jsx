@@ -1,7 +1,7 @@
 import { Component, h } from "preact";
 
-import { NOTIFICATION_LEVEL_WARNING } from "../state/Notifications";
-import { removeNotification } from "../state/Notifications";
+import { NOTIFICATION_LEVEL_WARNING } from "../state/notifications/types";
+import { removeNotification } from "../state/notifications/actions";
 
 class Notification extends Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import { Component, h } from "preact";
 
 import { Link } from "preact-router/match";
-import Logout from "./Logout";
+import Logout from "./logout";
 import Redux from "preact-redux";
 
 class Nav extends Component {
