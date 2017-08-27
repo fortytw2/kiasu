@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -174,8 +175,78 @@ func (db *DB) ActiveUserFromKey(ctx context.Context, key string) (string, error)
 }
 
 // AddFeed adds the given URL to the users default folder
-func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, feedURL string) error {
-	return nil
+// and links it across feed_folder
+func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, feedURL string) (err error) {
+	if folderID == "" {
+		// ensure we don't shadow folderID
+		var err error
+		folderID, err = db.getDefaultFolderID(ctx, sessionKey)
+		if err != nil {
+			return err
+		}
+	}
+
+	tx, err := db.sql.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	row := tx.QueryRowContext(ctx, `INSERT INTO feeds
+							 (title, plugin, url)
+							 VALUES ($1, $2, $3)
+							 RETURNING id;`, title, plugin, feedURL)
+
+	var feedID string
+	err = row.Scan(&feedID)
+	if err != nil {
+		txErr := tx.Rollback()
+		if txErr != nil {
+			return fmt.Errorf("%s - %s", err, txErr)
+		}
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, `INSERT INTO feed_folders
+							 (folder_id, feed_id)
+							 VALUES ($1, $2);`, folderID, feedID)
+	if err != nil {
+		txErr := tx.Rollback()
+		if txErr != nil {
+			return fmt.Errorf("%s - %s", err, txErr)
+		}
+		return err
+	}
+
+	return tx.Commit()
+}
+
+// getDefaultFolderID returns a users default folder ID
+func (db *DB) getDefaultFolderID(ctx context.Context, sessionKey string) (string, error) {
+	row := db.sql.QueryRowContext(ctx, `SELECT id FROM folders 
+							 			WHERE name = 'default' 
+							 			AND user_id = (SELECT user_id FROM sessions WHERE key = $1);`, sessionKey)
+
+	var fid string
+	err := row.Scan(&fid)
+	if err != nil {
+		// if there is no default folder, go create one
+		if err == sql.ErrNoRows {
+			row := db.sql.QueryRowContext(ctx, `INSERT INTO folders
+												(user_id)
+												VALUES (SELECT user_id FROM sessions WHERE key = $1 LIMIT 1);
+												RETURNING id;`, sessionKey)
+
+			err := row.Scan(&fid)
+			if err != nil {
+				return "", err
+			}
+
+		} else {
+			return "", err
+		}
+
+	}
+
+	return fid, nil
 }
 
 // RemoveFeed removes the given feed ID from the user
