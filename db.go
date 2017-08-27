@@ -174,11 +174,22 @@ func (db *DB) ActiveUserFromKey(ctx context.Context, key string) (string, error)
 }
 
 // AddFeed adds the given URL to the users default folder
-func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, plugin, feedURL string) error {
+func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, feedURL string) error {
 	return nil
 }
 
 // RemoveFeed removes the given feed ID from the user
 func (db *DB) RemoveFeed(ctx context.Context, sessionKey, folderID, feedID string) error {
 	return nil
+}
+
+// GetFolders returns all of the folders for a user - if there are none it creates a
+// default folder
+func (db *DB) GetFolders(ctx context.Context, sessionKey string) ([]*Folder, error) {
+	return nil, nil
+}
+
+// GetFeed returns a single feed
+func (db *DB) GetFeed(ctx context.Context, sessionKey, feedID string) (*Feed, error) {
+	return nil, nil
 }

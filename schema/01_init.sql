@@ -62,7 +62,9 @@ CREATE TABLE folders (
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
-	name TEXT NOT NULL DEFAULT 'default'
+	name TEXT NOT NULL DEFAULT 'default',
+
+	UNIQUE (user_id, name)
 );
 
 -- feeds are individual feeds
@@ -94,11 +96,13 @@ CREATE UNIQUE INDEX feed_plugin_url_idx ON feeds(plugin, url);
 
 CREATE TABLE posts (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-	hash TEXT NOT NULL,
+	content_hash TEXT NOT NULL,
 
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
 	title TEXT NOT NULL,
-	content TEXT NOT NULL
+	body TEXT NOT NULL,
+
+	extra JSONB
 );

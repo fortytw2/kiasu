@@ -19,9 +19,9 @@ export default {
     resolve({ jsnext: true, main: true, extensions: [".js", ".jsx"] }),
     commonjs({
       extensions: [".jsx", ".js"]
+    }),
+    babili({
+      comments: false
     })
-    // babili({
-    //   comments: false
-    // })
   ]
 };

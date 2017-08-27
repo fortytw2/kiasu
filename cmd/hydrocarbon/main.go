@@ -8,6 +8,7 @@ import (
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/fortytw2/hydrocarbon"
+	"github.com/fortytw2/hydrocarbon/plugins/rss"
 	"github.com/fortytw2/hydrocarbon/postmark"
 )
 
@@ -51,7 +52,8 @@ func main() {
 		}
 	}
 
-	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, m), domain, sentryPublic)
+	pl := hydrocarbon.NewPluginList(&rss.Reader{Client: http.DefaultClient})
+	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, m), hydrocarbon.NewFeedAPI(db, pl), domain, sentryPublic)
 	err = http.ListenAndServe(getPort(), httpLogger(gziphandler.GzipHandler(r)))
 	if err != nil {
 		log.Fatal(err)

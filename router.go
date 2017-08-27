@@ -17,7 +17,7 @@ import (
 //go:generate bash -c "go-bindata -pkg public -mode 0644 -modtime 499137600 -o public/assets_generated.go ui/build/..."
 
 // NewRouter configures a new http.Handler that serves hydrocarbon
-func NewRouter(ua *UserAPI, domain, sentryPublic string) http.Handler {
+func NewRouter(ua *UserAPI, fa *FeedAPI, domain, sentryPublic string) http.Handler {
 	m := httprouter.New()
 
 	fs := http.FileServer(
@@ -48,9 +48,15 @@ func NewRouter(ua *UserAPI, domain, sentryPublic string) http.Handler {
 	m.POST("/api/key/deactivate", ua.Deactivate)
 	m.POST("/api/key/list", ua.ListSessions)
 
+	// feeds/folder management
+	m.POST("/api/feed/new", fa.AddFeed)
+	m.POST("/api/feed/delete", fa.RemoveFeed)
+	m.POST("/api/folders", fa.GetFolders)
+
 	if httpsOnly(domain) {
 		return redirectHTTPS(m)
 	}
+
 	return m
 }
 
