@@ -232,16 +232,16 @@ func (db *DB) getDefaultFolderID(ctx context.Context, sessionKey string) (string
 		if err == sql.ErrNoRows {
 			row := db.sql.QueryRowContext(ctx, `INSERT INTO folders
 												(user_id)
-												VALUES (SELECT user_id FROM sessions WHERE key = $1 LIMIT 1);
+												VALUES ((SELECT user_id FROM sessions WHERE key = $1 LIMIT 1))
 												RETURNING id;`, sessionKey)
 
 			err := row.Scan(&fid)
 			if err != nil {
-				return "", err
+				return "", fmt.Errorf("could not create default folder: %s", err)
 			}
 
 		} else {
-			return "", err
+			return "", fmt.Errorf("could not find default folder: %s", err)
 		}
 
 	}
