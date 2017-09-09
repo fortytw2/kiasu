@@ -8,10 +8,10 @@
   revision = "46766160161ff594e6d56bf8fcffb0b0399dc62d"
 
 [[projects]]
+  branch = "master"
   name = "github.com/bouk/httprouter"
   packages = ["."]
-  revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
-  version = "v1.1"
+  revision = "ee8b3818a7f51fbc94cc709b5744b52c2c725e91"
 
 [[projects]]
   branch = "master"
@@ -46,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7f9e0ac3d89aa454682b2567cddb380dbda54dcf69f64db3b1f103b46d7cf99f"
+  inputs-digest = "72ed680a18295ffcad86f4130e279dd8ac92e365ea978f60b0229922856b217b"
   solver-name = "gps-cdcl"
   solver-version = 1
