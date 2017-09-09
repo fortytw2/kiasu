@@ -2,7 +2,6 @@ package hydrocarbon
 
 import (
 	"bytes"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -17,12 +16,12 @@ import (
 //go:generate bash -c "go-bindata -pkg public -mode 0644 -modtime 499137600 -o public/assets_generated.go ui/build/..."
 
 // NewRouter configures a new http.Handler that serves hydrocarbon
-func NewRouter(ua *UserAPI, fa *FeedAPI, domain, sentryPublic string) http.Handler {
+func NewRouter(ua *UserAPI, fa *FeedAPI, domain string) http.Handler {
 	m := httprouter.New()
 
 	fs := http.FileServer(
 		&assetfs.AssetFS{
-			Asset:     rewriteAsset(domain, sentryPublic, public.Asset),
+			Asset:     rewriteAsset(domain, public.Asset),
 			AssetDir:  public.AssetDir,
 			AssetInfo: public.AssetInfo,
 			Prefix:    "ui/build/",
@@ -60,7 +59,7 @@ func NewRouter(ua *UserAPI, fa *FeedAPI, domain, sentryPublic string) http.Handl
 	return m
 }
 
-func rewriteAsset(domain, sentryPublic string, f1 func(name string) ([]byte, error)) func(name string) ([]byte, error) {
+func rewriteAsset(domain string, f1 func(name string) ([]byte, error)) func(name string) ([]byte, error) {
 	return func(name string) ([]byte, error) {
 		if strings.Contains(name, ".min.js") {
 			buf, err := f1(name)
@@ -68,7 +67,6 @@ func rewriteAsset(domain, sentryPublic string, f1 func(name string) ([]byte, err
 				return nil, err
 			}
 			buf = bytes.Replace(buf, []byte("URL_ENDPOINT_CHANGE_ME"), []byte(domain+"/api"), -1)
-			buf = bytes.Replace(buf, []byte(`SENTRY_PUBLIC_DSN: ""`), []byte(fmt.Sprintf(`SENTRY_PUBLIC_DSN: "%s"`, sentryPublic)), -1)
 
 			return buf, nil
 		}
