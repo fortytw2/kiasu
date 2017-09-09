@@ -264,3 +264,14 @@ func (db *DB) GetFolders(ctx context.Context, sessionKey string) ([]*Folder, err
 func (db *DB) GetFeed(ctx context.Context, sessionKey, feedID string) (*Feed, error) {
 	return nil, nil
 }
+
+// GetFeedsToRefresh returns feeds that are not currently being updated AND
+// are past their time to be updated
+func (db *DB) GetFeedsToRefresh(ctx context.Context, num int) ([]*Feed, error) {
+	return nil, nil
+}
+
+// UpdateFeedFromRefresh UPSERTS all posts returned into the DB
+func (db *DB) UpdateFeedFromRefresh(ctx context.Context, feedID string, posts []*Post) error {
+	return nil
+}
