@@ -39,11 +39,13 @@ type Feed struct {
 
 // A Post is a single post on a feed
 type Post struct {
-	ID        string    `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
+	ID          string    `json:"id"`
+	CreatedAt   time.Time `json:"created_at"`
+	OriginalURL string    `json:"original_url"`
 
-	Title string `json:"title"`
-	Body  string `json:"body"`
+	Author string `json:"author"`
+	Title  string `json:"title"`
+	Body   string `json:"body"`
 
 	Extra map[string]interface{} `json:"extra"`
 }
