@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"sync"
+	"time"
 )
 
 // A Plugin is responsible for fetching and maintaining synchronized feeds
 type Plugin interface {
 	Name() string
 	Info(ctx context.Context, inputURL string) (title, baseURL string, err error)
-	Fetch(ctx context.Context, baseURL string) ([]*Post, error)
+	Fetch(ctx context.Context, baseURL string, since time.Time) ([]*Post, error)
 }
 
 // A PluginList is a collection of plugins

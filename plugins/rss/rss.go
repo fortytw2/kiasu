@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/httpx"
@@ -33,7 +34,7 @@ func (r *Reader) Info(ctx context.Context, inputURL string) (title, baseURL stri
 }
 
 // Fetch performs the actual scraping shenanigans
-func (r *Reader) Fetch(ctx context.Context, baseURL string) ([]*hydrocarbon.Post, error) {
+func (r *Reader) Fetch(ctx context.Context, baseURL string, _ time.Time) ([]*hydrocarbon.Post, error) {
 	f, err := r.getFeed(ctx, baseURL)
 	if err != nil {
 		return nil, err

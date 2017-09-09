@@ -33,6 +33,7 @@ type Feed struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	Plugin    string    `json:"plugin"`
 	Unread    int       `json:"unread"`
+	BaseURL   string    `json:"base_url"`
 
 	Posts []*Post `json:"posts,omitempty"`
 }
