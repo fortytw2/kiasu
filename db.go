@@ -38,12 +38,13 @@ func NewDB(dsn string) (*DB, error) {
 
 // CreateOrGetUser creates a new user and returns the users ID
 func (db *DB) CreateOrGetUser(ctx context.Context, email string) (string, error) {
-	row := db.sql.QueryRowContext(ctx, `INSERT INTO users 
-										(email) 
-										VALUES ($1)
-										ON CONFLICT (email)
-										DO UPDATE SET email = EXCLUDED.email
-										RETURNING id;`, email)
+	row := db.sql.QueryRowContext(ctx, `
+	INSERT INTO users 
+	(email) 
+	VALUES ($1)
+	ON CONFLICT (email)
+	DO UPDATE SET email = EXCLUDED.email
+	RETURNING id;`, email)
 
 	var userID string
 	err := row.Scan(&userID)
@@ -56,10 +57,11 @@ func (db *DB) CreateOrGetUser(ctx context.Context, email string) (string, error)
 
 // CreateLoginToken creates a new one-time-use login token
 func (db *DB) CreateLoginToken(ctx context.Context, userID, userAgent, ip string) (string, error) {
-	row := db.sql.QueryRowContext(ctx, `INSERT INTO login_tokens
-										(user_id, user_agent, ip)
-										VALUES ($1, $2, $3::cidr)
-										RETURNING token;`, userID, userAgent, ip)
+	row := db.sql.QueryRowContext(ctx, `
+	INSERT INTO login_tokens
+	(user_id, user_agent, ip)
+	VALUES ($1, $2, $3::cidr)
+	RETURNING token;`, userID, userAgent, ip)
 
 	var token string
 	err := row.Scan(&token)
@@ -73,12 +75,13 @@ func (db *DB) CreateLoginToken(ctx context.Context, userID, userAgent, ip string
 // ActivateLoginToken activates the given LoginToken and returns the user
 // the token was for
 func (db *DB) ActivateLoginToken(ctx context.Context, token string) (string, error) {
-	row := db.sql.QueryRowContext(ctx, `UPDATE login_tokens
-										SET (used) = (true)
-										WHERE token = $1
-										AND expires_at > now()
-										AND used = false
-										RETURNING user_id;`, token)
+	row := db.sql.QueryRowContext(ctx, `
+	UPDATE login_tokens
+	SET (used) = (true)
+	WHERE token = $1
+	AND expires_at > now()
+	AND used = false
+	RETURNING user_id;`, token)
 
 	var userID string
 	err := row.Scan(&userID)
@@ -95,18 +98,20 @@ func (db *DB) ActivateLoginToken(ctx context.Context, token string) (string, err
 // CreateSession creates a new session for the user ID and returns the
 // session key
 func (db *DB) CreateSession(ctx context.Context, userID, userAgent, ip string) (email string, key string, err error) {
-	row := db.sql.QueryRowContext(ctx, `INSERT INTO sessions 
-										(user_id, user_agent, ip)
-										VALUES ($1, $2, $3::cidr)
-										RETURNING key;`, userID, userAgent, ip)
+	row := db.sql.QueryRowContext(ctx, `
+	INSERT INTO sessions 
+	(user_id, user_agent, ip)
+	VALUES ($1, $2, $3::cidr)
+	RETURNING key;`, userID, userAgent, ip)
 	err = row.Scan(&key)
 	if err != nil {
 		return "", "", err
 	}
 
-	row = db.sql.QueryRowContext(ctx, `SELECT email
-										FROM users
-										WHERE id = $1`, userID)
+	row = db.sql.QueryRowContext(ctx, `
+	SELECT email
+	FROM users
+	WHERE id = $1`, userID)
 	err = row.Scan(&email)
 	if err != nil {
 		return "", "", err
@@ -125,11 +130,12 @@ type Session struct {
 
 // ListSessions lists all sessions a user has
 func (db *DB) ListSessions(ctx context.Context, key string, page int) ([]*Session, error) {
-	rows, err := db.sql.QueryContext(ctx, `SELECT created_at, user_agent, ip, active
-							FROM sessions
-							WHERE user_id = (SELECT user_id FROM sessions WHERE key = $1)
-							LIMIT 25
-							OFFSET $2`, key, page)
+	rows, err := db.sql.QueryContext(ctx, `
+	SELECT created_at, user_agent, ip, active
+	FROM sessions
+	WHERE user_id = (SELECT user_id FROM sessions WHERE key = $1)
+	LIMIT 25
+	OFFSET $2`, key, page)
 	if err != nil {
 		return nil, err
 	}
@@ -150,20 +156,21 @@ func (db *DB) ListSessions(ctx context.Context, key string, page int) ([]*Sessio
 
 // DeactivateSession invalidates the current session
 func (db *DB) DeactivateSession(ctx context.Context, key string) error {
-	_, err := db.sql.QueryContext(ctx, `UPDATE 
-										sessions
-										SET (active) = (false)
-										WHERE key = $1;`, key)
+	_, err := db.sql.QueryContext(ctx, `
+	UPDATE sessions
+	SET (active) = (false)
+	WHERE key = $1;`, key)
 
 	return err
 }
 
 // ActiveUserFromKey returns the active user ID from the session key
 func (db *DB) ActiveUserFromKey(ctx context.Context, key string) (string, error) {
-	row := db.sql.QueryRowContext(ctx, `SELECT user_id 
-										FROM sessions 
-										WHERE key = $1
-										AND active = true;`, key)
+	row := db.sql.QueryRowContext(ctx, `
+	SELECT user_id 
+	FROM sessions 
+	WHERE key = $1
+	AND active = true;`, key)
 
 	var userID string
 	err := row.Scan(&userID)
@@ -190,10 +197,11 @@ func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, 
 	if err != nil {
 		return err
 	}
-	row := tx.QueryRowContext(ctx, `INSERT INTO feeds
-							 (title, plugin, url)
-							 VALUES ($1, $2, $3)
-							 RETURNING id;`, title, plugin, feedURL)
+	row := tx.QueryRowContext(ctx, `
+	INSERT INTO feeds
+	(title, plugin, url)
+	VALUES ($1, $2, $3)
+	RETURNING id;`, title, plugin, feedURL)
 
 	var feedID string
 	err = row.Scan(&feedID)
@@ -205,9 +213,10 @@ func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, 
 		return err
 	}
 
-	_, err = tx.ExecContext(ctx, `INSERT INTO feed_folders
-							 (folder_id, feed_id)
-							 VALUES ($1, $2);`, folderID, feedID)
+	_, err = tx.ExecContext(ctx, `
+	INSERT INTO feed_folders
+	(user_id, folder_id, feed_id)
+	VALUES ((SELECT user_id FROM sessions WHERE key = $1), $2, $3);`, sessionKey, folderID, feedID)
 	if err != nil {
 		txErr := tx.Rollback()
 		if txErr != nil {
@@ -221,19 +230,21 @@ func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, 
 
 // getDefaultFolderID returns a users default folder ID
 func (db *DB) getDefaultFolderID(ctx context.Context, sessionKey string) (string, error) {
-	row := db.sql.QueryRowContext(ctx, `SELECT id FROM folders 
-							 			WHERE name = 'default' 
-							 			AND user_id = (SELECT user_id FROM sessions WHERE key = $1);`, sessionKey)
+	row := db.sql.QueryRowContext(ctx, `
+	SELECT id FROM folders 
+	WHERE name = 'default' 
+	AND user_id = (SELECT user_id FROM sessions WHERE key = $1);`, sessionKey)
 
 	var fid string
 	err := row.Scan(&fid)
 	if err != nil {
 		// if there is no default folder, go create one
 		if err == sql.ErrNoRows {
-			row := db.sql.QueryRowContext(ctx, `INSERT INTO folders
-												(user_id)
-												VALUES ((SELECT user_id FROM sessions WHERE key = $1 LIMIT 1))
-												RETURNING id;`, sessionKey)
+			row := db.sql.QueryRowContext(ctx, `
+			INSERT INTO folders
+			(user_id)
+			VALUES ((SELECT user_id FROM sessions WHERE key = $1 LIMIT 1))
+			RETURNING id;`, sessionKey)
 
 			err := row.Scan(&fid)
 			if err != nil {
@@ -251,13 +262,70 @@ func (db *DB) getDefaultFolderID(ctx context.Context, sessionKey string) (string
 
 // RemoveFeed removes the given feed ID from the user
 func (db *DB) RemoveFeed(ctx context.Context, sessionKey, folderID, feedID string) error {
-	return nil
+	_, err := db.sql.ExecContext(ctx, `
+	DELETE FROM feed_folders 
+	WHERE user_id = (SELECT user_id FROM sessions WHERE key = $1 LIMIT 1)
+	AND folder_id = $2
+	AND feed_id = $3;`, sessionKey, folderID, feedID)
+
+	return err
 }
 
 // GetFolders returns all of the folders for a user - if there are none it creates a
 // default folder
 func (db *DB) GetFolders(ctx context.Context, sessionKey string) ([]*Folder, error) {
-	return nil, nil
+	rows, err := db.sql.QueryContext(ctx, `
+	SELECT fo.name as folder_name, fo.id as folder_id, fe.title as feed_title, fe.id as feed_id, fe.url, fe.plugin, fe.created_at, fe.updated_at
+	FROM feed_folders ff
+	LEFT JOIN folders fo ON (fo.id = ff.folder_id)
+	LEFT JOIN feeds fe ON (fe.id = ff.feed_id)
+	WHERE ff.user_id = (SELECT user_id FROM sessions WHERE key = '7f33bf3e21f25ea83d438f42e0ed6c47' LIMIT 1) 
+	ORDER BY ff.priority DESC;`, sessionKey)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	folders := make([]*Folder, 0)
+	for rows.Next() {
+		var folderName, folderID, feedTitle, feedID, feedURL, plugin string
+		var createdAt, updatedAt time.Time
+
+		err := rows.Scan(&folderName, &folderID, &feedTitle, &feedID, &feedURL, &plugin, &createdAt, &updatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		folders = addFolderOrFeed(folders, folderName, folderID, &Feed{
+			ID:        feedID,
+			Title:     feedTitle,
+			Plugin:    plugin,
+			BaseURL:   feedURL,
+			CreatedAt: createdAt,
+			UpdatedAt: updatedAt,
+		})
+	}
+
+	return folders, nil
+}
+
+func addFolderOrFeed(folders []*Folder, name, id string, feed *Feed) []*Folder {
+	for _, f := range folders {
+		if f.Title == name && f.ID == id {
+			f.Feeds = append(f.Feeds, feed)
+			return folders
+		}
+	}
+
+	folders = append(folders, &Folder{
+		ID:    id,
+		Title: name,
+		Feeds: []*Feed{
+			feed,
+		},
+	})
+
+	return folders
 }
 
 // GetFeed returns a single feed

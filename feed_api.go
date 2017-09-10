@@ -31,8 +31,8 @@ type Feed struct {
 	ID        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	Title     string    `json:"title"`
 	Plugin    string    `json:"plugin"`
-	Unread    int       `json:"unread"`
 	BaseURL   string    `json:"base_url"`
 
 	Posts []*Post `json:"posts,omitempty"`
@@ -86,8 +86,8 @@ func (fa *FeedAPI) AddFeed(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if feed.URL == "" || feed.FolderID == "" || feed.Plugin == "" {
-		writeErr(w, errors.New("one of url, plugin, folder_id is empty"))
+	if feed.URL == "" || feed.Plugin == "" {
+		writeErr(w, errors.New("one of url or plugin is empty"))
 		return
 	}
 

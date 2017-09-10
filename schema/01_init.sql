@@ -39,7 +39,7 @@ CREATE TABLE sessions (
 	user_agent TEXT NOT NULL,
 	ip CIDR NOT NULL,
 
-	key TEXT DEFAULT encode(gen_random_bytes(16), 'hex'),
+	key CITEXT DEFAULT encode(gen_random_bytes(16), 'hex'),
 	active BOOLEAN NOT NULL DEFAULT true
 );
 
@@ -83,6 +83,7 @@ CREATE TABLE feeds (
 
 -- feed_folders is a join table between feeds and folders
 CREATE TABLE feed_folders (
+	user_id UUID REFERENCES users NOT NULL,
 	folder_id UUID REFERENCES folders NOT NULL,
 	feed_id UUID REFERENCES feeds NOT NULL,
 
