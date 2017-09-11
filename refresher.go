@@ -29,7 +29,7 @@ func NewRefresher(rc RefreshController, pl *PluginList, er ErrorReporter) *Refre
 
 // Refresh is the background poller
 func (rf *Refresher) Refresh(ctx context.Context) {
-	t := time.NewTicker(time.Second)
+	t := time.NewTicker(time.Second * 5)
 	defer t.Stop()
 	for {
 		select {

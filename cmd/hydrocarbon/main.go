@@ -37,7 +37,7 @@ func main() {
 	var m hydrocarbon.Mailer
 	{
 		if os.Getenv("POSTMARK_KEY") != "" {
-			log.Println("sending mails to via postmark")
+			log.Println("sending mails via postmark")
 			m = &postmark.Mailer{
 				Key:    os.Getenv("POSTMARK_KEY"),
 				Domain: domain,
@@ -45,7 +45,7 @@ func main() {
 			}
 
 		} else {
-			log.Println("sending mails to Stdout")
+			log.Println("sending mails to stdout")
 			m = &hydrocarbon.StdoutMailer{Domain: domain}
 		}
 	}

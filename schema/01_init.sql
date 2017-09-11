@@ -97,6 +97,9 @@ CREATE TABLE posts (
 	title TEXT NOT NULL,
 	author TEXT NOT NULL DEFAULT '',
 	body TEXT NOT NULL,
+	url TEXT NOT NULL,
 
-	extra JSONB
+	extra JSONB,
+
+	UNIQUE (content_hash)
 );

@@ -279,7 +279,7 @@ func (db *DB) GetFolders(ctx context.Context, sessionKey string) ([]*Folder, err
 	FROM feed_folders ff
 	LEFT JOIN folders fo ON (fo.id = ff.folder_id)
 	LEFT JOIN feeds fe ON (fe.id = ff.feed_id)
-	WHERE ff.user_id = (SELECT user_id FROM sessions WHERE key = '7f33bf3e21f25ea83d438f42e0ed6c47' LIMIT 1) 
+	WHERE ff.user_id = (SELECT user_id FROM sessions WHERE key = $1 LIMIT 1) 
 	ORDER BY ff.priority DESC;`, sessionKey)
 	if err != nil {
 		return nil, err
@@ -331,7 +331,7 @@ func addFolderOrFeed(folders []*Folder, name, id string, feed *Feed) []*Folder {
 // GetFeed returns a single feed
 func (db *DB) GetFeed(ctx context.Context, feedID string, limit, offset int) (*Feed, error) {
 	rows, err := db.sql.QueryContext(ctx, `
-	SELECT fe.id, fe.title, po.id, po.title, po.author, po.body, po.created_at, po.updated_at
+	SELECT fe.id, fe.title, po.id, po.title, po.author, po.body, po.url, po.created_at, po.updated_at
 	FROM feeds fe
 	LEFT JOIN posts po ON (fe.id = po.feed_id)
 	WHERE fe.id = $1
@@ -346,10 +346,10 @@ func (db *DB) GetFeed(ctx context.Context, feedID string, limit, offset int) (*F
 		Posts: make([]*Post, 0),
 	}
 	for rows.Next() {
-		var feedID, feedTitle, postID, postTitle, postAuthor, postBody string
+		var feedID, feedTitle, postID, postTitle, postAuthor, postBody, url string
 		var createdAt, updatedAt time.Time
 
-		err := rows.Scan(&feedID, &feedTitle, &postID, &postTitle, &postAuthor, &postBody, &createdAt, &updatedAt)
+		err := rows.Scan(&feedID, &feedTitle, &postID, &postTitle, &postAuthor, &postBody, &url, &createdAt, &updatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -357,12 +357,13 @@ func (db *DB) GetFeed(ctx context.Context, feedID string, limit, offset int) (*F
 		feed.Title = feedTitle
 
 		feed.Posts = append(feed.Posts, &Post{
-			ID:        postID,
-			CreatedAt: createdAt,
-			UpdatedAt: updatedAt,
-			Author:    postAuthor,
-			Title:     postTitle,
-			Body:      postBody,
+			ID:          postID,
+			CreatedAt:   createdAt,
+			UpdatedAt:   updatedAt,
+			Author:      postAuthor,
+			Title:       postTitle,
+			Body:        postBody,
+			OriginalURL: url,
 		})
 
 	}
@@ -374,15 +375,16 @@ func (db *DB) GetFeed(ctx context.Context, feedID string, limit, offset int) (*F
 // are past their time to be updated
 func (db *DB) GetFeedsToRefresh(ctx context.Context, num int) ([]*Feed, error) {
 	rows, err := db.sql.QueryContext(ctx, `
-	WITH feeds AS (
-		SELECT id, title 
+	WITH cte AS (
+		SELECT id
 		FROM feeds 
-		WHERE last_enqueued_at > (now() - interval '10 minutes')
+		WHERE last_enqueued_at < (now() - interval '10 minutes')
 		LIMIT $1
-	) UPDATE feeds 
+	) UPDATE feeds fe
 	SET last_enqueued_at = now()
-	WHERE id = feeds.id
-	RETURNING id, title`, num)
+	FROM cte
+	WHERE fe.id = cte.id
+	RETURNING fe.id, fe.title, fe.plugin, fe.url`, num)
 	if err != nil {
 		return nil, err
 	}
@@ -390,16 +392,18 @@ func (db *DB) GetFeedsToRefresh(ctx context.Context, num int) ([]*Feed, error) {
 
 	feeds := make([]*Feed, 0)
 	for rows.Next() {
-		var id, title string
+		var id, title, plugin, url string
 
-		err := rows.Scan(&id, &title)
+		err := rows.Scan(&id, &title, &plugin, &url)
 		if err != nil {
 			return nil, err
 		}
 
 		feeds = append(feeds, &Feed{
-			ID:    id,
-			Title: title,
+			ID:      id,
+			Title:   title,
+			Plugin:  plugin,
+			BaseURL: url,
 		})
 	}
 
@@ -412,12 +416,15 @@ func (db *DB) UpdateFeedFromRefresh(ctx context.Context, feedID string, posts []
 		var contentHash string
 		err := db.sql.QueryRow(`
 		INSERT INTO posts 
-		(feed_id, content_hash, title, author, body)
+		(feed_id, content_hash, title, author, body, url)
 		VALUES 
-		($1, $2, $3, $4, $5)
+		($1, $2, $3, $4, $5, $6)
 		ON CONFLICT (content_hash) DO NOTHING
-		RETURNING content_hash;`, feedID, p.ContentHash(), p.Title, p.Author, p.Body).Scan(&contentHash)
+		RETURNING content_hash;`, feedID, p.ContentHash(), p.Title, p.Author, p.Body, p.OriginalURL).Scan(&contentHash)
 		if err != nil {
+			if err == sql.ErrNoRows {
+				continue
+			}
 			return err
 		}
 	}
