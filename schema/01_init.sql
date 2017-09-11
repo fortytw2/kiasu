@@ -9,7 +9,7 @@ CREATE TABLE users (
 
 	email CITEXT NOT NULL,
 
-	UNQUE (email)
+	UNIQUE (email)
 );
 
 -- login tokens are one-time tokens used to login if oauth 2.0 is not used
