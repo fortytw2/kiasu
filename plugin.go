@@ -2,7 +2,7 @@ package hydrocarbon
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -39,7 +39,7 @@ func (pl *PluginList) ByName(n string) (Plugin, error) {
 
 	plug, ok := pl.plugins[n]
 	if !ok {
-		return nil, errors.New("plugin not found")
+		return nil, fmt.Errorf("plugin not found: %s", n)
 	}
 
 	return plug, nil
