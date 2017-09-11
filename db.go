@@ -329,17 +329,98 @@ func addFolderOrFeed(folders []*Folder, name, id string, feed *Feed) []*Folder {
 }
 
 // GetFeed returns a single feed
-func (db *DB) GetFeed(ctx context.Context, sessionKey, feedID string) (*Feed, error) {
-	return nil, nil
+func (db *DB) GetFeed(ctx context.Context, feedID string, limit, offset int) (*Feed, error) {
+	rows, err := db.sql.QueryContext(ctx, `
+	SELECT fe.id, fe.title, po.id, po.title, po.author, po.body, po.created_at, po.updated_at
+	FROM feeds fe
+	LEFT JOIN posts po ON (fe.id = po.feed_id)
+	WHERE fe.id = $1
+	LIMIT $2 OFFSET $3;`, feedID, limit, offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	feed := &Feed{
+		ID:    feedID,
+		Posts: make([]*Post, 0),
+	}
+	for rows.Next() {
+		var feedID, feedTitle, postID, postTitle, postAuthor, postBody string
+		var createdAt, updatedAt time.Time
+
+		err := rows.Scan(&feedID, &feedTitle, &postID, &postTitle, &postAuthor, &postBody, &createdAt, &updatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		feed.Title = feedTitle
+
+		feed.Posts = append(feed.Posts, &Post{
+			ID:        postID,
+			CreatedAt: createdAt,
+			UpdatedAt: updatedAt,
+			Author:    postAuthor,
+			Title:     postTitle,
+			Body:      postBody,
+		})
+
+	}
+
+	return feed, nil
 }
 
 // GetFeedsToRefresh returns feeds that are not currently being updated AND
 // are past their time to be updated
 func (db *DB) GetFeedsToRefresh(ctx context.Context, num int) ([]*Feed, error) {
-	return nil, nil
+	rows, err := db.sql.QueryContext(ctx, `
+	WITH feeds AS (
+		SELECT id, title 
+		FROM feeds 
+		WHERE last_enqueued_at > (now() - interval '10 minutes')
+		LIMIT $1
+	) UPDATE feeds 
+	SET last_enqueued_at = now()
+	WHERE id = feeds.id
+	RETURNING id, title`, num)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	feeds := make([]*Feed, 0)
+	for rows.Next() {
+		var id, title string
+
+		err := rows.Scan(&id, &title)
+		if err != nil {
+			return nil, err
+		}
+
+		feeds = append(feeds, &Feed{
+			ID:    id,
+			Title: title,
+		})
+	}
+
+	return feeds, nil
 }
 
 // UpdateFeedFromRefresh UPSERTS all posts returned into the DB
 func (db *DB) UpdateFeedFromRefresh(ctx context.Context, feedID string, posts []*Post) error {
+	for _, p := range posts {
+		var contentHash string
+		err := db.sql.QueryRow(`
+		INSERT INTO posts 
+		(feed_id, content_hash, title, author, body)
+		VALUES 
+		($1, $2, $3, $4, $5)
+		ON CONFLICT (content_hash) DO NOTHING
+		RETURNING content_hash;`, feedID, p.ContentHash(), p.Title, p.Author, p.Body).Scan(&contentHash)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

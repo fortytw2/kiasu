@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"testing"
+	"time"
 )
 
 func TestRSS(t *testing.T) {
@@ -34,7 +35,7 @@ func TestRSS(t *testing.T) {
 				t.Fatal("titles do not match")
 			}
 
-			_, err = r.Fetch(context.Background(), url)
+			_, err = r.Fetch(context.Background(), url, time.Time{})
 			if err != nil {
 				t.Fatal(err)
 			}

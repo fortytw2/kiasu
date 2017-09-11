@@ -7,10 +7,9 @@ CREATE TABLE users (
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
-	stripe_customer_id TEXT,
 	email CITEXT NOT NULL,
 
-	CONSTRAINT email_uniq UNIQUE (email)
+	UNQUE (email)
 );
 
 -- login tokens are one-time tokens used to login if oauth 2.0 is not used
@@ -45,15 +44,6 @@ CREATE TABLE sessions (
 
 CREATE UNIQUE INDEX sessions_key_idx ON sessions (key);
 
--- payments are where we record all payments made via stripe
-CREATE TABLE payments (
-	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-	user_id UUID REFERENCES users NOT NULL,
-
-	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
 -- folders are used to maintain collections of feeds
 CREATE TABLE folders (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -73,6 +63,7 @@ CREATE TABLE feeds (
 
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+	last_enqueued_at TIMESTAMPTZ,
 
 	plugin TEXT NOT NULL,
 	url TEXT NOT NULL,
@@ -90,19 +81,21 @@ CREATE TABLE feed_folders (
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
-	priority INT NOT NULL DEFAULT 0
-);
+	priority INT NOT NULL DEFAULT 0,
 
-CREATE UNIQUE INDEX feed_plugin_url_idx ON feeds(plugin, url);
+	PRIMARY KEY (user_id, folder_id, feed_id)
+);
 
 CREATE TABLE posts (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-	content_hash TEXT NOT NULL,
+	feed_id UUID REFERENCES feeds,
 
 	created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
+	content_hash CITEXT NOT NULL,
 	title TEXT NOT NULL,
+	author TEXT NOT NULL DEFAULT '',
 	body TEXT NOT NULL,
 
 	extra JSONB

@@ -2,8 +2,11 @@ package hydrocarbon
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -16,7 +19,7 @@ type FeedStore interface {
 
 	// GetFolders should not return any Posts in the nested Feeds
 	GetFolders(ctx context.Context, sessionKey string) ([]*Folder, error)
-	GetFeed(ctx context.Context, sessionKey, feedID string) (*Feed, error)
+	GetFeed(ctx context.Context, feedID string, limit, offset int) (*Feed, error)
 }
 
 // A Folder holds a collection of feeds
@@ -42,13 +45,22 @@ type Feed struct {
 type Post struct {
 	ID          string    `json:"id"`
 	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 	OriginalURL string    `json:"original_url"`
 
-	Author string `json:"author"`
 	Title  string `json:"title"`
+	Author string `json:"author"`
 	Body   string `json:"body"`
 
 	Extra map[string]interface{} `json:"extra"`
+}
+
+func (p *Post) ContentHash() string {
+	h := sha256.New()
+	h.Write([]byte(fmt.Sprintf("%s:%s:%s", p.Title, p.Author, p.Body)))
+
+	var b []byte
+	return hex.EncodeToString(h.Sum(b))
 }
 
 // FeedAPI encapsulates everything related to user management
@@ -180,7 +192,7 @@ func (fa *FeedAPI) GetFeed(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	feed, err := fa.s.GetFeed(r.Context(), key, id.ID)
+	feed, err := fa.s.GetFeed(r.Context(), id.ID, 50, 0)
 	if err != nil {
 		writeErr(w, err)
 		return
