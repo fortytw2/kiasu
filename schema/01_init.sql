@@ -79,6 +79,8 @@ CREATE TABLE feeds (
 	UNIQUE (plugin, url)
 );
 
+CREATE INDEX feeds_last_enqueued_at_idx ON feeds (last_enqueued_at);
+
 -- feed_folders is a join table between feeds and folders
 CREATE TABLE feed_folders (
 	user_id UUID REFERENCES users NOT NULL,
