@@ -94,6 +94,9 @@ CREATE TABLE feed_folders (
 
 	priority INT NOT NULL DEFAULT 0,
 
+	-- display this feed in collapsed or full mode
+	display_mode TEXT NOT NULL DEFAULT 'full',
+
 	PRIMARY KEY (user_id, folder_id, feed_id)
 );
 
