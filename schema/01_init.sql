@@ -76,8 +76,10 @@ CREATE TABLE feeds (
 	url TEXT NOT NULL,
 	title TEXT NOT NULL,
 
-	UNIQUE (plugin, url)
+	public BOOLEAN NOT NULL DEFAULT true
 );
+
+CREATE UNIQUE INDEX feeds_plugin_url_public_uniq_idx ON feeds (plugin, url) WHERE public;
 
 CREATE INDEX feeds_last_enqueued_at_idx ON feeds (last_enqueued_at);
 
