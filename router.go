@@ -34,7 +34,7 @@ func NewRouter(ua *UserAPI, fa *FeedAPI, domain string) http.Handler {
 	// serve the single page app for every other route, it has a 404 page builtin
 	m.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
-			w.WriteHeader(http.StatusMethodNotAllowed)
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 
@@ -60,7 +60,7 @@ func NewRouter(ua *UserAPI, fa *FeedAPI, domain string) http.Handler {
 	m.POST("/api/feed/list", fa.GetFeed)
 
 	// folder management
-	m.POST("/api/folder/create", fa.GetFolders)
+	m.POST("/api/folder/list", fa.GetFolders)
 
 	if httpsOnly(domain) {
 		return redirectHTTPS(m)

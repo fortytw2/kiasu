@@ -20,7 +20,7 @@ type FeedStore interface {
 
 	// GetFolders should not return any Posts in the nested Feeds
 	GetFolders(ctx context.Context, sessionKey string) ([]*Folder, error)
-	GetFeed(ctx context.Context, feedID string, limit, offset int) (*Feed, error)
+	GetFeed(ctx context.Context, sessionKey, feedID string, limit, offset int) (*Feed, error)
 }
 
 // A Folder holds a collection of feeds
@@ -52,6 +52,8 @@ type Post struct {
 	Title  string `json:"title"`
 	Author string `json:"author"`
 	Body   string `json:"body"`
+
+	Read bool `json:"read"`
 
 	Extra map[string]interface{} `json:"extra"`
 }
@@ -179,7 +181,7 @@ func (fa *FeedAPI) GetFolders(w http.ResponseWriter, r *http.Request) {
 
 // GetFeed writes a specific feed
 func (fa *FeedAPI) GetFeed(w http.ResponseWriter, r *http.Request) {
-	_, err := fa.ks.Verify(r.Header.Get("X-Hydrocarbon-Key"))
+	key, err := fa.ks.Verify(r.Header.Get("X-Hydrocarbon-Key"))
 	if err != nil {
 		writeErr(w, err)
 		return
@@ -195,7 +197,7 @@ func (fa *FeedAPI) GetFeed(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	feed, err := fa.s.GetFeed(r.Context(), id.ID, 50, 0)
+	feed, err := fa.s.GetFeed(r.Context(), key, id.ID, 50, 0)
 	if err != nil {
 		writeErr(w, err)
 		return
