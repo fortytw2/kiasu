@@ -3,15 +3,19 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/fortytw2/hydrocarbon"
 	"github.com/fortytw2/hydrocarbon/plugins/rss"
 	"github.com/fortytw2/hydrocarbon/postmark"
+	"github.com/oklog/oklog/pkg/group"
 )
 
 func main() {
@@ -70,17 +74,49 @@ func main() {
 
 	// enable stripe
 	stripePrivKey, paymentEnabled := os.LookupEnv("STRIPE_PRIVATE_TOKEN")
+	if paymentEnabled {
+		log.Println("payment enabled, tokens required to login")
+	} else {
+		log.Println("payment not enabled, set STRIPE_PRIVATE_TOKEN to enable")
+	}
 
 	ks := hydrocarbon.NewKeySigner(signingKey)
 	pl := hydrocarbon.NewPluginList(&rss.Reader{Client: http.DefaultClient})
 	rf := hydrocarbon.NewRefresher(db, pl, &hydrocarbon.StdoutReporter{})
-	go rf.Refresh(context.Background())
-
 	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, ks, m, "hydrocarbon", stripePrivKey, paymentEnabled), hydrocarbon.NewFeedAPI(db, ks, pl), domain)
-	err = http.ListenAndServe(getPort(), httpLogger(gziphandler.GzipHandler(r)))
-	if err != nil {
-		log.Fatal(err)
+
+	var g group.Group
+	{
+		ctx, cancel := context.WithCancel(context.Background())
+		g.Add(func() error {
+			rf.Refresh(ctx)
+			return nil
+		}, func(error) {
+			cancel()
+		})
 	}
+	{
+		s := &http.Server{
+			Addr:    getPort(),
+			Handler: httpLogger(gziphandler.GzipHandler(r)),
+		}
+		g.Add(func() error {
+			return s.ListenAndServe()
+		}, func(error) {
+			// TODO: handle healthchecks
+			s.Shutdown(context.Background())
+		})
+	}
+	{
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, syscall.SIGTERM, syscall.SIGINT)
+		g.Add(func() error {
+			sig := <-c
+			return fmt.Errorf("shutdown: recieved %s", sig)
+		}, func(error) {})
+	}
+
+	log.Fatal(g.Run())
 }
 
 func getPort() string {
