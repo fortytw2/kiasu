@@ -39,6 +39,8 @@ type Feed struct {
 	Plugin    string    `json:"plugin"`
 	BaseURL   string    `json:"base_url"`
 
+	Unread int `json:"unread"`
+
 	Posts []*Post `json:"posts,omitempty"`
 }
 

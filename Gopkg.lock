@@ -38,6 +38,12 @@
   revision = "68fecaef60268522d2ac3f0123cec9d3bcab7b6e"
 
 [[projects]]
+  name = "github.com/oklog/oklog"
+  packages = ["pkg/group"]
+  revision = "fca58330910eb7fe6267788eddf879b1d6811176"
+  version = "v0.2.2"
+
+[[projects]]
   name = "github.com/stripe/stripe-go"
   packages = [".","account","balance","bankaccount","bitcoinreceiver","bitcointransaction","card","charge","client","countryspec","coupon","customer","discount","dispute","ephemeralkey","event","fee","feerefund","fileupload","form","invoice","invoiceitem","loginlink","order","orderitem","orderreturn","paymentsource","payout","plan","product","recipient","refund","reversal","sku","source","sub","subitem","token","transfer"]
   revision = "fd984f4cf0352b66a98d2e7902ee8a71c11d65d1"
@@ -52,6 +58,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "40148e2a100c629c26a921c9dd10dbce3c9d50d3962e9b21c9ca48a8f1c5930c"
+  inputs-digest = "7d2dce1358402660eabf172512051b3cf14ca6bff929264bf89a93a944cd6e7c"
   solver-name = "gps-cdcl"
   solver-version = 1

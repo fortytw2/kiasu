@@ -295,7 +295,7 @@ func (db *DB) GetFolders(ctx context.Context, sessionKey string) ([]*Folder, err
 	FROM feed_folders ff
 	LEFT JOIN folders fo ON (fo.id = ff.folder_id)
 	LEFT JOIN feeds fe ON (fe.id = ff.feed_id)
-	WHERE ff.user_id = (SELECT user_id FROM sessions WHERE key = $1 LIMIT 1) 
+	WHERE ff.user_id = (SELECT user_id FROM sessions WHERE key = $1 LIMIT 1)
 	ORDER BY ff.priority DESC;`, sessionKey)
 	if err != nil {
 		return nil, err
