@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build-css": "tachyons tachyons/tachyons.css --minify > build/css/bundle.min.css",
-    "build-js": "rollup -c --output=build/js/bundle.min.js -- main.jsx"
+    "build-js": "rollup -c --output.file=build/js/bundle.min.js -- main.jsx"
   },
   "dependencies": {
     "history": "^4.6.1",
@@ -11,21 +11,20 @@
     "preact-router": "^2.5.2",
     "preact-router-redux": "^4.1.0",
     "redux": "^3.6.0",
-    "redux-persist": "^4.8.0"
+    "redux-persist": "^5.4.0"
   },
   "devDependencies": {
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-babili": "^0.0.12",
     "babel-preset-env": "^1.4.0",
-    "rollup": "^0.41.6",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-babili": "^3.0.0",
+    "rollup": "^0.51.8",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-babel-minify": "^3.0.0",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-replace": "^1.1.1",
+    "rollup-plugin-replace": "^2.0.0",
     "tachyons": "^4.7.0",
     "tachyons-cli": "^1.0.10"
   }

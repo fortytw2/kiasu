@@ -59,7 +59,7 @@ func main() {
 
 	var signingKey string
 	{
-		if sk := os.Getenv("SIGNING_kEY"); sk != "" {
+		if sk := os.Getenv("SIGNING_KEY"); sk != "" {
 			log.Println("using signing key from env")
 			signingKey = sk
 		} else {

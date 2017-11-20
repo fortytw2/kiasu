@@ -93,7 +93,7 @@ func (db *DB) CreateLoginToken(ctx context.Context, userID, userAgent, ip string
 func (db *DB) ActivateLoginToken(ctx context.Context, token string) (string, error) {
 	row := db.sql.QueryRowContext(ctx, `
 	UPDATE login_tokens
-	SET (used) = (true)
+	SET used = true
 	WHERE token = $1
 	AND expires_at > now()
 	AND used = false

@@ -1,13 +1,19 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { autoRehydrate, persistStore } from "redux-persist";
+import { persistCombineReducers, persistStore } from "redux-persist";
+import storage from 'redux-persist/es/storage' 
 import { routerReducer, syncHistoryWithStore } from "preact-router-redux";
 
 import createBrowserHistory from "history/createBrowserHistory";
 import { login } from "./login/reducers";
 import { notifications } from "./notifications/reducers";
 
-let Store = compose(autoRehydrate())(createStore)(
-  combineReducers({
+const config = {
+  key: 'hc-root',
+  storage,
+}
+
+let Store = createStore(
+  persistCombineReducers(config, {
     login: login,
     notifications: notifications,
     routing: routerReducer
