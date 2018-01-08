@@ -56,6 +56,7 @@ type Post struct {
 	Extra map[string]interface{} `json:"extra"`
 }
 
+// ContentHash returns the stable hex encoded SHA256 of a post
 func (p *Post) ContentHash() string {
 	h := sha256.New()
 	h.Write([]byte(fmt.Sprintf("%s:%s:%s", p.Title, p.Author, p.Body)))

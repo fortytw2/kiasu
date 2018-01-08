@@ -180,23 +180,6 @@ func (db *DB) DeactivateSession(ctx context.Context, key string) error {
 	return err
 }
 
-// ActiveUserFromKey returns the active user ID from the session key
-func (db *DB) ActiveUserFromKey(ctx context.Context, key string) (string, error) {
-	row := db.sql.QueryRowContext(ctx, `
-	SELECT user_id 
-	FROM sessions 
-	WHERE key = $1
-	AND active = true;`, key)
-
-	var userID string
-	err := row.Scan(&userID)
-	if err != nil {
-		return "", err
-	}
-
-	return userID, nil
-}
-
 // AddFeed adds the given URL to the users default folder
 // and links it across feed_folder
 func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, feedURL string) (err error) {
@@ -213,6 +196,7 @@ func (db *DB) AddFeed(ctx context.Context, sessionKey, folderID, title, plugin, 
 	if err != nil {
 		return err
 	}
+
 	row := tx.QueryRowContext(ctx, `
 	INSERT INTO feeds
 	(title, plugin, url)
@@ -387,8 +371,8 @@ func (db *DB) GetFeed(ctx context.Context, feedID string, limit, offset int) (*F
 	return feed, nil
 }
 
-// UpdateFeedFromRefresh UPSERTS all posts returned into the DB
-func (db *DB) UpdateFeedFromRefresh(ctx context.Context, feedID string, posts []*Post) error {
+// UpdatePosts inserts a smattering of posts into the db
+func (db *DB) UpdatePosts(ctx context.Context, feedID string, posts []*Post) error {
 	for _, p := range posts {
 		var contentHash string
 		err := db.sql.QueryRow(`
