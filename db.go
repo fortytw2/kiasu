@@ -387,45 +387,6 @@ func (db *DB) GetFeed(ctx context.Context, feedID string, limit, offset int) (*F
 	return feed, nil
 }
 
-// GetFeedsToRefresh returns feeds that are not currently being updated AND
-// are past their time to be updated
-func (db *DB) GetFeedsToRefresh(ctx context.Context, num int) ([]*Feed, error) {
-	rows, err := db.sql.QueryContext(ctx, `
-	WITH cte AS (
-		SELECT id
-		FROM feeds 
-		WHERE last_enqueued_at < (now() - interval '10 minutes')
-		LIMIT $1
-	) UPDATE feeds fe
-	SET last_enqueued_at = now()
-	FROM cte
-	WHERE fe.id = cte.id
-	RETURNING fe.id, fe.title, fe.plugin, fe.url`, num)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	feeds := make([]*Feed, 0)
-	for rows.Next() {
-		var id, title, plugin, url string
-
-		err := rows.Scan(&id, &title, &plugin, &url)
-		if err != nil {
-			return nil, err
-		}
-
-		feeds = append(feeds, &Feed{
-			ID:      id,
-			Title:   title,
-			Plugin:  plugin,
-			BaseURL: url,
-		})
-	}
-
-	return feeds, nil
-}
-
 // UpdateFeedFromRefresh UPSERTS all posts returned into the DB
 func (db *DB) UpdateFeedFromRefresh(ctx context.Context, feedID string, posts []*Post) error {
 	for _, p := range posts {

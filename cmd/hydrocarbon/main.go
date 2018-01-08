@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"log"
 	"net/http"
@@ -10,7 +9,6 @@ import (
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/fortytw2/hydrocarbon"
-	"github.com/fortytw2/hydrocarbon/plugins/rss"
 	"github.com/fortytw2/hydrocarbon/postmark"
 )
 
@@ -72,9 +70,6 @@ func main() {
 	stripePrivKey, paymentEnabled := os.LookupEnv("STRIPE_PRIVATE_TOKEN")
 
 	ks := hydrocarbon.NewKeySigner(signingKey)
-	pl := hydrocarbon.NewPluginList(&rss.Reader{Client: http.DefaultClient})
-	rf := hydrocarbon.NewRefresher(db, pl, &hydrocarbon.StdoutReporter{})
-	go rf.Refresh(context.Background())
 
 	r := hydrocarbon.NewRouter(hydrocarbon.NewUserAPI(db, ks, m, "hydrocarbon", stripePrivKey, paymentEnabled), hydrocarbon.NewFeedAPI(db, ks, pl), domain)
 	err = http.ListenAndServe(getPort(), httpLogger(gziphandler.GzipHandler(r)))
