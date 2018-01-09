@@ -10,17 +10,14 @@ import 'preact-material-components/Dialog/style.css';
 import 'preact-material-components/Drawer/style.css';
 import 'preact-material-components/List/style.css';
 import 'preact-material-components/Toolbar/style.css';
-// import style from './style';
+import style from './style';
 
-export default class Header extends Component {
+export default class Layout extends Component {
 	closeDrawer() {
-		this.drawer.MDComponent.open = false;
 		this.state = {
 			darkThemeEnabled: false
 		};
 	}
-
-	openDrawer = () => (this.drawer.MDComponent.open = true);
 
 	openSettings = () => this.dialog.MDComponent.show();
 
@@ -33,6 +30,7 @@ export default class Header extends Component {
 	};
 
 	goHome = this.linkTo('/');
+	goFeed = this.linkTo('/feed');
 	goToMyProfile = this.linkTo('/profile');
 
 	toggleDarkTheme = () => {
@@ -53,13 +51,10 @@ export default class Header extends Component {
 
 	render() {
 		return (
-			<div>
+			<div class={style.layout}>
 				<Toolbar className="toolbar">
 					<Toolbar.Row>
 						<Toolbar.Section align-start>
-							<Toolbar.Icon menu onClick={this.openDrawer}>
-								menu
-							</Toolbar.Icon>
 							<Toolbar.Title>Hydrocarbon</Toolbar.Title>
 						</Toolbar.Section>
 						<Toolbar.Section align-end onClick={this.openSettings}>
@@ -67,20 +62,27 @@ export default class Header extends Component {
 						</Toolbar.Section>
 					</Toolbar.Row>
 				</Toolbar>
-				<Drawer.TemporaryDrawer ref={this.drawerRef}>
-					<Drawer.TemporaryDrawerContent>
+				<div class={style.content}>
+				<Drawer.PermanentDrawer spacer={false} ref={this.drawerRef}>
+					<Drawer.PermanentDrawerContent>
 						<List>
 							<List.LinkItem onClick={this.goHome}>
 								<List.ItemIcon>home</List.ItemIcon>
 								Home
+							</List.LinkItem>
+							<List.LinkItem onClick={this.goFeed}>
+								<List.ItemIcon>view_headline</List.ItemIcon>
+								Feed
 							</List.LinkItem>
 							<List.LinkItem onClick={this.goToMyProfile}>
 								<List.ItemIcon>account_circle</List.ItemIcon>
 								Profile
 							</List.LinkItem>
 						</List>
-					</Drawer.TemporaryDrawerContent>
-				</Drawer.TemporaryDrawer>
+					</Drawer.PermanentDrawerContent>
+				</Drawer.PermanentDrawer>
+				{this.props.children}
+				</div>
 				<Dialog ref={this.dialogRef}>
 					<Dialog.Header>Settings</Dialog.Header>
 					<Dialog.Body>
