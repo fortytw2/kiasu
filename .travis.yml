@@ -28,8 +28,8 @@ script:
   # Ensure all js is formatted. gopherCI takes care of Go
   - yarn global add prettier preact-cli
   - prettier --write "ui/**.js"
-  - go generate $(go list ./... | grep -v vendor)
   - test $(git status --porcelain | wc -l) -eq 0 || { git diff; false; }
+  - go generate $(go list ./... | grep -v vendor)
   - go test -race -v ./...
 
 notifications:
