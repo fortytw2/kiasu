@@ -1,6 +1,5 @@
-
-export default function (config, env, helpers) {
+export default function(config, env, helpers) {
   if (env.production) {
-    config.output.publicPath = '/static/'
+    config.output.publicPath = "/static/";
   }
 }
