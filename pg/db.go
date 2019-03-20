@@ -362,7 +362,7 @@ func (db *DB) RemoveFeed(ctx context.Context, sessionKey, folderID, feedID strin
 	return err
 }
 
-// GetFolders returns all of the folders for a user - if there are none it creates a
+// GetFoldersWithFeeds returns all of the folders for a user - if there are none it creates a
 // default folder
 func (db *DB) GetFoldersWithFeeds(ctx context.Context, sessionKey string) ([]*hydrocarbon.Folder, error) {
 	rows, err := db.sql.QueryContext(ctx, `

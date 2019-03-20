@@ -106,7 +106,7 @@ func (d *Discollector) GetPlugin(name string) (*Plugin, error) {
 	return d.r.Get(name)
 }
 
-// GetPlugin returns the first plugin that matches the given entrypoint
+// PluginForEntrypoint returns the first plugin that matches the given entrypoint
 func (d *Discollector) PluginForEntrypoint(url string, blacklist []string) (*Plugin, *HandlerOpts, error) {
 	plugin, routeParams, err := d.r.PluginFor(url, blacklist)
 	if err != nil {
